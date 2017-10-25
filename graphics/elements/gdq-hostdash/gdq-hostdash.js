@@ -195,16 +195,24 @@
 			if (saveOrKill === 'save') {
 				if (saveTheAnimalsTotal.raw > killTheAnimalsTotal.raw) {
 					return `Ahead by ${diff}`;
-				} else if (killTheAnimalsTotal.raw > saveTheAnimalsTotal.raw) {
+				}
+
+				if (killTheAnimalsTotal.raw > saveTheAnimalsTotal.raw) {
 					return '---';
 				}
+
 				return 'TIED';
-			} else if (saveOrKill === 'kill') {
+			}
+
+			if (saveOrKill === 'kill') {
 				if (killTheAnimalsTotal.raw > saveTheAnimalsTotal.raw) {
 					return `Ahead by ${diff}`;
-				} else if (saveTheAnimalsTotal.raw > killTheAnimalsTotal.raw) {
+				}
+
+				if (saveTheAnimalsTotal.raw > killTheAnimalsTotal.raw) {
 					return '---';
 				}
+
 				return 'TIED';
 			}
 

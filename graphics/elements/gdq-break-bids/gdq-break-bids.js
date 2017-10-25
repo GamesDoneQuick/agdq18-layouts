@@ -109,11 +109,13 @@
 			// Tiny timekiller to fix things breaking. Seriously, do not remove this.
 			this.tl.to({}, 0.03, {
 				onComplete() {
+					/* eslint-disable function-paren-newline */
 					this.replaceBottomText(
 						bid.isBitsChallenge ?
 							'Use&nbsp;Twitch&nbsp;chat&nbsp;to&nbsp;contribute&nbsp;Bits!' : '' +
 							'gamesdonequick.com/donate'
 					);
+					/* eslint-enable function-paren-newline */
 
 					this.bitsChallenge = bid.isBitsChallenge;
 					this.$['challenge-leftarrow'].src =
