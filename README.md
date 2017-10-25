@@ -24,7 +24,7 @@ However, [we did make one for the last event](https://www.youtube.com/watch?v=vB
 Please note that you **must manually run `npm install` for this bundle**. NodeCG currently cannot reliably compile this bundle's npm dependencies. This is an issue we hope to address in the future.
 
 **Please note that by default, the break screen graphic will not work.** This is because this graphic uses
-a paid library called [SplitText](https://greensock.com/SplitText), which we cannot redistribute. If you wish to use the break screen with its current implementation, you will need to pay for access to SplitText and save a copy to `graphics/imports/SplitText.min.js`.
+a paid library called [SplitText](https://greensock.com/SplitText), which we cannot redistribute. If you wish to use the break screen with its current implementation, you will need to pay for access to SplitText and save a copy to `shared/lib/SplitText.min.js`.
 
 ## Usage
 This bundle is not intended to be used verbatim. Some of the assets have been replaced with placeholders, and most of the data sources are hardcoded. We are open-sourcing this bundle in hopes that people will use it as a learning tool and base to build from, rather than just taking and using it wholesale in their own productions.
