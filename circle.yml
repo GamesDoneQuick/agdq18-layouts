@@ -1,3 +1,12 @@
 machine:
   node:
-    version: 7
+    version: 8.8.0
+
+dependencies:
+  pre:
+    - npm install --global bower
+    - npm install --global polymer-cli
+    - bower install
+  cache_directories:
+    - "/opt/circleci/nodejs/v8.8.0/lib/node_modules"
+    - "/opt/circleci/nodejs/v8.8.0/bin"
