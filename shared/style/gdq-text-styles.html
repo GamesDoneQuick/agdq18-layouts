@@ -1,0 +1,41 @@
+<dom-module id="gdq-text-styles">
+	<template>
+		<style>
+			.shadow {
+				color: white;
+				text-shadow:
+					-1px -1px 0 #000,
+					1px -1px 0 #000,
+					-1px 1px 0 #000,
+					1px 1px 0 #000;
+				-webkit-filter: drop-shadow(0 2px 0 black);
+			}
+
+			.filter-shadow {
+				-webkit-filter: drop-shadow(4px 4px 0 rgba(0, 0, 0, 0.33));
+			}
+
+			.box-shadow {
+				box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.33);
+			}
+
+			.tabular-nums {
+				font-variant-numeric: tabular-nums;
+				-moz-font-feature-settings: "tnum";
+				-webkit-font-feature-settings: "tnum";
+				font-feature-settings: "tnum";
+			}
+
+			.hashtag {
+				color: #ff3b72;
+			}
+
+			img.emoji {
+				height: 1em;
+				width: 1em;
+				margin: 0 .05em 0 .1em;
+				vertical-align: -0.1em;
+			}
+		</style>
+	</template>
+</dom-module>

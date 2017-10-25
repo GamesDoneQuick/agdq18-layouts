@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Standard, 4 Player</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
+	<link rel="import" href="elements/gdq-timer/gdq-timer.html">
+	<link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+	<custom-style>
+		<style>
+			gdq-nameplate {
+				--gdq-nameplate-width: 330px;
+			}
+
+			gdq-nameplate:nth-of-type(1) {
+				top: 10px;
+				left: 442px;
+			}
+
+			gdq-nameplate:nth-of-type(2) {
+				top: 60px;
+				right: 442px;
+			}
+
+			gdq-nameplate:nth-of-type(3) {
+				top: 348px;
+				left: 442px;
+			}
+
+			gdq-nameplate:nth-of-type(4) {
+				top: 398px;
+				right: 442px;
+			}
+
+			gdq-runinfo {
+				left: 444px;
+				top: 109px;
+				width: 394px;
+				height: 170px;
+				--gdq-runinfo-misc-height: 58px;
+			}
+
+			gdq-timer {
+				left: 444px;
+				top: 279px;
+				height: 53px;
+				width: 394px;
+				padding-bottom: 7px;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+	<div id="container">
+		<img id="background" src="img/backgrounds/standard_4_bg.png">
+		<gdq-runinfo></gdq-runinfo>
+		<gdq-timer></gdq-timer>
+		<gdq-nameplate index="0" attach-left></gdq-nameplate>
+		<gdq-nameplate index="1" attach-right></gdq-nameplate>
+		<gdq-nameplate index="2" attach-left></gdq-nameplate>
+		<gdq-nameplate index="3" attach-right></gdq-nameplate>
+		<img id="foreground" src="img/backgrounds/standard_4_fg.png">
+	</div>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>

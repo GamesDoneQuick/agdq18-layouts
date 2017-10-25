@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Widescreen, 1 Player</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
+	<link rel="import" href="elements/gdq-timer/gdq-timer.html">
+	<link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+	<custom-style>
+		<style>
+			gdq-nameplate {
+				left: 367px;
+				bottom: 70px;
+				--gdq-nameplate-width: 377px;
+			}
+
+			gdq-runinfo {
+				right: 0px;
+				bottom: 0px;
+				width: 480px;
+				height: 121px;
+				--gdq-runinfo-misc-height: 35px;
+			}
+
+			gdq-timer {
+				left: 315px;
+				bottom: 18px;
+				height: 57px;
+				width: 480px;
+				font-size: 45px;
+				border-bottom: 1px solid #000000;
+				padding-bottom: 3px;
+			}
+
+			gdq-twitter {
+				bottom: 0;
+				left: 0;
+				width: 311px;
+				height: 338px;
+
+				--gdq-twitter-body: {
+					font-size: 19px;
+					padding: 20px 25px 0 25px;
+				};
+				--gdq-twitter-namebar: {
+					width: 288px;
+					height: 40px;
+					margin-bottom: 50px;
+					padding-bottom: 2px;
+					padding-left: 12px;
+					font-size: 21px;
+				};
+			}
+
+			gdq-sponsors {
+				bottom: 0;
+				left: 0;
+				width: 311px;
+				height: 338px;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+	<div id="container">
+		<img id="background" src="img/backgrounds/widescreen_1_bg.png">
+		<gdq-runinfo max-name-size="35" single-line-name></gdq-runinfo>
+		<gdq-timer></gdq-timer>
+		<gdq-sponsors></gdq-sponsors>
+		<gdq-twitter></gdq-twitter>
+		<gdq-nameplate index="0"></gdq-nameplate>
+		<img id="foreground" src="img/backgrounds/widescreen_1_fg.png">
+	</div>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+@import 'base.css';
+
+#container {
+	width: 1280px;
+	height: 665px;
+}
+
+#container > #background,
+#container > #foreground,
+#container > #addon {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#container > #background {
+	z-index: -10;
+}
+
+#container > #foreground {
+	pointer-events: none;
+	z-index: 10;
+}
+
+#container > #addon {
+	pointer-events: none;
+	z-index: -11;
+}

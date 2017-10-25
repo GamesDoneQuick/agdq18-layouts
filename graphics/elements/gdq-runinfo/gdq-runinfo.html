@@ -1,0 +1,88 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/textFit.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+<link rel="import" href="../gdq-stepped-gradient-text/gdq-stepped-gradient-text.html">
+
+<dom-module id="gdq-runinfo">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				white-space: nowrap;
+				color: white;
+			}
+
+			#category,
+			#name {
+				padding: 0 16px;
+			}
+
+			#name {
+				line-height: 1;
+				text-transform: uppercase;
+				text-align: center;
+				flex-grow: 1;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: 700;
+			}
+
+			#category {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 35px;
+				background: url("img/category-bg.png");
+				white-space: nowrap;
+				flex-shrink: 0;
+				font-size: 20px;
+				font-weight: 700;
+			}
+
+			#category-text {
+				position: relative;
+				bottom: 4px;
+			}
+
+			#misc {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				flex-shrink: 0;
+				height: var(--gdq-runinfo-misc-height);
+			}
+
+			#misc > * {
+				position: relative;
+				top: -2px;
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		</style>
+
+		<span id="name" class="shadow">&nbsp;</span>
+		<div id="category">
+			<gdq-stepped-gradient-text
+			id="category-text"
+			text="[[category]]"
+			steps="3"
+			start-color="#fffdd3"
+			end-color="#ffcc00"></gdq-stepped-gradient-text>
+		</div>
+		<div id="misc">
+			<span class="shadow">[[console]][[calcReleaseYearDisplay(releaseYear)]]</span>
+			<div>
+				<img src="[[importPath]]img/clock.png" style="position: relative; top: 2px;">
+				&nbsp;<span class="shadow">[[estimate]]</span>
+			</div>
+		</div>
+	</template>
+
+	<script src="gdq-runinfo.js"></script>
+</dom-module>

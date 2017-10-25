@@ -1,0 +1,39 @@
+<!--
+@license
+Copyright (c) 2017 Thomas Smith. All rights reserved.
+This code may only be used under the BSD style license found in LICENSE.txt
+
+NOTE 2017-06-11: This element has been modified and adapted by Alex Van Camp for Games Done Quick.
+-->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/dragula.html">
+
+<!--
+Make any element draggable. This is a wrapper for dragula.js with minimal
+additional logic to ease usage with shadow DOM.
+
+See the [Dragula documentation](https://github.com/bevacqua/dragula) for any API
+not described or documented here.
+
+@demo demo/index.html
+-->
+<dom-module id="dragula-element">
+	<template>
+		<style>
+			:host {
+				display: block;
+				width: 100%;
+			}
+
+			#mirrorContainer {
+				width: 0;
+				height: 0;
+				overflow: visible;
+			}
+		</style>
+
+		<slot></slot>
+	</template>
+
+	<script src="dragula-element.js"></script>
+</dom-module>

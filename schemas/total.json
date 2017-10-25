@@ -1,0 +1,17 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"raw": {
+			"type": "number",
+			"minimum": 0
+		},
+		"formatted": {
+			"type": "string"
+		}
+	},
+	"default": {
+		"raw": 0,
+		"formatted": "$0"
+	}
+}

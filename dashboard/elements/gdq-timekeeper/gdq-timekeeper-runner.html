@@ -1,0 +1,137 @@
+<dom-module id="gdq-timekeeper-runner">
+	<template>
+		<style>
+			:host {
+				flex-basis: 130px;
+				padding-left: 18px;
+				padding-right: 8px;
+				flex-grow: 1;
+				flex-shrink: 1;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-justified;
+			}
+
+			:host(:nth-of-type(odd)) {
+				background-color: #dedede;
+			}
+
+
+			.green {
+				--bg-color: #43ac6a;
+			}
+
+			.yellow {
+				--bg-color: #e99002;
+			}
+
+			.purple {
+				--bg-color: #a50074;
+			}
+
+			.gray {
+				--bg-color: #555555;
+			}
+
+			#info {
+				line-height: 1;
+				@apply --layout-vertical;
+			}
+
+			#info-name {
+				font-size: 24px;
+				font-weight: 500;
+			}
+
+			#info-status {
+				font-size: 24px;
+				color: #adadad;
+				font-weight: 700;
+			}
+
+			#info-status.finished {
+				color: #43ac6a;
+			}
+
+			#buttons {
+				margin-left: auto;
+				@apply --layout-horizontal;
+			}
+
+			#buttons paper-button {
+				width: 98px;
+				height: 52px;
+			}
+
+			#empty {
+				font-size: 24px;
+				color: #adadad;
+				width: 100%;
+				text-align: center;
+			}
+
+			paper-button {
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+				--paper-button: {
+					color: white;
+					padding: 0;
+					font-size: 16px;
+					font-weight: bold;
+					background-color: var(--bg-color);
+				}
+			}
+		</style>
+
+		<template is="dom-if" if="[[runner]]">
+			<div id="info">
+				<div id="info-name">[[runner.name]]</div>
+				<div id="info-status" class$="[[calcRunnerStatusClass(results, index)]]">
+					[[calcRunnerStatus(results, index)]]
+				</div>
+			</div>
+
+			<div id="buttons">
+				<paper-button
+					raised
+					class="green"
+					on-tap="finish"
+				  	hidden="[[calcFinishHidden(results, index)]]">
+					<iron-icon src="[[importPath]]/img/flag-checkered.svg"></iron-icon>
+					&nbsp;Finish
+				</paper-button>
+
+				<paper-button
+					raised
+					class="yellow"
+					on-tap="resume"
+					hidden="[[calcResumeHidden(results, index)]]">
+					<iron-icon icon="undo"></iron-icon>
+					&nbsp;Resume
+				</paper-button>
+
+				<paper-button
+					raised
+					class="gray"
+					on-tap="forfeit"
+					hidden="[[calcForfeitHidden(results, index)]]">
+					<iron-icon icon="cancel"></iron-icon>
+					&nbsp;Forfeit
+				</paper-button>
+
+				<paper-button
+					raised
+					class="purple"
+					on-tap="editTime"
+					disabled="[[calcEditDisabled(results, index)]]">
+					<iron-icon icon="editor:mode-edit"></iron-icon>
+					&nbsp;Edit
+				</paper-button>
+			</div>
+		</template>
+
+		<div id="empty" hidden="[[runner]]">- EMPTY SLOT -</div>
+	</template>
+
+	<script src="gdq-timekeeper-runner.js"></script>
+</dom-module>

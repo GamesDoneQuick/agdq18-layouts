@@ -1,0 +1,38 @@
+<link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../../bower_components/polymer/lib/utils/render-status.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="gdq-recordings">
+	<template>
+		<style>
+			:host {
+				margin-right: 24px;
+				@apply --layout-vertical;
+				@apply --layout-center;
+				@apply --layout-flex-none;
+			}
+
+			label {
+				text-transform: uppercase;
+				font-size: 12px;
+				font-weight: bold;
+				margin-bottom: 0;
+				pointer-events: none;
+				user-select: none;
+				white-space: nowrap;
+			}
+		</style>
+
+		<label for="cycleToggle">Auto Cycle Recordings</label>
+		<paper-toggle-button
+			id="cycleToggle"
+		 	on-change="_handleCycleToggleChange"></paper-toggle-button>
+
+		<label for="cycleToggle" style="margin-top: 8px;">Auto Upload Recordings</label>
+		<paper-toggle-button
+			id="uploadToggle"
+			on-change="_handleUploadToggleChange"></paper-toggle-button>
+	</template>
+
+	<script src="gdq-recordings.js"></script>
+</dom-module>

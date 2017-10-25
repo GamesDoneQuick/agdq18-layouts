@@ -1,0 +1,87 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../../shared/style/gdq-input-style.html">
+
+<dom-module id="gdq-lowerthird-name-input">
+	<template>
+		<style include="gdq-input-style">
+			:host {
+				display: block;
+				max-width: 176px;
+				margin: 0 3px;
+				@apply --layout-vertical;
+			}
+
+			:host(:first-of-type) {
+				margin-left: 0;
+			}
+
+			:host(:last-of-type) {
+				margin-right: 0;
+			}
+
+			#buttons {
+				margin-bottom: 9px;
+				@apply --layout-horizontal;
+				@apply --layout-justified;
+			}
+
+			#handle,
+			#clear {
+				width: 75px;
+				height: 24px;
+				border-radius: 3px;
+				box-sizing: border-box;
+			}
+
+			#handle {
+				border: 1px solid #645BA6;
+				padding: 0 10px;
+				color: #645BA6;
+				cursor: move;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-justified;
+			}
+
+			#handle > * {
+				pointer-events: none;
+			}
+
+			#clear {
+				margin-right: 0;
+				--paper-button: {
+					background-color: #C9513E;
+					color: white;
+				}
+			}
+		</style>
+
+		<div id="buttons">
+			<div id="handle">
+				<iron-icon icon="editor:drag-handle"></iron-icon>
+				<iron-icon icon="compare-arrows"></iron-icon>
+			</div>
+
+			<paper-button id="clear" raised>
+				<iron-icon icon="clear" on-tap="clear"></iron-icon>
+			</paper-button>
+		</div>
+
+		<vaadin-combo-box
+			id="input"
+			class="gdq-input-style"
+			placeholder="HOST NAME"
+			no-label-float
+			value="{{value}}"
+			selected-item="{{selectedItem}}"
+			items="[[items]]"
+			allow-custom-value
+			disabled="[[disabled]]">
+			<!-- We provide our own clear button, so replace the default one with an empty div. -->
+			<div slot="clear-button"></div>
+		</vaadin-combo-box>
+	</template>
+
+	<script src="gdq-lowerthird-name-input.js"></script>
+</dom-module>

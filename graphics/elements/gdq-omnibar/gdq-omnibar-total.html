@@ -1,0 +1,104 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+<link rel="import" href="../gdq-stepped-gradient/gdq-stepped-gradient.html">
+
+<dom-module id="gdq-omnibar-total">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				position: relative;
+				height: calc(100% - 1px);
+				margin-top: 1px;
+				white-space: nowrap;
+				padding-left: 16px;
+				padding-right: 8px;
+				@apply --layout-flex-none;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#background {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+			}
+
+			#leftCap {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 4;
+			}
+
+			#totals {
+				@apply --layout-vertical;
+			}
+
+			#totalText,
+			#bitsTotal {
+				color: white;
+				font-family: gdqpixel, 'sans-serif';
+				font-weight: 400;
+				z-index: 4;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#totalText {
+				position: relative;
+				top: -2px;
+				font-size: 20px;
+			}
+
+			#bitsTotal {
+				position: relative;
+				top: 1px;
+				align-self: flex-end;
+			}
+
+			#bitsTotalIcon-container {
+				width: 6px;
+				height: 0;
+				margin-right: 5px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#bitsTotalIcon {
+				position: relative;
+				top: 1px;
+			}
+
+			#bitsTotalAmount {
+				font-size: 10px;
+			}
+		</style>
+
+		<gdq-stepped-gradient
+			id="background"
+			start-entered
+			steps="3"
+			start-color="#4f40b5"
+			end-color="#312871"></gdq-stepped-gradient>
+
+		<img id="leftCap" src="[[importPath]]img/total-leftcap.png">
+
+		<div id="totals">
+			<div id="totalText" class="shadow">
+				<div id="totalTextDollars">$</div>
+				<div id="totalTextAmount"></div>
+			</div>
+
+			<div id="bitsTotal">
+				<div id="bitsTotalIcon-container">
+					<img id="bitsTotalIcon" width="16" src="img/bitsicon.png">
+				</div>
+				<div id="bitsTotalAmount" class="shadow"></div>
+			</div>
+		</div>
+	</template>
+
+	<script src="gdq-omnibar-total.js"></script>
+</dom-module>

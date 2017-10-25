@@ -1,0 +1,24 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"preOrPost": {
+			"type": "string",
+			"enum": ["pre", "post"]
+		},
+		"content": {
+			"type": "array",
+			"items": {
+				"oneOf": [
+					{ "$ref": "types/adBreak.json" },
+					{ "$ref": "types/interview.json" }
+				]
+			}
+		}
+	},
+	"default": {
+		"preOrPost": "post",
+		"content": []
+	}
+}

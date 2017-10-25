@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Advertisements</title>
+	<link rel="stylesheet" href="style/base.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<script src="../bower_components/PreloadJS/lib/preloadjs-0.6.2.min.js"></script>
+	<link rel="import" href="elements/gdq-advertisements/gdq-advertisements.html">
+</head>
+<body>
+	<gdq-advertisements></gdq-advertisements>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>

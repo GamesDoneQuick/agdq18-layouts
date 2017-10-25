@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "array",
+	"items": {
+		"type": "object",
+		"properties": {
+			"name": {
+				"type": "string"
+			},
+			"nameWithExt": {
+				"type": "string"
+			},
+			"type": {
+				"type": "string"
+			},
+			"size": {
+				"type": "number"
+			},
+			"changed": {
+				"type": "number"
+			},
+			"frames": {
+				"type": "number"
+			},
+			"frameTime": {
+				"type": "string"
+			},
+			"frameRate": {
+				"type": "number"
+			},
+			"duration": {
+				"type": "number"
+			}
+		}
+	},
+	"default": []
+}

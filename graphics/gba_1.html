@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>GBA, 1 Player</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
+	<link rel="import" href="elements/gdq-timer/gdq-timer.html">
+	<link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+	<custom-style>
+		<style is="custom-style">
+			gdq-nameplate {
+				top: 393px;
+				left: 8px;
+				--gdq-nameplate-width: 312px;
+			}
+
+			gdq-runinfo {
+				left: 0;
+				top: 0;
+				width: 330px;
+				height: 167px;
+				--gdq-runinfo-misc-height: 43px;
+			}
+
+			gdq-timer {
+				left: 0;
+				top: 420px;
+				height: 57px;
+				width: 326px;
+				font-size: 42px;
+				border-bottom: 1px solid #000000;
+				padding-top: 8px;
+				padding-bottom: 5px;
+			}
+
+			gdq-twitter {
+				bottom: 0;
+				left: 0;
+				width: 325px;
+				height: 188px;
+				--gdq-twitter-body: {
+					font-size: 25px;
+					padding-top: 5px;
+				};
+				--gdq-twitter-namebar: {
+					width: 269px;
+					height: 50px;
+					margin-bottom: -12px;
+					padding-bottom: 12px;
+					font-size: 21px;
+				};
+			}
+
+			gdq-sponsors {
+				bottom: 0;
+				left: 0;
+				width: 325px;
+				height: 186px;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+	<div id="container">
+		<img id="background" src="img/backgrounds/gba_1_bg.png">
+		<gdq-runinfo></gdq-runinfo>
+		<gdq-timer></gdq-timer>
+		<gdq-sponsors></gdq-sponsors>
+		<gdq-twitter></gdq-twitter>
+		<gdq-nameplate index="0"></gdq-nameplate>
+		<img id="foreground" src="img/backgrounds/gba_1_fg.png">
+	</div>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>

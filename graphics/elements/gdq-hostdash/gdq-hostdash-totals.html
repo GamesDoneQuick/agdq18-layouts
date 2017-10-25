@@ -1,0 +1,38 @@
+<link rel="import" href="gdq-hostdash-styles.html">
+
+<dom-module id="gdq-hostdash-totals">
+	<template>
+		<style include="gdq-hostdash-styles">
+			:host {
+				font-size: 48px;
+				font-weight: 700;
+				@apply --layout-vertical;
+			}
+
+			.material {
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+				@apply --layout-flex;
+			}
+
+			#cashTotal {
+				margin-bottom: 4px;
+			}
+
+			#bitsTotal {
+				margin-top: 4px;
+			}
+		</style>
+
+		<div id="cashTotal" class="material">
+			[[cashTotal]]
+		</div>
+
+		<div id="bitsTotal" class="material">
+			<img id="bitsIcon" src="img/bitsicon.png" width="40">
+			[[bitsTotal]]
+		</div>
+	</template>
+
+	<script src="gdq-hostdash-totals.js"></script>
+</dom-module>

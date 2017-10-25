@@ -1,0 +1,38 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"id": {
+			"type": "number"
+		},
+		"interviewees": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"interviewers": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"duration": {
+			"type": "string"
+		},
+		"order": {
+			"type": "number"
+		},
+		"subject": {
+			"type": "string"
+		},
+		"suborder": {
+			"type": "number"
+		},
+		"type": {
+			"type": "string",
+			"enum": ["interview"]
+		}
+	}
+}

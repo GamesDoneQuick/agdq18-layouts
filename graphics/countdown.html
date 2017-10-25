@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Countdown</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="stylesheet" href="style/font/small-pixel-7.css">
+	<link rel="stylesheet" href="style/font/SF%20Pixelate.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+
+	<custom-style>
+		<style>
+			body {
+				font-family: 'SF Pixelate', sans-serif;
+				letter-spacing: -0.025em;
+			}
+
+			#container {
+				height: 720px;
+			}
+
+			#logo {
+				position: absolute;
+				top: 0;
+				left: 388px;
+				transform: scale(0.75);
+				z-index: 1;
+			}
+
+			#loop {
+				position: absolute;
+				top: 308px;
+				left: 280px;
+				z-index: -10;
+			}
+
+			#nowPlaying {
+				color: white;
+				font-size: 23px;
+				width: 764px;
+				bottom: 4px;
+				left: 258px;
+				opacity: 0;
+			}
+
+			#countdown {
+				font-size: 90px;
+				font-family: 'small-pixel-7', sans-serif;
+				color: #00ff00;
+				left: 509px;
+				top: 337px;
+				width: 264px;
+				letter-spacing: 0.075em;
+				display: flex;
+				justify-content: center;
+			}
+
+			#countdown,
+			#nowPlaying {
+				text-align: center;
+				white-space: nowrap;
+				position: absolute;
+				transform-origin: left;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+<div id="container">
+	<video id="loop" autoplay loop src="img/countdown/countdown_anim_loop.webm"></video>
+	<img src="img/backgrounds/countdown_bg.png">
+	<img id="logo" src="img/countdown/countdown_logo.png">
+	<div id="countdown">
+		<div id="countdownMinutes"></div>
+		<div id="countdownColon">:</div>
+		<div id="countdownSeconds"></div>
+	</div>
+	<div id="nowPlaying"></div>
+</div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', () => {
+		TweenLite.to(document.body, 0.333, {
+			opacity: 1,
+			ease: Power1.easeOut
+		});
+	});
+</script>
+
+<script src="app/countdown.js"></script>
+</body>
+</html>

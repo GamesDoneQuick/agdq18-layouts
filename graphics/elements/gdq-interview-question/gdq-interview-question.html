@@ -1,0 +1,67 @@
+<link rel="import" href="../../../bower_components/polymer/lib/utils/flush.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="gdq-interview-question">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				display: block;
+				width: 1280px;
+				height: 173px;
+				position: absolute;
+				bottom: 72px;
+				background-image: url("img/question_bg.png");
+				font-family: "SF Pixelate", sans-serif;
+				z-index: 2;
+
+				/* prep for animation */
+				transform: translateY(245px);
+			}
+
+			#wrapper {
+				position: absolute;
+				left: 24px;
+				top: 8px;
+				height: 116px;
+				width: 1232px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				box-sizing: border-box;
+				padding: 0 32px;
+			}
+
+			#question {
+				font-size: 23px;
+				font-weight: 400;
+				line-height: 31px;
+				color: #ffffff;
+				flex: 1;
+				text-align: center;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			#username {
+				color: #00bffa;
+				font-size: 28px;
+				font-weight: 700;
+			}
+
+			.hashtag {
+				color: #62b7ff;
+			}
+		</style>
+
+		<div id="wrapper">
+			<div id="question">
+				<div id="question-text"></div>
+			</div>
+			<div id="username"></div>
+		</div>
+	</template>
+
+	<script src="gdq-interview-question.js"></script>
+</dom-module>

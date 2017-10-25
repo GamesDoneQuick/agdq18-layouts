@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Monitor</title>
+	<link rel="stylesheet" href="style/font/montserrat.css">
+	<link rel="stylesheet" href="style/base.css">
+	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/gdq-interview-monitor/gdq-interview-monitor.html">
+	<style>
+		body {
+			margin: 0;
+			font-family: montserrat, 'sans-serif';
+		}
+	</style>
+</head>
+<body>
+	<gdq-interview-monitor></gdq-interview-monitor>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>

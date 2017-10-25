@@ -1,0 +1,104 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/elements/gdq-time-ago/gdq-time-ago.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="gdq-tweet">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				position: relative;
+				padding-left: 64px;
+				padding-right: 10px;
+				min-height: 50px;
+				min-width: 1px;
+				@apply --layout-vertical;
+			}
+
+			#avatar {
+				position: absolute;
+				top: 3px;
+				left: 8px;
+				width: 48px;
+				height: 48px;
+				border-radius: 10%;
+			}
+
+			#profileLink {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				min-width: 1px;
+				@apply --layout-flex;
+			}
+
+			#profileLink:hover {
+				text-decoration: none;
+			}
+
+			#profileLink:hover #name {
+				color: #2b7bb9;
+				text-decoration: underline;
+			}
+
+			#name {
+				color: black;
+				font-weight: bold;
+				font-size: 16px;
+			}
+
+			#screenName,
+			#timeAgo {
+				color: #888;
+				font-size: 14px;
+			}
+
+			#tweetLink {
+				padding-left: 5px;
+				@apply --layout-flex-none;
+			}
+
+			#tweetLink:hover #timeAgo {
+				color: #2b7bb9;
+				text-decoration: underline;
+			}
+
+			#body {
+				word-wrap: break-word;
+				word-break: break-word;
+			}
+
+			a {
+				text-transform: none;
+				text-decoration: none;
+			}
+
+			header {
+				white-space: nowrap;
+				@apply --layout-horizontal;
+			}
+		</style>
+
+		<header>
+			<a id="profileLink" href="[[profileUrl]]" target="_blank">
+				<iron-image
+					id="avatar"
+					src="[[tweet.user.profile_image_url_https]]"
+					sizing="contain"
+					fade>
+				</iron-image>
+				<span id="name">[[tweet.user.name]]</span>
+				<span id="screenName">@[[tweet.user.screen_name]]</span>
+			</a>
+
+			<a id="tweetLink" href="[[tweetUrl]]" target="_blank">
+				<gdq-time-ago id="timeAgo" datetime="[[tweet.created_at]]"></gdq-time-ago>
+			</a>
+		</header>
+
+		<div id="body"></div>
+	</template>
+
+	<script src="gdq-tweet.js"></script>
+</dom-module>

@@ -1,0 +1,284 @@
+<link rel="import" href="../../../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../bower_components/polymer/lib/mixins/mutable-data.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/elements/gdq-rundown/gdq-rundown.html">
+<link rel="import" href="gdq-hostdash-ads.html">
+<link rel="import" href="gdq-hostdash-bids.html">
+<link rel="import" href="gdq-hostdash-prizes.html">
+<link rel="import" href="gdq-hostdash-styles.html">
+<link rel="import" href="gdq-hostdash-totals.html">
+<link rel="import" href="gdq-hostdash-twitch-ads.html">
+
+<dom-module id="gdq-hostdash">
+	<template>
+		<style include="gdq-hostdash-styles iron-flex iron-flex-alignment">
+			:host {
+				position: absolute;
+				top: 0;
+				left: 0;
+				overflow: hidden;
+				width: 1920px;
+				height: 1080px;
+				display: block;
+				font-family: Roboto, sans-serif;
+				color: #000000;
+				padding: 24px 34px 50px 34px;
+				box-sizing: border-box;
+				@apply --layout-vertical;
+			}
+
+			#header {
+				font-size: 36px;
+				font-weight: 700;
+				line-height: 43px;
+				text-transform: uppercase;
+				margin-bottom: 9px;
+				@apply --layout-flex-none;
+				@apply --layout-horizontal;
+				@apply --layout-justified;
+			}
+
+			#gridWrapper {
+				display: grid;
+				grid-template-columns: repeat(3, 422px) auto;
+				grid-template-rows: 147px 387px auto;
+				grid-gap: 10px;
+			}
+
+			#totals {
+				grid-column: 1;
+				grid-row: 1;
+			}
+
+			#prizes {
+				grid-column: 1;
+				grid-row: 2 / 4;
+				flex-grow: 1;
+			}
+
+			#metroid {
+				grid-column: 2 / 4;
+				grid-row: 1;
+				box-sizing: border-box;
+				@apply --layout-vertical;
+			}
+
+			#metroid-state {
+				height: 32px;
+				margin: 0 167px;
+				font-size: 18px;
+				@apply --shadow-elevation-2dp;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#metroid-results {
+				@apply --layout-flex;
+				@apply --layout-horizontal;
+			}
+
+			#metroid-kill {
+				text-align: right;
+			}
+
+			.metroid-category {
+				width: 50%;
+				font-size: 30px;
+				font-weight: 300;
+				line-height: 43px;
+				text-transform: uppercase;
+				padding: 4px 16px 0 16px;
+				@apply --layout-center-justified;
+				@apply --layout-vertical;
+			}
+
+			.metroid-category[ahead] {
+				font-size: 30px;
+				font-weight: 900;
+				background-color: rgba(168, 255, 168, 0.55);
+			}
+
+			.metroid-category-name {
+				margin-bottom: -9px;
+			}
+
+			.metroid-category-ahead {
+				font-size: 18px;
+				font-weight: 400;
+				text-transform: none;
+			}
+
+			#bids {
+				grid-column: 2;
+				grid-row: 2 / 4;
+				box-sizing: border-box;
+			}
+
+			#ads {
+				grid-column: 3;
+				grid-row: 2 / 4;
+			}
+
+			#twitch {
+				grid-column: 4;
+				grid-row: 1;
+			}
+
+			#schedule {
+				grid-column: 4;
+				grid-row: 2;
+				padding: 11px;
+				@apply --layout-vertical;
+			}
+
+			#checklistStatus {
+				width: 100%;
+				height: 49px;
+				font-size: 36px;
+				font-weight: 500;
+				text-transform: uppercase;
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			}
+
+			#stopwatch {
+				text-align: center;
+				font-variant-numeric: tabular-nums;
+				-moz-font-feature-settings: "tnum";
+				-webkit-font-feature-settings: "tnum";
+				font-feature-settings: "tnum";
+			}
+
+			#stopwatch-time {
+				font-size: 100px;
+				font-weight: 700;
+			}
+
+			#stopwatch-results {
+				height: 93px;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-around-justified;
+			}
+
+			.result {
+				width: 120px;
+			}
+
+			.result:not([display]) {
+				display: none;
+			}
+
+			.result-time {
+				font-size: 24px;
+				font-weight: 400;
+			}
+
+			.result-name {
+				font-size: 18px;
+				font-weight: 400;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			#currentRun {
+				text-align: center;
+			}
+
+			#currentRun-name {
+				font-size: 36px;
+				font-weight: 500;
+				line-height: 43px;
+				margin-bottom: 12px;
+			}
+
+			#currentRun-runners {
+				font-size: 22px;
+				font-weight: 400;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			#rundown {
+				grid-column: 4;
+				grid-row: 3;
+			}
+		</style>
+
+		<div id="header">
+			<div>[[currentTime]] -- [[elapsedTime]]</div>
+			<div>SUMMER GAMES DONE QUICK 2017</div>
+		</div>
+
+		<div id="gridWrapper">
+			<gdq-hostdash-totals id="totals"></gdq-hostdash-totals>
+
+			<gdq-hostdash-prizes id="prizes" class="material"></gdq-hostdash-prizes>
+
+			<div id="metroid">
+				<div id="metroid-state">[[calcMetroidStateText(metroidBid.state)]]</div>
+
+				<div id="metroid-results" class="material">
+					<div id="metroid-save" class="metroid-category">
+						<div class="metroid-category-name">SAVE THE ANIMALS</div>
+						<div class="layout horizontal center justified">
+							<div>[[saveTheAnimalsTotal.formatted]]</div>
+							<div class="metroid-category-ahead">
+								[[calcMetroidAheadText('save', saveTheAnimalsTotal, killTheAnimalsTotal)]]
+							</div>
+						</div>
+					</div>
+					<div id="metroid-kill" class="metroid-category">
+						<div class="metroid-category-name">KILL THE ANIMALS</div>
+						<div class="layout horizontal center justified">
+							<div class="metroid-category-ahead">
+								[[calcMetroidAheadText('kill', saveTheAnimalsTotal, killTheAnimalsTotal)]]
+							</div>
+							<div>[[killTheAnimalsTotal.formatted]]</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<gdq-hostdash-bids id="bids" class="material"></gdq-hostdash-bids>
+			<gdq-hostdash-ads id="ads" class="material"></gdq-hostdash-ads>
+			<gdq-hostdash-twitch-ads id="twitch" class="material"></gdq-hostdash-twitch-ads>
+
+			<div id="schedule" class="material">
+				<div id="checklistStatus"></div>
+
+				<div id="stopwatch">
+					<div id="stopwatch-time">[[stopwatchTime]]</div>
+					<div 1id="stopwatch-results">
+						<template is="dom-repeat" items="[[stopwatchResults]]" as="result">
+							<div class="result" display$="[[isValidResult(result, index, runners)]]">
+								<div class="result-time">[[result.formatted]]</div>
+								<div class="result-name" title="[[calcRunnerName(runners, index)]]">
+									[[calcRunnerName(runners, index)]]
+								</div>
+							</div>
+						</template>
+					</div>
+				</div>
+
+				<div id="currentRun">
+					<div id="currentRun-name"></div>
+					<div id="currentRun-runners">[[calcRunnersString(runners)]]</div>
+				</div>
+			</div>
+
+			<gdq-rundown id="rundown" class="material"></gdq-rundown>
+		</div>
+	</template>
+
+	<script src="gdq-hostdash.js"></script>
+</dom-module>

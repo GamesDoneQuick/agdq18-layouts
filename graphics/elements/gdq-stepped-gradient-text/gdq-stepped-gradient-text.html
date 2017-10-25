@@ -1,0 +1,31 @@
+<link rel="import" href="../../mixins/SteppedGradientMixin.html">
+
+<dom-module id="gdq-stepped-gradient-text">
+	<template>
+		<style>
+			:host {
+				position: relative;
+			}
+
+			#background {
+				position: absolute;
+				top: var(--gdq-stepped-gradient-text-bg-offset, 0);
+				left: 0;
+				color: transparent;
+			}
+
+			#foreground {
+				position: relative;
+				z-index: 1;
+				color: transparent;
+				text-shadow: none;
+				-webkit-background-clip: text;
+			}
+		</style>
+
+		<span id="background">[[text]]</span>
+		<span id="foreground">[[text]]</span>
+	</template>
+
+	<script src="gdq-stepped-gradient-text.js"></script>
+</dom-module>

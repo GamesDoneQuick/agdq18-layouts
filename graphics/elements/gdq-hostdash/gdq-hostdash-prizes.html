@@ -1,0 +1,35 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="gdq-hostdash-prize.html">
+<link rel="import" href="gdq-hostdash-styles.html">
+
+<dom-module id="gdq-hostdash-prizes">
+	<template>
+		<style include="gdq-hostdash-styles">
+			:host {
+				display: block;
+				@apply --layout-flex;
+			}
+
+			#list {
+				height: 706px;
+				padding: 0 14px;
+				margin-top: 13px;
+				margin-right: 11px;
+				margin-bottom: 13px;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				overflow-x: hidden;
+			}
+		</style>
+
+		<div class="header">PRIZES CURRENTLY AVAILABLE</div>
+		<iron-list id="list" items="[[prizes]]" as="prize">
+			<template>
+				<gdq-hostdash-prize id="prize-[[prize.id]]" prize="[[prize]]"></gdq-hostdash-prize>
+			</template>
+		</iron-list>
+	</template>
+
+	<script src="gdq-hostdash-prizes.js"></script>
+</dom-module>

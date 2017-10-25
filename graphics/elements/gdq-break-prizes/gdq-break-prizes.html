@@ -1,0 +1,141 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="gdq-break-prizes">
+	<template>
+		<style include="gdq-text-styles iron-flex iron-flex-alignment">
+			:host {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				height: 100%;
+				flex-grow: 1;
+				font-family: "SF Pixelate", sans-serif;
+				color: #ffffff;
+				padding-top: 21px;
+				box-sizing: border-box;
+			}
+
+			#provider {
+				height: 41px;
+				background-color: rgba(255, 91, 91, 0.42);
+				font-size: 19px;
+				font-weight: 400;
+				text-align: center;
+				margin-bottom: 21px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#provider-wrap {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				padding: 0 16px;
+			}
+
+			#prize {
+				padding: 14px 14px;
+				background-color: #1f2828;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#prize-image {
+				position: relative;
+				width: 225px;
+				height: 163px;
+				outline: 6px solid black;
+				border: 3px solid white;
+				box-sizing: border-box;
+				margin: 6px;
+				@apply --layout-flex-none;
+			}
+
+			#prize-image iron-image {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+
+			#prize-image-next {
+				opacity: 0;
+				z-index: 1;
+			}
+
+			#prize-name {
+				color: #ffffff;
+				font-size: 29px;
+				font-weight: 400;
+				line-height: 32px;
+				display: -webkit-box;
+				-webkit-line-clamp: 4;
+				-webkit-box-orient: vertical;
+				overflow: hidden;
+			}
+
+			#prize-minbid {
+				font-size: 19px;
+				color: #ffffff;
+				font-weight: 400;
+				margin-top: 12px;
+				white-space: nowrap;
+				@apply --layout-horizontal;
+			}
+
+			#prize-minbid-amount {
+				color: #4e8bd7;
+				font-weight: 700;
+			}
+
+			#disclaimer {
+				position: absolute;
+				bottom: -54px;
+				left: 111px;
+				text-align: center;
+				width: 308px;
+				height: 16px;
+				border: 1px solid #000000;
+				background-color: #24292e;
+				font-size: 10px;
+				font-weight: 400;
+				transition: opacity 333ms ease;
+				opacity: 0;
+			}
+		</style>
+
+		<div id="provider">
+			<div id="provider-wrap" class="shadow"></div>
+		</div>
+
+		<div id="prize">
+			<div id="prize-image">
+				<iron-image
+					id="prize-image-current"
+					sizing="cover"
+					preload
+					placeholder="elements/gdq-break-prizes/img/fallback.png">
+				</iron-image>
+				<iron-image
+					id="prize-image-next"
+					sizing="cover"
+					preload
+					placeholder="elements/gdq-break-prizes/img/fallback.png">
+				</iron-image>
+			</div>
+			<div class="layout vertical shadow" style="margin-left: 21px; margin-top: 6px; align-self: flex-start;">
+				<div id="prize-name"></div>
+				<div id="prize-minbid"></div>
+			</div>
+		</div>
+
+		<div id="disclaimer">No donation necessary. See website for details.</div>
+	</template>
+
+	<script src="gdq-break-prizes.js"></script>
+</dom-module>

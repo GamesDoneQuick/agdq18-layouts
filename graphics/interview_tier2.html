@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tier 2 Interview Moderation</title>
+	<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="style/font/montserrat.css">
+	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+	<link rel="import" href="elements/gdq-interview-tier2/gdq-interview-tier2.html">
+	<style>
+		html,
+		body {
+			height: 100%;
+		}
+
+		html {
+			overflow: hidden;
+		}
+
+		body {
+			overflow: scroll;
+			-webkit-overflow-scrolling: touch;
+			margin: 0;
+			font-family: montserrat, 'sans-serif';
+			background-color: #dedede;
+		}
+
+		gdq-interview-tier2 {
+			/* prevents iOS "overscroll" */
+			/*position: fixed;*/
+			width: 100%;
+			max-width: 800px;
+			height: 100%;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+	<gdq-interview-tier2></gdq-interview-tier2>
+</body>
+</html>
