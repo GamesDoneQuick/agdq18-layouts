@@ -1,0 +1,171 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+<link rel="import" href="../../../shared/elements/gdq-time-ago/gdq-time-ago.html">
+
+<dom-module id="tweet-item">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				@apply --layout-vertical;
+			}
+
+			:host(:not(:first-of-type)) {
+				margin-top: 5px;
+			}
+
+			:host(:not(:last-of-type)) {
+				border-bottom: 1px solid #3c3c3c;
+				padding-bottom: 10px;
+			}
+
+			#tweetWrapper {
+				@apply --layout-horizontal;
+				position: relative;
+			}
+
+			#tweet {
+				@apply --layout-flex;
+				@apply --layout-vertical;
+				margin-left: 58px;
+				margin-bottom: 6px;
+			}
+
+			#avatar {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 48px;
+				height: 48px;
+				border-radius: 5px;
+				margin-top: 5px;
+			}
+
+			#profileLink {
+				word-break: break-word;
+				word-wrap: break-word;
+				display: block;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-decoration: none;
+			}
+
+			#profileLink:hover {
+				text-decoration: none;
+			}
+
+			#profileLink:hover #name {
+				color: #2b7bb9;
+				text-decoration: underline;
+			}
+
+			#name {
+				color: black;
+				font-weight: bold;
+				font-size: 16px;
+			}
+
+			#screenName,
+			#timeAgo {
+				color: #888;
+				font-size: 14px;
+			}
+
+			#tweetLink {
+				padding-left: 5px;
+				float: right;
+			}
+
+			#tweetLink:hover #timeAgo {
+				color: #2b7bb9;
+				text-decoration: underline;
+			}
+
+			#controls {
+				margin-left: 8px;
+				align-self: center;
+				@apply --layout-flex-none;
+				@apply --layout-vertical;
+			}
+
+			#accept {
+				color: #5BA664;
+			}
+
+			#accept:hover {
+				background: var(--paper-green-50);
+				border-radius: 50%;
+			}
+
+			#reject {
+				color: #C9513E;
+			}
+
+			#reject:hover {
+				background: var(--paper-red-50);
+				border-radius: 50%;
+			}
+
+			#media {
+				text-align: center;
+			}
+
+			#media a {
+				font-size: 16px;
+				display: inline-block;
+				margin-bottom: -6px;
+			}
+
+			a {
+				text-transform: none;
+			}
+		</style>
+
+		<div id="tweetWrapper">
+			<div id="tweet">
+				<header>
+					<a id="tweetLink" href="[[tweetUrl]]" target="_blank">
+						<gdq-time-ago id="timeAgo" datetime="[[value.created_at]]"></gdq-time-ago>
+					</a>
+
+					<a id="profileLink" href="[[profileUrl]]" target="_blank">
+						<iron-image id="avatar" src="[[value.user.profile_image_url_https]]"
+									sizing="contain" fade></iron-image>
+						<span id="name">[[value.user.name]]</span>
+						<span id="screenName">@[[value.user.screen_name]]</span>
+					</a>
+				</header>
+
+				<div id="body"></div>
+			</div>
+
+			<div id="controls">
+				<paper-icon-button
+					id="accept"
+					on-tap="accept"
+					icon="check"
+					title="Accept and show"></paper-icon-button>
+				<paper-icon-button
+					id="reject"
+					on-tap="reject"
+					icon="clear"
+					title="Reject and discard"></paper-icon-button>
+			</div>
+		</div>
+
+		<template is="dom-if" if="{{value.imageUrls.length}}">
+			<div id="media">
+				<b>Tweet has [[value.imageUrls.length]] [[computePhotoOrPhotos(value.imageUrls.length)]]:</b>
+				<template is="dom-repeat" items="{{value.imageUrls}}" as="image">
+					<a class="imageLink" href="[[image]]" target="_blank">[[computeIndexPlusOne(index)]]</a>
+				</template>
+			</div>
+		</template>
+	</template>
+
+	<script src="tweet-item.js"></script>
+</dom-module>

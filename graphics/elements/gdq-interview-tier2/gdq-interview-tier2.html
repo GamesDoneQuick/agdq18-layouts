@@ -1,0 +1,389 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../../bower_components/polymer/lib/mixins/mutable-data.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../../shared/style/gdq-input-style.html">
+<link rel="import" href="../dragula-element/dragula-element.html">
+<link rel="import" href="../gdq-tweet/gdq-tweet.html">
+<link rel="import" href="gdq-lowerthird-name-input.html">
+
+<dom-module id="gdq-interview-tier2">
+	<template>
+		<style include="dragula-styles gdq-input-style iron-flex iron-flex-alignment">
+			:host {
+				padding: 8px;
+				font-family: "Roboto", sans-serif;
+				background-color: #424242;
+				@apply --layout-vertical;
+			}
+
+			.frame {
+				border: 1px solid black;
+				box-sizing: border-box;
+				background-color: white;
+				@apply --layout-vertical;
+			}
+
+			.frame-title {
+				background-color: #C4C4C4;
+				font-style: normal;
+				font-weight: bold;
+				font-size: 18px;
+				color: black;
+				height: 29px;
+				text-transform: uppercase;
+				@apply --layout-flex-none;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#fifthPersonInput {
+				width: 327px;
+				margin-bottom: 0;
+			}
+
+			#fivePersonTooltip,
+			#lowerthirdDisabledTooltip {
+				margin: 0 16px;
+				--paper-tooltip: {
+					font-size: 14px;
+				};
+			}
+
+			#toggle {
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#toggle-label {
+				border-bottom: 1px dashed #999;
+				cursor: help;
+				font-size: 18px;
+			}
+
+			#toggle-button {
+				margin-left: 22px;
+				margin-right: 6px;
+			}
+
+			#resetNameOrder {
+				margin-left: auto;
+				margin-right: 0;
+				--paper-button: {
+					height: 35px;
+					background-color: #A50074;
+				}
+			}
+
+			#nameInputs {
+				margin-top: 17px;
+				margin-bottom: 12px;
+				@apply --layout-horizontal;
+				@apply --layout-around-justified;
+			}
+
+			#endInterview,
+			#showNext {
+				width: 300px;
+				height: 43px;
+				margin: 0 7px;
+				text-align: center;
+			}
+
+			#hideLowerthird,
+			#hideQuestion,
+			#endInterview {
+				--paper-button: {
+					background-color: #C9513E;
+				};
+			}
+
+			#showNext,
+			#showQuestion,
+			#showLowerthird {
+				--paper-button: {
+					background-color: #5BA664;
+				};
+			}
+
+			#showQuestion,
+			#hideQuestion,
+			#autoQuestion,
+			#showLowerthird,
+			#hideLowerthird,
+			#autoLowerthird {
+				width: 160px;
+				height: 35px;
+				margin: 0 9px;
+			}
+
+			#autoQuestion,
+			#autoLowerthird {
+				--paper-button: {
+					background-color: #645BA6;
+				}
+			}
+
+			#approvedQuestionsHeader {
+				text-transform: uppercase;
+				padding-left: 9px;
+				font-weight: bold;
+				font-size: 24px;
+				margin-top: 15px;
+				margin-bottom: 6px;
+			}
+
+			#placeholder {
+				padding-left: 10px;
+			}
+
+			#list {
+				margin-top: 14px;
+				padding: 0 10px;
+				box-sizing: border-box;
+				overflow-y: auto;
+				overflow-x: hidden;
+				@apply --layout-vertical;
+			}
+
+			.tweet {
+				margin: 4px 0;
+				padding-left: 0;
+				padding-right: 6px;
+				padding-top: 5px;
+				padding-bottom: 7px;
+				background-color: #9966cc;
+				box-sizing: border-box;
+				box-shadow:
+					0 2px 2px 0 rgba(0, 0, 0, 0.14),
+					0 1px 5px 0 rgba(0, 0, 0, 0.12),
+					0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				@apply --layout-horizontal;
+			}
+
+			#list .tweet:first-of-type {
+				margin-top: 0;
+				background-color: #BFE7C4 !important;
+			}
+
+			.tweet-content {
+				@apply --layout-flex;
+			}
+
+			.tweet-handle {
+				position: relative;
+				width: 50px;
+				border-right: 1px solid black;
+				cursor: move;
+				@apply --layout-flex-none;
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			}
+
+			.tweet-buttons {
+				width: 52px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			.tweet-buttons paper-button {
+				width: 46px;
+				height: 46px;
+				min-width: 46px;
+				margin-right: 0;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			.tweet-buttons-reject {
+				--paper-button: {
+					background-color: #C9513E;
+				};
+			}
+
+			.bg-color-transition {
+				transition: background-color 1600ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+			}
+
+			paper-button {
+				color: white;
+				font-weight: bold;
+			}
+
+			#endInterviewDialog paper-button {
+				color: #00bebe;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<div class="frame" style="margin-bottom: 4px;">
+			<div class="frame-title">Interview Graphic</div>
+
+			<div style="padding: 8px 14px 14px 14px;">
+				<div class="layout horizontal center">
+					<div id="toggle">
+						<span id="toggle-label">5 Person Mode</span>
+						<paper-toggle-button id="toggle-button" checked="{{fivePersonMode}}"></paper-toggle-button>
+
+						<paper-tooltip
+							id="fivePersonTooltip"
+							for="toggle-label"
+							offset="20"
+							animation-delay="0"
+							fit-to-visible-bounds>
+							Enables the "Host" input. The host's name will appear below the 4 other names on the graphic.
+						</paper-tooltip>
+					</div>
+
+					<vaadin-combo-box
+						id="fifthPersonInput"
+						class="gdq-input-style"
+						placeholder="INTERVIEWER NAME"
+						no-label-float
+						items="[[_typeaheadCandidates]]"
+						disabled="[[!fivePersonMode]]">
+					</vaadin-combo-box>
+
+					<paper-button raised id="resetNameOrder" on-tap="resetNameOrder">
+						Reset Order&ensp;<iron-icon icon="refresh"></iron-icon>
+					</paper-button>
+				</div>
+
+				<dragula-element id="nameInputs" direction="horizontal">
+					<gdq-lowerthird-name-input items="[[_typeaheadCandidates]]"></gdq-lowerthird-name-input>
+					<gdq-lowerthird-name-input items="[[_typeaheadCandidates]]"></gdq-lowerthird-name-input>
+					<gdq-lowerthird-name-input items="[[_typeaheadCandidates]]"></gdq-lowerthird-name-input>
+					<gdq-lowerthird-name-input items="[[_typeaheadCandidates]]"></gdq-lowerthird-name-input>
+				</dragula-element>
+
+				<div class="layout horizontal center-center">
+					<paper-button id="showLowerthird" raised on-tap="showLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
+						Show
+					</paper-button>
+
+					<paper-button id="hideLowerthird" raised on-tap="hideLowerthird" disabled="[[!lowerthirdShowing]]">
+						Hide
+					</paper-button>
+
+					<paper-button id="autoLowerthird" raised on-tap="autoLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
+						Auto
+					</paper-button>
+				</div>
+			</div>
+		</div>
+
+		<div class="frame flex" style="background-color: #BAC1C3;">
+			<div class="frame-title" style="background-color: #8f9496; margin-bottom: 14px;">Lightning Round</div>
+
+			<div class="layout horizontal center-center">
+				<paper-button id="endInterview" raised on-tap="openEndInterviewDialog">End Interview (Clear Questions)</paper-button>
+				<paper-button
+					id="showNext"
+					raised
+					on-tap="showNextQuestion"
+					disabled="[[calcShowNextDisabled(replies, _markingTopQuestionAsDone)]]">
+					Load Next Approved Question
+				</paper-button>
+			</div>
+
+			<div id="approvedQuestionsHeader">APPROVED QUESTIONS</div>
+
+			<div id="placeholder" hidden="[[replies.length]]">
+				There are no Twitter questions currently approved for use.
+			</div>
+
+			<div class="layout horizontal center-center flex-none" hidden="[[!replies.length]]">
+				<paper-button id="showQuestion" raised on-tap="showQuestion" disabled="[[questionShowing]]">
+					Show
+				</paper-button>
+
+				<paper-button id="hideQuestion" raised on-tap="hideQuestion" disabled="[[!questionShowing]]">
+					Hide
+				</paper-button>
+
+				<paper-button id="autoQuestion" raised on-tap="autoQuestion" disabled="[[questionShowing]]">
+					Auto
+				</paper-button>
+			</div>
+
+			<dragula-element
+				id="list"
+				container-class="container"
+				handle-class="tweet-handle"
+				on-dragula-drag="_handleDrag"
+				on-dragula-dragend="_handleDragEnd">
+				<div id="list-container" class="container">
+					<template
+						id="repeat"
+						is="dom-repeat"
+						items="[[replies]]"
+						as="reply"
+						sort="_mapSort"
+						mutable-data>
+						<div class="tweet bg-color-transition" tweet-id="[[reply.id_str]]">
+							<div class="tweet-handle">
+								<iron-icon
+									style="pointer-events: none;"
+									icon="editor:drag-handle"></iron-icon>
+							</div>
+
+							<gdq-tweet class="tweet-content" tweet="[[reply]]"></gdq-tweet>
+
+							<div class="tweet-buttons">
+								<paper-button
+									class="tweet-buttons-reject"
+									raised
+									on-tap="reject"
+									alt="Reject">
+									<iron-icon icon="delete-forever"></iron-icon>
+								</paper-button>
+								<!--<paper-button
+									raised
+									on-tap="promote"
+									alt="Promote"
+									disabled="[[calcPromoteDisabled(reply, _sortMapVal)]]">
+									<iron-icon icon="arrow-drop-up"></iron-icon>
+								</paper-button>
+
+								<paper-button
+									raised
+									on-tap="demote"
+									alt="Demote"
+									disabled="[[calcDemoteDisabled(reply, _sortMapVal)]]">
+									<iron-icon icon="arrow-drop-down"></iron-icon>
+								</paper-button>-->
+							</div>
+						</div>
+					</template>
+				</div>
+			</dragula-element>
+		</div>
+
+		<paper-dialog id="endInterviewDialog" with-backdrop>
+			<h2>End Interview</h2>
+			<p>Are you sure you wish to end this interview?</p>
+			<p>This will clear the current "prompt" tweet and prepare the interface for the next set of questions.</p>
+			<div class="buttons">
+				<paper-button dialog-dismiss>Cancel</paper-button>
+				<paper-button dialog-confirm autofocus on-tap="endInterview">Accept</paper-button>
+			</div>
+		</paper-dialog>
+
+		<paper-toast id="errorToast"></paper-toast>
+	</template>
+
+	<script src="gdq-interview-tier2.js"></script>
+</dom-module>

@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+
+	"definitions": {
+		"checklistGroup": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"name": {
+						"type": "string",
+						"required": true
+					},
+					"complete": {
+						"type": "boolean",
+						"required": true
+					}
+				}
+			}
+		}
+	},
+
+	"type": "object",
+	"properties": {
+		"extraContent": {
+			"$ref": "#/definitions/checklistGroup"
+		},
+		"techStationDuties": {
+			"$ref": "#/definitions/checklistGroup"
+		},
+		"stageTechDuties": {
+			"$ref": "#/definitions/checklistGroup"
+		},
+		"audioEngineerDuties": {
+			"$ref": "#/definitions/checklistGroup"
+		}
+	},
+
+	"default": {
+		"extraContent": [
+			{"name": "Check for Advertisement", "complete": false},
+			{"name": "Check for Interview", "complete": false}
+		],
+		"techStationDuties": [
+			{"name": "Reset Timer", "complete": false},
+			{"name": "Check Tech Notes", "complete": false},
+			{"name": "Stream Layout", "complete": false},
+			{"name": "Runner Info/Position", "complete": false},
+			{"name": "Camera", "complete": false}
+		],
+		"stageTechDuties": [
+			{"name": "Wipe Down Headsets", "complete": false},
+			{"name": "TVs have Video", "complete": false},
+			{"name": "Steam Notifications Off", "complete": false},
+			{"name": "Restart Elgato Recording", "complete": false},
+			{"name": "Remove Excess Chairs", "complete": false}
+		],
+		"audioEngineerDuties": [
+			{"name": "Runner Game Audio", "complete": false},
+			{"name": "Stream Audio", "complete": false}
+		]
+	}
+}

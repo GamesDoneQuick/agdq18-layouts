@@ -1,0 +1,48 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="gdq-timer">
+	<template>
+		<style include="gdq-text-styles">
+			:host {
+				position: absolute;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-top: 1px solid #7d808f;
+				border-bottom: 1px solid #5f2e5a;
+				box-sizing: border-box;
+				font-size: 46px;
+				background-color: #0d122f;
+				box-shadow: 0 -2px 8px -1px black, 0 2px 8px -1px black;
+				font-weight: 700;
+				font-variant-numeric: tabular-nums;
+				font-feature-settings: "tnum";
+				color: white;
+			}
+
+			:host([paused]) {
+				background: linear-gradient(to right, #212121 0%,#353535 13.5%,#9d9d9d 50%,#353535 86.5%,#212121 100%);
+			}
+
+			:host([finished]) {
+				background: linear-gradient(to right, #012006 0%,#013705 13.5%,#2ab641 50%,#013705 86.5%,#012006 100%);
+			}
+
+			#startFlash {
+				position: absolute;
+				display: flex;
+				background-color: #a5ffa9;
+				width: 100%;
+				height: 100%;
+				bottom: 0;
+				mix-blend-mode: color-dodge;
+				opacity: 0;
+			}
+		</style>
+		<div id="startFlash"></div>
+		<span class="shadow">[[time]]</span>
+	</template>
+
+	<script src="gdq-timer.js"></script>
+</dom-module>

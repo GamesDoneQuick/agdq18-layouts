@@ -1,0 +1,110 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/gsap-SplitText.html">
+
+<dom-module id="gdq-break-schedule">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				display: block;
+				font-family: "SF Pixelate", sans-serif;
+				text-align: center;
+			}
+
+			#upNext,
+			#onDeck {
+				width: 536px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+
+			#upNext {
+				height: 108px;
+			}
+
+			#onDeck {
+				position: absolute;
+				top: 140px;
+				height: 106px;
+			}
+
+			#upNext .run-details {
+				text-shadow: 0px 0px 4px #7fec26;
+			}
+
+			#onDeck .run-details {
+				text-shadow: 0px 0px 4px #ee2623;
+			}
+
+			.run-name {
+				color: #ffffff;
+				font-size: 24px;
+				font-weight: 400;
+				line-height: 31px;
+			}
+
+			.run-details {
+				color: #ffffff;
+				font-size: 14px;
+				line-height: 18px;
+				font-style: oblique;
+				font-weight: 500;
+			}
+
+			.onDeckRun {
+				display: flex;
+				width: 100%;
+				height: 100%;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+
+			#redPips {
+				display: flex;
+				width: 236px;
+				position: absolute;
+				top: 130px;
+				right: 24px;
+				justify-content: space-between;
+			}
+
+			.redPip {
+				opacity: 0;
+				transition: opacity 500ms steps(6);
+			}
+		</style>
+
+		<div id="upNext">
+			<div class="run-name"></div>
+			<div class="run-details"></div>
+		</div>
+
+		<div id="redPips">
+			<img id="redPip1" class="redPip" src="[[importPath]]/img/red_pip.png">
+			<img id="redPip2" class="redPip" src="[[importPath]]/img/red_pip.png">
+			<img id="redPip3" class="redPip" src="[[importPath]]/img/red_pip.png">
+		</div>
+
+		<div id="onDeck">
+			<div id="onDeck1" class="onDeckRun">
+				<div class="run-name"></div>
+				<div class="run-details"></div>
+			</div>
+
+			<div id="onDeck2" class="onDeckRun">
+				<div class="run-name"></div>
+				<div class="run-details"></div>
+			</div>
+
+			<div id="onDeck3" class="onDeckRun">
+				<div class="run-name"></div>
+				<div class="run-details"></div>
+			</div>
+		</div>
+	</template>
+
+	<script src="gdq-break-schedule.js"></script>
+</dom-module>

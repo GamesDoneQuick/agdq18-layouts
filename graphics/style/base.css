@@ -1,0 +1,13 @@
+@import 'font/montserrat.css';
+@import 'font/gdqpixel.css';
+
+body {
+	font-family: montserrat, sans-serif;
+	margin: 0;
+	opacity: 0;
+}
+
+#container {
+	position: absolute;
+	overflow: hidden;
+}

@@ -1,0 +1,86 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/polymer/lib/mixins/mutable-data.html">
+<link rel="import" href="../../../bower_components/polymer/lib/utils/debounce.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="gdq-rundown-item.html">
+
+<dom-module id="gdq-rundown">
+	<template>
+		<style>
+			:host {
+				@apply --layout-vertical;
+			}
+
+			#label {
+				font-size: 20px;
+				font-weight: bold;
+				text-transform: uppercase;
+				background-color: #C4C4C4;
+				height: 29px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#currentItems,
+			#remainderItems {
+				padding: 0 12px;
+			}
+
+			#currentItems {
+				margin-top: 8px;
+			}
+
+			#remainderItems {
+				margin-bottom: 8px;
+				margin-right: 10px;
+				overflow-y: scroll;
+				@apply --layout-flex;
+			}
+
+			#divider {
+				margin: 8px 12px;
+				height: 1px;
+				background: black;
+				box-sizing: border-box;
+			}
+
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+
+			::-webkit-scrollbar-track {
+				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				border-radius: 5px;
+				background: #757575;
+				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+			}
+
+			::-webkit-scrollbar-thumb:window-inactive {
+				background: #b9b9b9;;
+			}
+		</style>
+
+		<div id="label">Rundown</div>
+
+		<div id="currentItems">
+			<template is="dom-repeat" items="[[currentItems]]" mutable-data>
+				<gdq-rundown-item item="[[item]]" current></gdq-rundown-item>
+			</template>
+		</div>
+
+		<div id="divider"></div>
+
+		<div id="remainderItems">
+			<template is="dom-repeat" items="[[remainderItems]]" mutable-data>
+				<gdq-rundown-item item="[[item]]"></gdq-rundown-item>
+			</template>
+		</div>
+	</template>
+
+	<script src="gdq-rundown.js"></script>
+</dom-module>

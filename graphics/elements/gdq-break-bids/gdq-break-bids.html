@@ -1,0 +1,407 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/gsap-ModifiersPlugin.html">
+<link rel="import" href="../../../shared/imports/gsap-SplitText.html">
+<link rel="import" href="../../../shared/style/gdq-text-styles.html">
+
+<dom-module id="gdq-break-bids">
+	<template>
+		<style include="gdq-text-styles iron-flex iron-flex-alignment">
+			:host {
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+				height: 100%;
+				font-family: "SF Pixelate", sans-serif;
+				color: #ffffff;
+				padding-top: 21px;
+				box-sizing: border-box;
+			}
+
+			#runName {
+				height: 29px;
+				background-color: rgba(91, 137, 255, 0.42);
+				font-size: 19px;
+				text-align: center;
+				padding: 0 16px;
+
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+				@apply --layout-flex-none;
+			}
+
+			#runName-content {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+
+			#bidDescription {
+				height: 45px;
+				background-color: #1f2828;
+				font-size: 28px;
+				line-height: 31px;
+				text-align: center;
+				padding: 0 16px;
+
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+				@apply --layout-flex-none;
+			}
+
+			:host(:not([bid-type="challenge"])) #bidDescription-content .line:nth-child(n+2) {
+				display: none!important;
+			}
+
+			:host([bid-type="challenge"]) #bidDescription-content .line:nth-child(n+3) {
+				display: none!important;
+			}
+
+			#body {
+				flex-grow: 1;
+				@apply --layout-vertical;
+
+				/* prep for animation */
+				opacity: 0;
+			}
+
+			#challenge {
+				margin-top: 15px;
+			}
+
+			#challenge-goal {
+				color: transparent;
+				font-size: 48px;
+				font-weight: 700;
+				margin: 0 17px;
+			}
+
+			#challenge-goal-bitsIcon {
+				position: relative;
+				top: 8px;
+				margin-right: -2px;
+				margin-left: -6px;
+			}
+
+			#challenge-bar {
+				width: 372px;
+				height: 33px;
+				background-image: url("img/meter_empty.png");
+			}
+
+			#challenge-bar-fill {
+				position: relative;
+				height: 100%;
+				background-image: url("img/meter_green.png");
+			}
+
+			#challenge-bar-fill-label {
+				position: absolute;
+				right: 0;
+				top: 37px;
+				width: 0; /* bit of a hack to position it correctly */
+
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			}
+
+			#challenge-bar-fill-label-text {
+				color: #b0f080;
+				font-size: 30px;
+				font-weight: 700;
+				line-height: 34px;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#tug {
+				flex-grow: 1;
+				@apply --layout-vertical;
+				@apply --layout-center-justified;
+			}
+
+			#tug-left {
+				margin-left: 49px;
+
+				@apply --layout-vertical;
+			}
+
+			#tug-left .tug-option-desc .character,
+			#tug-left .tug-option-total .character {
+				color: #ffa031;
+			}
+
+			#tug-right {
+				margin-right: 49px;
+				@apply --layout-vertical;
+				@apply --layout-end;
+			}
+
+			#tug-right .tug-option-desc .character,
+			#tug-right .tug-option-total .character {
+				color: #d778ff;
+			}
+
+			.tug-option-desc {
+				font-size: 24px;
+				font-weight: 700;
+				line-height: 32px;
+				height: 32px;
+				overflow: hidden;
+				color: transparent;
+				max-width: 450px;
+			}
+
+			.tug-option-total {
+				font-size: 30px;
+				font-weight: 400;
+				line-height: 21px;
+				color: transparent;
+			}
+
+			#tug-bar {
+				width: 372px;
+				height: 33px;
+				background-image: url("img/meter_purple.png");
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#tug-bar-left {
+				width: 50%;
+				height: 100%;
+				background-image: url("img/meter_orange.png");
+			}
+
+			#tug-bar-center {
+				width: 0;
+				height: 100%;
+
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			}
+
+			#tug-bar-center-line {
+				position: absolute;
+				width: 3px;
+				height: 42px;
+				background: white;
+			}
+
+			#tug-bar-center-label {
+				height: 13px;
+				border: 1px solid white;
+				background-color: #000000;
+				z-index: 1;
+				padding: 0 3px;
+				color: #ffffff;
+				font-size: 10px;
+				font-weight: 400;
+				box-sizing: border-box;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#tug-bar-center-label-leftarrow {
+				margin-right: 2px;
+			}
+
+			#tug-bar-center-label-rightarrow {
+				margin-left: 2px;
+				transform: scaleX(-1);
+			}
+
+			#choice {
+				flex-grow: 1;
+				overflow: hidden;
+				@apply --layout-vertical;
+			}
+
+			.choice-row {
+				padding-left: 27px;
+				padding-right: 23px;
+				padding-top: 13px;
+				align-items: flex-end;
+				justify-content: space-between;
+				will-change: transform;
+				@apply --layout-horizontal;
+				@apply --layout-flex-none;
+			}
+
+			.choice-row-label {
+				color: transparent;
+				font-size: 24px;
+				font-weight: 700;
+				line-height: 26px;
+				max-width: 220px;
+			}
+
+			.choice-row-label .character {
+				color: white;
+			}
+
+			.choice-row-meter {
+				width: 216px;
+				height: 18px;
+				border: 1px solid #ffffff;
+				border-radius: 1px;
+				box-sizing: border-box;
+			}
+
+			.choice-row-meter-fill {
+				height: 16px;
+				background-image: url("img/meter_pip.png");
+			}
+
+			.choice-row-amount {
+				color: transparent;
+				font-size: 36px;
+				font-weight: 400;
+				line-height: 0.9;
+				white-space: nowrap;
+			}
+
+			.choice-row-amount .character {
+				color: #b0f080;
+			}
+
+			.choice-row:first-of-type .choice-row-amount {
+				font-size: 42px;
+				font-weight: 700;
+			}
+
+			#challenge-goal .character,
+			.choice-row:first-of-type .choice-row-amount .character {
+				background-image: linear-gradient(
+					180deg,
+					#e8c8a0 0%,
+					#e0e0e0 16%,
+					#e8c8a0 33%,
+					#f8c850 55%,
+					#f87018 76%,
+					#e05010 91%,
+					#e05010 100%
+				);
+				-webkit-background-clip: text;
+				color: transparent;
+			}
+
+			.mirrored {
+				transform: scaleX(-1);
+			}
+
+			:host([bits-challenge]) #challenge-goal .character {
+				background-image: linear-gradient(
+					180deg,
+					#d5a0e8 0%,
+					#ffffff 16%,
+					#d5a0e8 33%,
+					#cb50f8 55%,
+					#ac18f8 76%,
+					#8510e0 91%,
+					#8510e0 100%
+				);
+			}
+		</style>
+
+		<div id="runName">
+			<!-- Needed to properly center SplitText's output -->
+			<div id="runName-content" class="shadow"></div>
+		</div>
+
+		<div id="bidDescription">
+			<!-- Needed to properly center SplitText's output -->
+			<div id="bidDescription-content" class="shadow"></div>
+		</div>
+
+		<iron-pages id="body" attr-for-selected="data-bid-type" selected="[[bidType]]">
+			<div id="challenge" data-bid-type="challenge">
+				<div class="layout horizontal center-center">
+					<img id="challenge-leftarrow" src="[[importPath]]img/challenge_leftarrow.png">
+					<div id="challenge-goal"></div>
+					<img id="challenge-rightarrow" src="[[importPath]]img/challenge_rightarrow.png">
+				</div>
+
+				<div class="layout horizontal center-center">
+					<img src="[[importPath]]img/cap_green.png">
+					<div id="challenge-bar">
+						<div id="challenge-bar-fill">
+							<div id="challenge-bar-fill-label">
+								<img src="[[importPath]]img/meter_uparrow.png">
+								<div id="challenge-bar-fill-label-text" class="tabular-nums"></div>
+							</div>
+						</div>
+					</div>
+					<img src="[[importPath]]img/cap_green.png" class="mirrored">
+				</div>
+			</div>
+
+			<div id="tug" data-bid-type="choice-binary">
+				<div id="tug-left">
+					<div class="tug-option-desc"></div>
+					<div class="tug-option-total"></div>
+				</div>
+
+				<div class="layout horizontal center-center" style="margin: 12px 0;">
+					<img src="[[importPath]]img/cap_orange.png">
+					<div id="tug-bar">
+						<div id="tug-bar-left"></div>
+						<div id="tug-bar-center">
+							<div id="tug-bar-center-line"></div>
+							<div id="tug-bar-center-label">
+								<img id="tug-bar-center-label-leftarrow" src="[[importPath]]img/tiny-left-arrow.png">
+								<div id="tug-bar-center-label-delta" class="tabular-nums"></div>
+								<img id="tug-bar-center-label-rightarrow" src="[[importPath]]img/tiny-left-arrow.png">
+							</div>
+						</div>
+					</div>
+					<img src="[[importPath]]img/cap_purple.png" class="mirrored">
+				</div>
+
+				<div id="tug-right">
+					<div class="tug-option-total"></div>
+					<div class="tug-option-desc"></div>
+				</div>
+			</div>
+
+			<div id="choice" data-bid-type="choice-many">
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+
+				<div class="choice-row">
+					<div class="layout vertical">
+						<div class="choice-row-label"></div>
+						<div class="choice-row-meter">
+							<div class="choice-row-meter-fill"></div>
+						</div>
+					</div>
+
+					<div class="choice-row-amount"></div>
+				</div>
+			</div>
+		</iron-pages>
+	</template>
+
+	<script src="gdq-break-bids.js"></script>
+</dom-module>

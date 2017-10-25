@@ -1,0 +1,62 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../gdq-stepped-gradient/gdq-stepped-gradient.html">
+
+<dom-module id="gdq-omnibar-label">
+	<template>
+		<style>
+			:host {
+				box-sizing: border-box;
+				height: calc(100% - 1px);
+				margin-right: 1.5px;
+				margin-top: 1px;
+				position: relative;
+				width: 212px;
+				z-index: 2;
+				padding: 0 8px;
+				@apply --layout-flex-none;
+			}
+
+			#background {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+			}
+
+			#text {
+				width: 100%;
+				height: 100%;
+				color: #ffffff;
+				font-family: Montserrat, sans-serif;
+				font-size: 16px;
+				font-weight: 700;
+				z-index: 4;
+				position: relative;
+				top: -1px;
+				transform: translateY(-100%);
+				line-height: 19px;
+				text-align: center;
+				text-shadow:
+					-1px -1px 0 #000,
+					1px -1px 0 #000,
+					-1px 1px 0 #000,
+					1px 1px 0 #000,
+					0 0 5px #2a0047;
+				will-change: transform, opacity;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+		</style>
+
+		<gdq-stepped-gradient
+			id="background"
+			steps="3"
+			start-color="#ae7fc1"
+			end-color="#71338a"></gdq-stepped-gradient>
+
+		<div id="text"></div>
+	</template>
+
+	<script src="gdq-omnibar-label.js"></script>
+</dom-module>

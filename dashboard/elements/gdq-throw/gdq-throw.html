@@ -1,0 +1,44 @@
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="gdq-throw">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			paper-button {
+				margin: 0;
+				width: 100%;
+				height: 60px;
+				line-height: 1;
+				font-size: 24px;
+				font-weight: bold;
+				color: white;
+				text-align: center;
+			}
+
+			#arm {
+				--paper-button: {
+					background-color: #5BA664;
+				};
+			}
+
+			#disarm {
+				--paper-button: {
+					background-color: #C9513E;
+				};
+			}
+		</style>
+
+		<paper-button id="arm" raised hidden="[[throwIncoming]]" on-tap="arm" disabled="[[disabled]]">
+			WARN INTERVIEWERS OF THROW
+		</paper-button>
+
+		<paper-button id="disarm" raised hidden="[[!throwIncoming]]" on-tap="disarm" disabled="[[disabled]]">
+			CANCEL THROW
+		</paper-button>
+	</template>
+
+	<script src="gdq-throw.js"></script>
+</dom-module>

@@ -1,0 +1,132 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="gdq-adbreak.html">
+<link rel="import" href="gdq-hostdash-styles.html">
+
+<dom-module id="gdq-hostdash-ads">
+	<template>
+		<style include="gdq-hostdash-styles iron-flex iron-flex-alignment">
+			:host {
+				position: relative;
+				grid-column: 3;
+				grid-row: 2;
+				box-sizing: border-box;
+				@apply --layout-vertical;
+			}
+
+			#list {
+				height: 706px;
+				padding: 0 14px;
+				margin-top: 13px;
+				margin-right: 11px;
+				margin-bottom: 13px;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				overflow-x: hidden;
+				@apply --layout-vertical;
+			}
+
+			.interview {
+				font-size: 30px;
+				font-weight: bold;
+				text-transform: uppercase;
+				background-color: #C88787;
+				height: 46px;
+				margin: 26px 0;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			gdq-adbreak:first-of-type:not([hidden]),
+			.interview:first-of-type:not([hidden]){
+				margin-top: 4px;
+			}
+
+			#cover {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.85);
+				color: white;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				font-size: 22px;
+				padding: 1em;
+				box-sizing: border-box;
+				user-select: none;
+			}
+
+			paper-dialog paper-button {
+				color: inherit;
+				margin: 0 8px;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<div class="header" style="background-color: #CED4FF;">Sponsor Ad Breaks</div>
+
+		<div id="list">
+			<template is="dom-repeat" items="[[content]]" mutable-data>
+				<template is="dom-if" if="[[equal(item.type, 'adBreak')]]">
+					<gdq-adbreak
+						on-start="_confirmStartAdBreak"
+						on-cancel="_confirmCancelAdBreak"
+						on-complete="completeAdBreak"
+						ad-break="[[item]]"></gdq-adbreak>
+				</template>
+
+				<template is="dom-if" if="[[equal(item.type, 'interview')]]">
+					<div class="interview">Interview</div>
+				</template>
+			</template>
+		</div>
+
+		<div id="cover"></div>
+
+		<paper-dialog
+			id="confirmStartDialog"
+			on-iron-overlay-closed="_handleConfirmStartDialogClosed"
+			with-backdrop>
+			<h2>Confirm Ad Break</h2>
+
+			<div>
+				Are you sure you wish to <b>start</b> this ad break?
+				Have you gotten the go-ahead from the producer?
+				Is the audio engineer ready?
+			</div>
+
+			<div class="buttons">
+				<paper-button dialog-dismiss autofocus raised>No, Cancel</paper-button>
+				<paper-button dialog-confirm raised>Yes, Begin</paper-button>
+			</div>
+		</paper-dialog>
+
+		<paper-dialog
+			id="confirmCancelDialog"
+			on-iron-overlay-closed="_handleConfirmCancelDialogClosed"
+			with-backdrop>
+			<h2>Cancel Ad Break</h2>
+
+			<div>
+				Are you sure you wish to <b>cancel</b> this ad break?
+				Only do this if the producer has told you to!
+			</div>
+
+			<div class="buttons">
+				<paper-button dialog-dismiss autofocus raised>No, Do Not Cancel</paper-button>
+				<paper-button dialog-confirm raised>Yes, Cancel It</paper-button>
+			</div>
+		</paper-dialog>
+	</template>
+
+	<script src="gdq-hostdash-ads.js"></script>
+</dom-module>

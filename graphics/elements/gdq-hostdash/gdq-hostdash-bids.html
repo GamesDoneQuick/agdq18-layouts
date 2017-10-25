@@ -1,0 +1,85 @@
+<link rel="import" href="gdq-hostdash-bid.html">
+<link rel="import" href="gdq-hostdash-styles.html">
+
+<dom-module id="gdq-hostdash-bids">
+	<template>
+		<style include="gdq-hostdash-styles">
+			:host {
+				@apply --layout-vertical;
+			}
+
+			#cooldown {
+				width: 100%;
+				box-sizing: border-box;
+				--paper-progress-active-color: #8560a8;
+				--paper-progress-transition-timing-function: linear;
+				--paper-progress-transition-duration: 60s;
+				--paper-progress-indeterminate-cycle-duration: 2.5s;
+				--paper-progress-height: 11px;
+				--paper-progress-container-color: white;
+				@apply --layout-flex-none;
+			}
+
+			#filter {
+				padding-left: 12px;
+				padding-right: 24px;
+				@apply --layout-flex-none;
+
+				--paper-input-container-input: {
+					font-weight: 400;
+				};
+
+				--paper-input-container-label: {
+					font-weight: 400;
+				};
+
+				--paper-input-container-label-focus: {
+					color: #8560a8
+				};
+
+				--paper-input-container-underline: {
+					position: relative;
+					top: 2px;
+					border-bottom: 3px solid #8560a8;
+				};
+
+				--paper-input-container-underline-focus: {
+					top: 2px;
+					border-bottom: 3px solid #C693F2;
+				}
+			}
+
+			#list {
+				padding: 0 14px;
+				margin-top: 9px;
+				margin-right: 11px;
+				margin-bottom: 13px;
+				box-sizing: border-box;
+				min-height: 1px;
+				overflow-y: scroll;
+				overflow-x: hidden;
+				@apply --layout-flex;
+			}
+		</style>
+
+		<paper-progress id="cooldown" indeterminate></paper-progress>
+
+		<div class="header" style="margin-top: 0;">Incentives & Bid Wars</div>
+
+		<paper-input
+			id="filter"
+			label="Filter"
+			placeholder="Type in filter here"
+			type="search"
+			value="{{bidFilterString}}">
+		</paper-input>
+
+		<div id="list">
+			<template is="dom-repeat" items="[[relevantBids]]" as="bid" filter="{{computeBidsFilter(bidFilterString)}}">
+				<gdq-hostdash-bid bid="[[bid]]"></gdq-hostdash-bid>
+			</template>
+		</div>
+	</template>
+
+	<script src="gdq-hostdash-bids.js"></script>
+</dom-module>

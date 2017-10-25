@@ -1,0 +1,254 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="gdq-run-editor">
+	<template>
+		<style>
+			:host {
+				@apply --layout-vertical;
+				@apply --layout-center;
+			}
+
+			#title {
+				font-size: 24px;
+				font-weight: 500;
+				margin-bottom: 16px;
+			}
+
+			#run,
+			#runners {
+				@apply --layout-vertical;
+				padding: 16px;
+			}
+
+			#run {
+				@apply --layout-flex;
+				margin-right: 4px;
+				padding-left: 0;
+			}
+
+			#runners {
+				@apply --layout-flex-2;
+				border: 1px solid #C1C1C1;
+				margin-left: 4px;
+			}
+
+			#runners > :nth-child(1) paper-input {
+				--paper-input-container-label: {
+					color: #32a7d3;
+				};
+				--paper-input-container-label-focus: {
+					color: #32a7d3;
+				};
+				--paper-input-container-underline-focus: {
+					background-color: #32a7d3;
+				};
+			}
+
+			#runners > :nth-child(2) paper-input {
+				--paper-input-container-label: {
+					color: #fa5959;
+				};
+				--paper-input-container-label-focus: {
+					color: #fa5959;
+				};
+				--paper-input-container-underline-focus: {
+					background-color: #fa5959;
+				};
+			}
+
+			#runners > :nth-child(3) paper-input {
+				--paper-input-container-label: {
+					color: #24c55d;
+				};
+				--paper-input-container-label-focus: {
+					color: #24c55d;
+				};
+				--paper-input-container-underline-focus: {
+					background-color: #24c55d;
+				};
+			}
+
+			#runners > :nth-child(4) paper-input {
+				--paper-input-container-label: {
+					color: #dd4dee;
+				};
+				--paper-input-container-label-focus: {
+					color: #dd4dee;
+				};
+				--paper-input-container-underline-focus: {
+					background-color: #dd4dee;
+				};
+			}
+
+			#buttons {
+				margin-top: 16px;
+			}
+
+			#resetRun {
+				--paper-button: {
+					background-color: #C9513E;
+					color: white;
+				}
+			}
+
+			#applyChanges {
+				--paper-button: {
+					background-color: #5BA664;
+					color: white;
+				}
+			}
+
+			.row {
+				@apply --layout-horizontal;
+			}
+
+			.row > :not(:last-child) {
+				margin-right: 12px;
+			}
+
+			.row > :not(:first-child) {
+				margin-left: 12px;
+			}
+
+			paper-input {
+				@apply --layout-flex;
+				--paper-input-container-disabled: {
+					opacity: 1;
+					background-color: #ffb0b3;
+				}
+			}
+
+			paper-checkbox[disabled] {
+				background-color: #ffb0b3;
+			}
+		</style>
+
+		<div id="title">[[title]]</div>
+
+		<div class="row">
+			<div id="run">
+				<paper-input label="Name" always-float-label value="{{name}}"
+							 hidden$="[[calcHide('name', showingOriginal)]]"></paper-input>
+				<paper-input label="Name" always-float-label value="[[originalValues.name]]" disabled
+							 hidden$="[[!calcHide('name', showingOriginal)]]"></paper-input>
+
+				<paper-input label="Category" always-float-label value="{{category}}"
+							 hidden$="[[calcHide('category', showingOriginal)]]"></paper-input>
+				<paper-input label="Category" always-float-label value="[[originalValues.category]]" disabled
+							 hidden$="[[!calcHide('category', showingOriginal)]]"></paper-input>
+
+
+				<paper-input label="Estimate" always-float-label value="{{estimate}}"
+							 hidden$="[[calcHide('estimate', showingOriginal)]]"></paper-input>
+				<paper-input label="Estimate" always-float-label value="[[originalValues.estimate]]" disabled
+							 hidden$="[[!calcHide('estimate', showingOriginal)]]"></paper-input>
+
+				<paper-input label="Console" always-float-label value="{{console}}"
+							 hidden$="[[calcHide('console', showingOriginal)]]"></paper-input>
+				<paper-input label="Console" always-float-label value="[[originalValues.console]]" disabled
+							 hidden$="[[!calcHide('console', showingOriginal)]]"></paper-input>
+
+				<div class="row" style="align-items: center;">
+					<div>
+						<paper-input label="Release Year" always-float-label value="{{releaseYear}}"
+									 hidden$="[[calcHide('releaseYear', showingOriginal)]]"></paper-input>
+						<paper-input label="Release Year" always-float-label value="[[originalValues.releaseYear]]" disabled
+									 hidden$="[[!calcHide('releaseYear', showingOriginal)]]"></paper-input>
+					</div>
+
+					<div>
+						<paper-checkbox checked="{{coop}}"
+										hidden$="[[calcHide('coop', showingOriginal)]]">
+							<span style="white-space: nowrap;">Co-op</span>
+						</paper-checkbox>
+						<paper-checkbox checked="[[originalValues.coop]]" disabled
+										hidden$="[[!calcHide('coop', showingOriginal)]]">
+							<span style="white-space: nowrap;">Co-op</span>
+						</paper-checkbox>
+					</div>
+				</div>
+			</div>
+
+			<div id="runners">
+				<div class="row">
+					<div>
+						<paper-input label="Runner" always-float-label value="{{runners.0.name}}"
+									 hidden$="[[calcHide('runners.0.name', showingOriginal)]]"></paper-input>
+						<paper-input label="Runner" always-float-label value="[[originalValues.runners.0.name]]" disabled
+									 hidden$="[[!calcHide('runners.0.name', showingOriginal)]]"></paper-input>
+					</div>
+
+					<div>
+						<paper-input label="Twitch Channel" always-float-label value="{{runners.0.stream}}"
+									 hidden$="[[calcHide('runners.0.stream', showingOriginal)]]"></paper-input>
+						<paper-input label="Twitch Channel" always-float-label value="[[originalValues.runners.0.stream]]" disabled
+									 hidden$="[[!calcHide('runners.0.stream', showingOriginal)]]"></paper-input>
+					</div>
+				</div>
+
+				<div class="row">
+					<div>
+						<paper-input label="Runner 2" always-float-label value="{{runners.1.name}}"
+									 hidden$="[[calcHide('runners.1.name', showingOriginal)]]"></paper-input>
+						<paper-input label="Runner 2" always-float-label value="[[originalValues.runners.1.name]]" disabled
+									 hidden$="[[!calcHide('runners.1.name', showingOriginal)]]"></paper-input>
+					</div>
+
+					<div>
+						<paper-input label="Twitch Channel" always-float-label value="{{runners.1.stream}}"
+									 hidden$="[[calcHide('runners.1.stream', showingOriginal)]]"></paper-input>
+						<paper-input label="Twitch Channel" always-float-label value="[[originalValues.runners.1.stream]]" disabled
+									 hidden$="[[!calcHide('runners.1.stream', showingOriginal)]]"></paper-input>
+					</div>
+				</div>
+
+				<div class="row">
+					<div>
+						<paper-input label="Runner 3" always-float-label value="{{runners.2.name}}"
+									 hidden$="[[calcHide('runners.2.name', showingOriginal)]]"></paper-input>
+						<paper-input label="Runner 3" always-float-label value="[[originalValues.runners.2.name]]" disabled
+									 hidden$="[[!calcHide('runners.2.name', showingOriginal)]]"></paper-input>
+					</div>
+
+					<div>
+						<paper-input label="Twitch Channel" always-float-label value="{{runners.2.stream}}"
+									 hidden$="[[calcHide('runners.2.stream', showingOriginal)]]"></paper-input>
+						<paper-input label="Twitch Channel" always-float-label value="[[originalValues.runners.2.stream]]" disabled
+									 hidden$="[[!calcHide('runners.2.stream', showingOriginal)]]"></paper-input>
+					</div>
+				</div>
+
+				<div class="row">
+					<div>
+						<paper-input label="Runner 4" always-float-label value="{{runners.3.name}}"
+									 hidden$="[[calcHide('runners.3.name', showingOriginal)]]"></paper-input>
+						<paper-input label="Runner 4" always-float-label value="[[originalValues.runners.3.name]]" disabled
+									 hidden$="[[!calcHide('runners.3.name', showingOriginal)]]"></paper-input>
+					</div>
+
+					<div>
+						<paper-input label="Twitch Channel" always-float-label value="{{runners.3.stream}}"
+									 hidden$="[[calcHide('runners.3.stream', showingOriginal)]]"></paper-input>
+						<paper-input label="Twitch Channel" always-float-label value="[[originalValues.runners.3.stream]]" disabled
+									 hidden$="[[!calcHide('runners.3.stream', showingOriginal)]]"></paper-input>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="buttons">
+			<paper-button
+				id="resetRun"
+				raised
+				on-tap="resetRun"
+				on-mouseover="showOriginal"
+			  	on-mouseout="hideOriginal">RESET DATA TO ORIGINAL</paper-button>
+			<paper-button id="applyChanges" raised on-tap="applyChanges">APPLY CHANGES</paper-button>
+		</div>
+	</template>
+
+	<script src="gdq-run-editor.js"></script>
+</dom-module>

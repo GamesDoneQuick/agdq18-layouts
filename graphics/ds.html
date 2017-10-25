@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DS, 1 Player</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/gdq-runinfo/gdq-runinfo.html">
+	<link rel="import" href="elements/gdq-timer/gdq-timer.html">
+	<link rel="import" href="elements/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/gdq-sponsors/gdq-sponsors.html">
+	<custom-style>
+		<style>
+			gdq-nameplate {
+				top: 407px;
+				left: 42px;
+				z-index: 11;
+				--gdq-nameplate-width: 312px;
+			}
+
+			gdq-runinfo {
+				left: 0;
+				top: 280px;
+				width: 397px;
+				height: 129px;
+				--gdq-runinfo-misc-height: 33px;
+			}
+
+			gdq-timer {
+				left: 0;
+				bottom: 0;
+				height: 47px;
+				width: 397px;
+				font-size: 42px;
+				padding-bottom: 6px;
+				border-bottom: 1px solid #000000;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+	<div id="container">
+		<img id="background" src="img/backgrounds/ds_bg.png">
+		<gdq-runinfo max-name-size="24"></gdq-runinfo>
+		<gdq-timer></gdq-timer>
+		<img id="foreground" src="img/backgrounds/ds_fg.png">
+		<gdq-nameplate index="0"></gdq-nameplate>
+	</div>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+		});
+	</script>
+</body>
+</html>
