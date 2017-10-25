@@ -97,8 +97,10 @@ const udpPort = new osc.UDPPort({
 });
 
 const emitForegroundChanged = debounce(() => {
-	const logStr = format('%s, %s, %s\n',
-		new Date().toISOString(), foregroundFileName, currentRun.value.name);
+	const logStr = format(
+		'%s, %s, %s\n',
+		new Date().toISOString(), foregroundFileName, currentRun.value.name
+	);
 
 	log.info('Ad play:', logStr.replace('\n', ''));
 	fs.appendFile('logs/ad_log.csv', logStr, err => {

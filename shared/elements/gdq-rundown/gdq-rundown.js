@@ -47,7 +47,8 @@
 			if (currentRun.status !== 'declared' ||
 				schedule.status !== 'declared' ||
 				stopwatch.status !== 'declared' ||
-				currentIntermission.status !== 'declared') {
+				currentIntermission.status !== 'declared' ||
+				!schedule.value) {
 				return;
 			}
 
@@ -78,7 +79,9 @@
 					}
 
 					return false;
-				} else if (item.type !== 'run' && item.order === lastRunOrder) {
+				}
+
+				if (item.type !== 'run' && item.order === lastRunOrder) {
 					endIndex = index;
 					return false;
 				}

@@ -33,9 +33,12 @@ currentRun.on('change', (newVal, oldVal) => {
 stopwatch.on('change', (newVal, oldVal) => {
 	if (!oldVal || (hasRunStarted() ? 'post' : 'pre') !== currentIntermission.value.preOrPost) {
 		return debouncedUpdateCurrentIntermissionContent();
-	} else if (newVal.state !== oldVal.state) {
+	}
+
+	if (newVal.state !== oldVal.state) {
 		debouncedUpdateCurrentIntermissionState();
 	}
+
 	checkCanSeek();
 });
 caspar.replicants.files.on('change', () => {

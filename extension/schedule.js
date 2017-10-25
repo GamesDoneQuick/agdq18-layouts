@@ -141,8 +141,10 @@ nodecg.listenFor('resetRun', (pk, cb) => {
 	if (runRep) {
 		runRep.value = clone(findRunByPk(pk));
 		if ({}.hasOwnProperty.call(runRep.value, 'originalValues')) {
-			nodecg.log.error('%s had an `originalValues` property after being reset! This is bad! Deleting it...',
-				runRep.value.name);
+			nodecg.log.error(
+				'%s had an `originalValues` property after being reset! This is bad! Deleting it...',
+				runRep.value.name
+			);
 			delete runRep.value.originalValues;
 		}
 	}
@@ -165,7 +167,7 @@ function update() {
 			'https://private.gamesdonequick.com/tracker/search',
 		qs: {
 			type: 'runner',
-			event: 20
+			event: 22
 		},
 		json: true
 	});
@@ -176,7 +178,7 @@ function update() {
 			'https://private.gamesdonequick.com/tracker/search',
 		qs: {
 			type: 'run',
-			event: 20
+			event: 22
 		},
 		json: true
 	});
@@ -184,14 +186,14 @@ function update() {
 	const adsPromise = request({
 		uri: nodecg.bundleConfig.useMockData ?
 			'https://dl.dropboxusercontent.com/u/6089084/gdq_mock/ads.json' :
-			'https://private.gamesdonequick.com/tracker/gdq/ads/20/',
+			'https://private.gamesdonequick.com/tracker/gdq/ads/22/',
 		json: true
 	});
 
 	const interviewsPromise = request({
 		uri: nodecg.bundleConfig.useMockData ?
 			'https://dl.dropboxusercontent.com/u/6089084/gdq_mock/interviews.json' :
-			'https://private.gamesdonequick.com/tracker/gdq/interviews/20/',
+			'https://private.gamesdonequick.com/tracker/gdq/interviews/22/',
 		json: true
 	});
 

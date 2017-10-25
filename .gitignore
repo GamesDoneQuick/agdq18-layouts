@@ -18,6 +18,3 @@ coverage
 firebase-credentials.json
 
 npm-debug.log
-
-# Can remove this once the bugs in npm5 are gone
-package-lock.json

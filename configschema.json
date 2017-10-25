@@ -204,6 +204,9 @@
 	"adsPath": {
 		"type": "string"
 	},
+	"nowPlayingKey": {
+		"type": "string"
+	},
 
 	"required": ["tracker", "adsPath"]
 }

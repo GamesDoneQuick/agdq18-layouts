@@ -40,10 +40,14 @@ class GdqOmnibarRun extends Polymer.Element {
 		if (run.pk === 2274) {
 			// Pre-Show
 			return 'SpikeVegeta, feasel, Golden, Protomagicalgirl & Hobz';
-		} else if (run.pk === 2233) {
+		}
+
+		if (run.pk === 2233) {
 			// Tetris: The Grand Master 8-Way 100% Race
 			return 'aperturegrillz, Poochy.EXE, KevinDDR, EnchantressOfNumbers, JBroms, MxKai3, PARTY MAN X & eihoppe';
-		} else if (run.pk === 2255) {
+		}
+
+		if (run.pk === 2255) {
 			// Super Mario Series Warpless Relay Race Warpless
 			return 'Just_defend, bjw, Svenne, darbian, Dotsarecool, xsvArea51, truman, LackAttack24, grandpoobear, Kosmicd12, MrCab, Kirua, SuperSonic71087, Aweglib & RaikouRider';
 		}

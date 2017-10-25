@@ -143,7 +143,8 @@
 			if (canSeekSchedule.status !== 'declared' ||
 				schedule.status !== 'declared' ||
 				currentRun.status !== 'declared' ||
-				nextRun.status !== 'declared') {
+				nextRun.status !== 'declared' ||
+				!schedule.value) {
 				return;
 			}
 
