@@ -494,7 +494,7 @@ function formatAd(ad) {
 	return {
 		id: ad.pk,
 		name: ad.fields.ad_name,
-		adType: ad.fields.ad_type,
+		adType: calcAdType(ad.fields.filename),
 		filename: ad.fields.filename,
 		duration: ad.fields.length,
 		order: ad.fields.order,
@@ -502,6 +502,25 @@ function formatAd(ad) {
 		sponsorName: ad.fields.sponsor_name,
 		type: 'ad'
 	};
+}
+
+/**
+ * We completely ignore the ad_type field from the tracker because it's been wrong
+ * a few too many times. And when its wrong, everything explodes.
+ * It's safer just to compute the type ourselves based on the filename.
+ * @param {string} filename - The name of the file, with extension included.
+ * @returns {('VIDEO'|'IMAGE')} - The type of this ad.
+ */
+function calcAdType(filename) {
+	if (filename.endsWith('.mp4') || filename.endsWith('.webm')) {
+		return 'VIDEO';
+	}
+
+	if (filename.endsWith('.png') || filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+		return 'IMAGE';
+	}
+
+	throw new Error(`Unexpected ad type! Filename: "${filename}"`);
 }
 
 /**
