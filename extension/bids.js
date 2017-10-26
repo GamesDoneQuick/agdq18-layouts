@@ -11,10 +11,10 @@ const nodecg = require('./util/nodecg-api-context').get();
 
 const POLL_INTERVAL = 60 * 1000;
 const BIDS_URL = nodecg.bundleConfig.useMockData ?
-	'https://dl.dropboxusercontent.com/u/6089084/gdq_mock/allBids.json' :
+	'https://www.dropbox.com/s/1gysv511t97sab5/allBids.json?dl=1' :
 	'https://gamesdonequick.com/tracker/search/?type=allbids&event=22';
 const CURRENT_BIDS_URL = nodecg.bundleConfig.useMockData ?
-	'https://dl.dropboxusercontent.com/u/6089084/gdq_mock/currentBids.json' :
+	'https://www.dropbox.com/s/87n9tdh4qp72yps/currentBids.json?dl=1' :
 	'https://gamesdonequick.com/tracker/search/?type=allbids&feed=current&event=22';
 const currentBidsRep = nodecg.Replicant('currentBids', {defaultValue: []});
 const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
