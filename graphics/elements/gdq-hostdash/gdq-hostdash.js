@@ -2,7 +2,7 @@
 	'use strict';
 
 	const METROID_BID_ID = 5744;
-	const EVENT_START_TIMESTAMP = 1499013000000;
+	const EVENT_START_TIMESTAMP = 1515434400000;
 	const allBids = nodecg.Replicant('allBids');
 	const checklistComplete = nodecg.Replicant('checklistComplete');
 	const stopwatch = nodecg.Replicant('stopwatch');
