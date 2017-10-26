@@ -6,6 +6,10 @@
 	const nextRun = nodecg.Replicant('nextRun');
 	const schedule = nodecg.Replicant('schedule');
 
+	/**
+	 * @customElement
+	 * @polymer
+	 */
 	class GdqSchedule extends Polymer.Element {
 		static get is() {
 			return 'gdq-schedule';
@@ -58,6 +62,10 @@
 		 * @returns {undefined}
 		 */
 		takeTypeahead() {
+			if (!this.$.typeahead.value) {
+				return;
+			}
+
 			const nameToFind = this.$.typeahead.value;
 
 			// Find the run based on the name.
@@ -71,9 +79,9 @@
 					this._checkButtons();
 					nodecg.sendMessage('setCurrentRunByOrder', run.order, () => {
 						this._pendingSetCurrentRunByOrderMessageResponse = false;
-						this._checkButtons();
 						this.$.typeahead.value = '';
 						this.$.typeahead._suggestions = [];
+						this._checkButtons();
 					});
 					return true;
 				}
@@ -177,6 +185,11 @@
 				}
 			} else {
 				shouldDisablePrev = true;
+			}
+
+			// Disable take button if there's no takeTypeahead value.
+			if (!this.$.typeahead.value) {
+				shouldDisableTake = true;
 			}
 
 			if (shouldDisableNext) {
