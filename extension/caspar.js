@@ -55,7 +55,6 @@ const connection = new CasparCG({
 });
 
 connection.clear(1);
-setInterval(checkConnection, 1000);
 
 module.exports = {
 	play(filename) {
@@ -224,15 +223,5 @@ function updateFiles() {
 		}).catch(e => {
 			log.error('Error updating files:', e);
 		});
-	});
-}
-
-function checkConnection() {
-	if (connected.value) {
-		return;
-	}
-
-	connection.info().catch(e => {
-		log.error('Error checking connection:', e);
 	});
 }
