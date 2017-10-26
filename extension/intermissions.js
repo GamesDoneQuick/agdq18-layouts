@@ -148,7 +148,10 @@ caspar.osc.on('foregroundChanged', filename => {
 		// if we play another outro video like the one Bestban made for AGDQ2017.
 		// However, this is rare enough that I'm comfortable leaving this as an error log,
 		// which will ping me in Slack. - Lange 2017/06/20
-		log.error('A video started playing in CasparCG, but no adBreak is active:', filename);
+		log.error(
+			`"${filename}" started playing in CasparCG, but no adBreak is active.`,
+			'Letting it play, no action will be taken.'
+		);
 		return;
 	}
 
@@ -168,12 +171,15 @@ caspar.osc.on('foregroundChanged', filename => {
 	if (!adThatJustStarted) {
 		currentlyPlayingAd = null;
 		currentAdBreak = null;
+		log.error(
+			`"${filename}" started playing in CasparCG, but it did not correspond to any ad in the current adBreak.`,
+			'Caspar will now be cleared to get us back into a predictable state.',
+		);
 		caspar.clear().then(() => {
 			checkCanSeek();
 		}).catch(err => {
 			log.error('Failed to clear Caspar:', err);
 		});
-		log.error('A video started playing in CasparCG, but it did not correspond to any ad in the current adBreak:', filename);
 		return;
 	}
 	currentlyPlayingAd = adThatJustStarted;
