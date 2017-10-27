@@ -1,3 +1,6 @@
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/sc-fitted-text/sc-fitted-text.html">
+
 <dom-module id="gdq-timekeeper-runner">
 	<template>
 		<style>
@@ -35,12 +38,15 @@
 
 			#info {
 				line-height: 1;
+				min-width: 1px;
 				@apply --layout-vertical;
+				@apply --layout-flex;
 			}
 
 			#info-name {
 				font-size: 24px;
 				font-weight: 500;
+				min-width: 1px;
 			}
 
 			#info-status {
@@ -85,7 +91,7 @@
 
 		<template is="dom-if" if="[[runner]]">
 			<div id="info">
-				<div id="info-name">[[runner.name]]</div>
+				<sc-fitted-text id="info-name" align="left" max-width="202" text="[[runner.name]]"></sc-fitted-text>
 				<div id="info-status" class$="[[calcRunnerStatusClass(results, index)]]">
 					[[calcRunnerStatus(results, index)]]
 				</div>
