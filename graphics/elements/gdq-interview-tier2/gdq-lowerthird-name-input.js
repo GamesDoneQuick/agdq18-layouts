@@ -12,7 +12,9 @@ class GdqLowerthirdNameInput extends Polymer.Element {
 			value: {
 				type: String,
 				notify: true
-			}
+			},
+			disabled: Boolean,
+			items: Array
 		};
 	}
 

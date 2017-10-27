@@ -12,6 +12,7 @@
 
 		static get properties() {
 			return {
+				content: Array,
 				_connectedToNodeCG: {
 					type: Boolean,
 					value: true,

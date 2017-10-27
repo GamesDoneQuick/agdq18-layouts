@@ -8,7 +8,7 @@
 
 		static get properties() {
 			return {
-				total: {
+				value: {
 					type: String,
 					value: '?'
 				},

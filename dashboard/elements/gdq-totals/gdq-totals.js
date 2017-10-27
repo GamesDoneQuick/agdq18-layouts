@@ -19,7 +19,8 @@
 				bitsTotal: {
 					type: String,
 					value: '?'
-				}
+				},
+				autoUpdateTotal: Boolean
 			};
 		}
 

@@ -18,7 +18,11 @@
 					type: Boolean,
 					reflectToAttribute: true,
 					value: false
-				}
+				},
+				estimate: String,
+				releaseYear: String,
+				console: String,
+				category: String
 			};
 		}
 

@@ -21,7 +21,8 @@
 						return new TimelineLite({autoRemoveChildren: true});
 					},
 					readOnly: true
-				}
+				},
+				bits: String
 			};
 		}
 

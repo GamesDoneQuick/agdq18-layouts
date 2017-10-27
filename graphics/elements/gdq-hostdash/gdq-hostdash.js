@@ -21,9 +21,12 @@
 				currentRun: {
 					type: Object
 				},
+				runners: Array,
 				elapsedTime: {
 					type: String
 				},
+				stopwatchResults: Array,
+				stopwatchTime: String,
 				metroidBid: {
 					type: Object,
 					observer: 'metroidBidChanged'

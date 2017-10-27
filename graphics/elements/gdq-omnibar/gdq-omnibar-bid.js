@@ -7,7 +7,8 @@ class GdqOmnibarBid extends Polymer.Element {
 		return {
 			bid: {
 				type: Object
-			}
+			},
+			delta: String
 		};
 	}
 

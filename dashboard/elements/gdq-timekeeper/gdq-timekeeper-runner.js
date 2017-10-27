@@ -10,7 +10,8 @@ class GdqTimekeeperRunner extends Polymer.Element {
 			},
 			runner: {
 				type: Object
-			}
+			},
+			results: Array
 		};
 	}
 

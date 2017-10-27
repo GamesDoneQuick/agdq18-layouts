@@ -38,7 +38,8 @@
 				},
 				timeElapsed: {
 					type: String
-				}
+				},
+				upNextRunName: String
 			};
 		}
 

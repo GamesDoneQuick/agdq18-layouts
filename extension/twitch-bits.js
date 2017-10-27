@@ -1,12 +1,10 @@
 // Packages
-const request = require('request-promise');
 const TwitchPubSub = require('twitchps');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 
 const DEBUG = nodecg.bundleConfig.twitch.debug;
-const BITS_OFFSET = nodecg.bundleConfig.twitch.bitsOffset;
 const BITS_TOTAL_UPDATE_INTERVAL = 10 * 1000;
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch-bits`);
 const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
@@ -54,29 +52,5 @@ updateBitsTotal();
 setInterval(updateBitsTotal, BITS_TOTAL_UPDATE_INTERVAL);
 
 function updateBitsTotal() {
-	request({
-		method: 'get',
-		uri: `https://api.twitch.tv/bits/channels/${nodecg.bundleConfig.twitch.channelId}?event=agdq2018`,
-		headers: {
-			Accept: 'application/vnd.twitchtv.v5+json',
-			Authorization: `OAuth ${nodecg.bundleConfig.twitch.oauthToken}`,
-			'Client-ID': nodecg.bundleConfig.twitch.clientId,
-			'Content-Type': 'application/json'
-		},
-		json: true
-	}).then(res => {
-		if (!autoUpdateTotal.value) {
-			return;
-		}
-
-		const total = res.total;
-		if (typeof res.total !== 'number' || Number.isNaN(total)) {
-			log.error('Total was an unexpected value:', res);
-			return;
-		}
-
-		bitsTotal.value = total - BITS_OFFSET;
-	}).catch(err => {
-		log.error('Failed to update bits total:\n\t', err);
-	});
+	bitsTotal.value = 0;
 }

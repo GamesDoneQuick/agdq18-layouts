@@ -269,7 +269,7 @@
     "url": "git://github.com/GamesDoneQuick/agdq18-layouts.git"
   },
   "scripts": {
-    "static": "eslint ./**/*.js ./**/*.html --ignore-path .eslintignore",
+    "static": "eslint **/*.js **/*.html && polymer lint",
     "test": "npm run static && istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "mock-donations": "node ./scripts/test_donation_server"
   }

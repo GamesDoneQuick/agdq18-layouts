@@ -19,7 +19,8 @@
 					type: Boolean,
 					observer: 'finishedChanged',
 					reflectToAttribute: true
-				}
+				},
+				time: String
 			};
 		}
 

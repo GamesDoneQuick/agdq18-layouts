@@ -8,7 +8,14 @@ class GdqRunEditor extends Polymer.Element {
 			showingOriginal: {
 				type: Boolean,
 				value: false
-			}
+			},
+			coop: Boolean,
+			releaseYear: String,
+			console: String,
+			estimate: String,
+			category: String,
+			originalValues: Object,
+			name: String
 		};
 	}
 

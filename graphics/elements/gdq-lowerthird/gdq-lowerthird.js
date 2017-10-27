@@ -18,10 +18,12 @@
 					},
 					readOnly: true
 				},
+				names: Array,
 				numNames: {
 					type: Number,
 					reflectToAttribute: true
-				}
+				},
+				greebles: Array
 			};
 		}
 

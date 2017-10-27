@@ -13,7 +13,8 @@ class GdqSteppedGradient extends SteppedGradientMixin(Polymer.Element) {
 			},
 			zIndexing: {
 				type: String
-			}
+			},
+			palette: Array
 		};
 	}
 

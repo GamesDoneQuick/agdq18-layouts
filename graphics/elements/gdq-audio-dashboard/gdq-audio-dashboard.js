@@ -12,7 +12,11 @@
 		}
 
 		static get properties() {
-			return {};
+			return {
+				audioEngineerDuties: Array,
+				runners: Array,
+				stopwatchTime: String
+			};
 		}
 
 		ready() {
