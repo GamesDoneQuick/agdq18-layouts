@@ -24,7 +24,11 @@
 				paused: {
 					type: Boolean,
 					reflectToAttribute: true
-				}
+				},
+				results: Array,
+				coop: Boolean,
+				runners: Array,
+				time: String
 			};
 		}
 

@@ -12,7 +12,15 @@ class GdqScheduleRuninfo extends Polymer.Element {
 			label: {
 				type: String,
 				reflectToAttribute: true
-			}
+			},
+			coop: Boolean,
+			releaseYear: String,
+			console: String,
+			estimate: String,
+			category: String,
+			name: String,
+			originalValues: Object,
+			order: Number
 		};
 	}
 

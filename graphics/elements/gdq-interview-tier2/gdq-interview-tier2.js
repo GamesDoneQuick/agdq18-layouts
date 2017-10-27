@@ -32,7 +32,8 @@
 					value() {
 						return [];
 					}
-				}
+				},
+				_markingTopQuestionAsDone: Boolean
 			};
 		}
 

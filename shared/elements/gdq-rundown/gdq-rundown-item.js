@@ -17,7 +17,8 @@ class GdqRundownItem extends Polymer.Element {
 			current: {
 				type: Boolean,
 				reflectToAttribute: true
-			}
+			},
+			name: String
 		};
 	}
 

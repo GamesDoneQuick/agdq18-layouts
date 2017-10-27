@@ -8,6 +8,15 @@
 			return 'gdq-checklist';
 		}
 
+		static get properties() {
+			return {
+				stageTechDuties: Array,
+				extraContent: Array,
+				audioReady: Boolean,
+				techStationDuties: Array
+			};
+		}
+
 		ready() {
 			super.ready();
 			checklist.on('change', newVal => {

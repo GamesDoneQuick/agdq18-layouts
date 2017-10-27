@@ -10,7 +10,9 @@
 		}
 
 		static get properties() {
-			return {};
+			return {
+				tweets: Array
+			};
 		}
 
 		ready() {

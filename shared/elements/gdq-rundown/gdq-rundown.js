@@ -16,7 +16,9 @@
 			return {
 				schedule: {
 					type: Object
-				}
+				},
+				remainderItems: Array,
+				currentItems: Array
 			};
 		}
 

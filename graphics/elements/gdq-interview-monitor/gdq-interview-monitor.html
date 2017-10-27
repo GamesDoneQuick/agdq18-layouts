@@ -129,23 +129,6 @@
 			}
 		</style>
 
-		<firebase-app
-			id="firebase"
-			auth-domain="lightning-round.firebaseapp.com"
-			database-url="https://lightning-round.firebaseio.com"
-			api-key="AIzaSyCQGPyU0FnB2W6nz-kQoz9TxjI0_i7bb8I">
-		</firebase-app>
-
-		<firebase-document
-			path="/active_tweet_id"
-			data="{{activeTweetId}}">
-		</firebase-document>
-
-		<firebase-document
-			path="/tweets/[[activeTweetId]]/replies"
-			data="{{replies}}">
-		</firebase-document>
-
 		<div id="infoColumn">
 			<div id="total" class="tabular-nums" hidden="[[throwIncoming]]">
 				$<span id="total-amount"></span>
