@@ -8,6 +8,7 @@
 <link rel="import" href="../../../bower_components/paper-styles/shadow.html">
 <link rel="import" href="../../../bower_components/polymer/lib/mixins/mutable-data.html">
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/sc-fitted-text/sc-fitted-text.html">
 <link rel="import" href="../../../shared/elements/gdq-rundown/gdq-rundown.html">
 <link rel="import" href="gdq-hostdash-ads.html">
 <link rel="import" href="gdq-hostdash-bids.html">
@@ -135,6 +136,8 @@
 				grid-column: 4;
 				grid-row: 2;
 				padding: 11px;
+				max-width: 556px;
+				box-sizing: border-box;
 				@apply --layout-vertical;
 			}
 
@@ -203,9 +206,8 @@
 			#currentRun-runners {
 				font-size: 22px;
 				font-weight: 400;
-				overflow: hidden;
 				white-space: nowrap;
-				text-overflow: ellipsis;
+				min-width: 1px;
 			}
 
 			#rundown {
@@ -272,7 +274,13 @@
 
 				<div id="currentRun">
 					<div id="currentRun-name"></div>
-					<div id="currentRun-runners">[[calcRunnersString(runners)]]</div>
+					<sc-fitted-text
+						id="currentRun-runners"
+						text="[[calcRunnersString(runners)]]"
+						title="[[calcRunnersString(runners)]]"
+						align="center"
+						max-width="500">
+					</sc-fitted-text>
 				</div>
 			</div>
 
