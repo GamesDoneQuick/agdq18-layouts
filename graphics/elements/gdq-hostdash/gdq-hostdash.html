@@ -162,10 +162,13 @@
 			#stopwatch-time {
 				font-size: 100px;
 				font-weight: 700;
+				margin-top: -4px;
+				margin-bottom: -30px;
 			}
 
 			#stopwatch-results {
 				height: 93px;
+				margin-bottom: -4px;
 				@apply --layout-horizontal;
 				@apply --layout-center;
 				@apply --layout-around-justified;
@@ -187,9 +190,7 @@
 			.result-name {
 				font-size: 18px;
 				font-weight: 400;
-				overflow: hidden;
 				white-space: nowrap;
-				text-overflow: ellipsis;
 			}
 
 			#currentRun {
@@ -260,13 +261,17 @@
 
 				<div id="stopwatch">
 					<div id="stopwatch-time">[[stopwatchTime]]</div>
-					<div 1id="stopwatch-results">
-						<template is="dom-repeat" items="[[stopwatchResults]]" as="result">
+					<div id="stopwatch-results">
+						<template is="dom-repeat" items="[[stopwatchResults]]" as="result" mutable-data>
 							<div class="result" display$="[[isValidResult(result, index, runners)]]">
 								<div class="result-time">[[result.formatted]]</div>
-								<div class="result-name" title="[[calcRunnerName(runners, index)]]">
-									[[calcRunnerName(runners, index)]]
-								</div>
+								<sc-fitted-text
+									class="result-name"
+									text="[[calcRunnerName(runners, index)]]"
+									title="[[calcRunnerName(runners, index)]]"
+									align="center"
+									max-width="120">
+								</sc-fitted-text>
 							</div>
 						</template>
 					</div>
