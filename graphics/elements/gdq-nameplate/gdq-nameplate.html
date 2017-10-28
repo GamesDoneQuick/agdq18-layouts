@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/sc-fitted-text/sc-fitted-text.html">
 <link rel="import" href="../../../shared/imports/easeljs.html">
 <link rel="import" href="../../../shared/style/gdq-text-styles.html">
 
@@ -12,7 +13,7 @@ Attached left, right, or none
 Width configurable
 Height constant
 
-Audio indicator comes out from side opposide placement indicator
+Audio indicator comes out from side opposite placement indicator
 -->
 
 <dom-module id="gdq-nameplate">
@@ -71,9 +72,8 @@ Audio indicator comes out from side opposide placement indicator
 				opacity: 0;
 			}
 
-			#namesTwitch span {
+			#namesTwitch sc-fitted-text {
 				display: inline-block;
-				transform-origin: left;
 			}
 
 			#timeClip {
@@ -158,7 +158,8 @@ Audio indicator comes out from side opposide placement indicator
 
 			.hidden {
 				position: absolute;
-				visibility: hidden;
+				opacity: 0 !important;
+				pointer-events: none;
 			}
 
 			/* attachment styles */
@@ -256,10 +257,10 @@ Audio indicator comes out from side opposide placement indicator
 
 			<div id="body">
 				<div id="names">
-					<div id="namesName" class="shadow">[[name]]</div>
+					<sc-fitted-text id="namesName" class="shadow" text="[[name]]" align="center"></sc-fitted-text>
 					<div id="namesTwitch">
 						<img src="[[importPath]]img/twitch.png" style="position: relative; top: 4px;">
-						<span class="shadow">[[twitch]]</span>
+						<sc-fitted-text class="shadow" text="[[twitch]]" align="left"></sc-fitted-text>
 					</div>
 				</div>
 			</div>
