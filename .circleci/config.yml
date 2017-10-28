@@ -1,0 +1,82 @@
+# Pointers & snippets
+defaults: &defaults
+  working_directory: /tmp/workspace
+  docker:
+    - image: circleci/node:8-browsers
+      environment:
+        NPM_CONFIG_PREFIX: ~/.npm-global
+npm-path: &npm_path
+  name: Set up path for global npm installs
+  command: |
+    mkdir -p /tmp/workspace/.npm-global
+    npm config set prefix '/tmp/workspace/.npm-global'
+    echo 'export PATH=/tmp/workspace/.npm-global/bin:$PATH' >> $BASH_ENV
+    echo 'export NPM_CONFIG_PREFIX=/tmp/workspace/.npm-global' >> $BASH_ENV
+    source $BASH_ENV
+    cat $BASH_ENV
+    printenv PATH
+
+version: 2
+jobs:
+  install_deps:
+    <<: *defaults
+    working_directory: /tmp/workspace/agdq18-layouts
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-bower-dependencies-{{ checksum "bower.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+          - v1-bower-dependencies-
+      - run:
+          <<: *npm_path
+      - run:
+          name: Install global npm deps
+          command: npm install -g bower polymer-cli
+      - run:
+          name: Install project npm deps
+          command: npm install
+      - run:
+          name: Install bower deps
+          command: printenv PATH && ls /tmp/workspace/.npm-global && bower install
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+            - /tmp/workspace/.npm-global
+      - save_cache:
+          key: v1-bower-dependencies-{{ checksum "bower.json" }}
+          paths:
+            - bower_components
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: /tmp/workspace
+          # Must be relative path from root
+          paths:
+            - agdq18-layouts
+            - .npm-global
+  test:
+    <<: *defaults
+    working_directory: /tmp/workspace/agdq18-layouts
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          <<: *npm_path
+      - run:
+          name: Test
+          command: npm test
+
+workflows:
+  version: 2
+
+  test_and_build:
+    jobs:
+      - install_deps
+      - test:
+          requires:
+            - install_deps
