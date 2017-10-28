@@ -431,28 +431,10 @@
 		fitName() {
 			Polymer.flush();
 			const MAX_NAME_WIDTH = this.$.names.clientWidth - 32;
-			const nameWidth = this.$.namesName.clientWidth;
-			if (nameWidth > MAX_NAME_WIDTH) {
-				TweenLite.set(this.$.namesName, {scaleX: MAX_NAME_WIDTH / nameWidth});
-			} else {
-				TweenLite.set(this.$.namesName, {scaleX: 1});
-			}
-
 			const MAX_TWITCH_WIDTH = MAX_NAME_WIDTH - 20;
-			const twitchSpan = this.$.namesTwitch.querySelector('span');
-			twitchSpan.style.width = 'auto';
-			const twitchWidth = twitchSpan.clientWidth;
-			if (twitchWidth > MAX_TWITCH_WIDTH) {
-				const scale = MAX_TWITCH_WIDTH / twitchWidth;
-				const newWidth = twitchWidth * scale;
-
-				// Can sometimes be NaN on the co-op variants of Standard_1
-				if (typeof newWidth === 'number' && !isNaN(newWidth)) {
-					TweenLite.set(twitchSpan, {scaleX: scale, width: newWidth});
-				}
-			} else {
-				TweenLite.set(twitchSpan, {scaleX: 1});
-			}
+			const twitchText = this.$.namesTwitch.querySelector('sc-fitted-text');
+			this.$.namesName.maxWidth = MAX_NAME_WIDTH;
+			twitchText.maxWidth = MAX_TWITCH_WIDTH;
 		}
 
 		stopwatchChanged(newVal) {
