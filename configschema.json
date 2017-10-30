@@ -196,9 +196,12 @@
 				"localOscPort": {
 					"type": "number",
 					"default": 6250
+				},
+				"adsPath": {
+					"type": "string"
 				}
 			},
-			"required": ["host", "port", "lockSecret", "localOscPort"]
+			"required": ["host", "port", "lockSecret", "localOscPort", "adsPath"]
 		}
 	},
 	"adsPath": {
@@ -208,5 +211,5 @@
 		"type": "string"
 	},
 
-	"required": ["tracker", "adsPath"]
+	"required": ["tracker"]
 }
