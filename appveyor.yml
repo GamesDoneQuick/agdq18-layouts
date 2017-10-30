@@ -1,0 +1,44 @@
+platform:
+  - x64
+
+environment:
+  PKG_CACHE_PATH: '%USERPROFILE%\pkg-cache'
+
+cache:
+  - '%APPDATA%\npm-cache'
+  - '%LOCALAPPDATA%\bower'
+  - '%USERPROFILE%\pkg-cache'
+
+install:
+  - ps: Install-Product node 8 x64
+  - git reset --hard HEAD
+  - npm install -g bower polymer-cli pkg
+  - npm install
+  - bower install
+
+before_build:
+  - node --version
+  - npm --version
+  - npm test
+
+build_script:
+  - cd ..
+  - git clone https://github.com/nodecg/nodecg.git
+  - cd nodecg
+  - git checkout pkg
+  - npm i && bower install
+  - 'move %APPVEYOR_BUILD_FOLDER% bundles\%APPVEYOR_PROJECT_SLUG%'
+  - dir bundles
+  - pkg . --targets node8-win-x64 --public
+
+after_build:
+  - 7z a pkg-agdq18-layouts.zip nodecg.exe
+  - ps: 'Get-ChildItem -Recurse -ErrorAction SilentlyContinue bundles\$env:APPVEYOR_PROJECT_SLUG\node_modules\*.node | % { 7z a pkg-agdq18-layouts.zip $_.FullName }'
+  - 'if not exist %APPVEYOR_BUILD_FOLDER% mkdir %APPVEYOR_BUILD_FOLDER%'
+  - 'move pkg-agdq18-layouts.zip %APPVEYOR_BUILD_FOLDER%'
+
+test: off
+
+artifacts:
+  - path: pkg-agdq18-layouts.zip
+    name: pkg-agdq18-layouts
