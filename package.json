@@ -28,7 +28,6 @@
     "q": "^1.4.1",
     "request": "^2.67.0",
     "request-promise": "^4.2.1",
-    "serialport": "^6.0.3",
     "socket.io-client": "^2.0.1",
     "twemoji": "^2.0.5",
     "twitchps": "^0.5.5",
