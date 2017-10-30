@@ -161,7 +161,7 @@ function updateFiles() {
 		return;
 	}
 
-	fs.readdir(nodecg.bundleConfig.adsPath, (err, items) => {
+	fs.readdir(nodecg.bundleConfig.casparcg.adsPath, (err, items) => {
 		if (err) {
 			log.error('Error updating files:', err);
 			return;
@@ -170,7 +170,7 @@ function updateFiles() {
 		let hadError = false;
 		const foundFiles = [];
 		items.forEach(item => {
-			const fullPath = path.join(nodecg.bundleConfig.adsPath, item);
+			const fullPath = path.join(nodecg.bundleConfig.casparcg.adsPath, item);
 			const stats = fs.lstatSync(fullPath);
 
 			// If this isn't a file, we don't care.
