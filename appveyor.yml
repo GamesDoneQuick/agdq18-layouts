@@ -5,6 +5,7 @@ environment:
   PKG_CACHE_PATH: '%USERPROFILE%\pkg-cache'
 
 cache:
+  - '%APPDATA%\npm'
   - '%APPDATA%\npm-cache'
   - '%LOCALAPPDATA%\bower'
   - '%USERPROFILE%\pkg-cache'
