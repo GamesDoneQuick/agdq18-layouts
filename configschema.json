@@ -198,7 +198,8 @@
 					"default": 6250
 				},
 				"adsPath": {
-					"type": "string"
+					"type": "string",
+					"default": "casparcg/server/media"
 				}
 			},
 			"required": ["host", "port", "lockSecret", "localOscPort", "adsPath"]
