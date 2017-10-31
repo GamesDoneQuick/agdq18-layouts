@@ -29,7 +29,6 @@ build_script:
   - git checkout pkg
   - npm i && bower install
   - 'move %APPVEYOR_BUILD_FOLDER% bundles\%APPVEYOR_PROJECT_SLUG%'
-  - dir bundles
   - pkg . --targets node8-win-x64 --public
   - if not exist cfg mkdir cfg
   - 'echo {"logging": {"console": {"level": "info"},"file": {"enabled": true,"level": "debug"},"replicants": false}} >> cfg/nodecg.json'
