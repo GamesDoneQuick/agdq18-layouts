@@ -37,7 +37,7 @@ build_script:
 
 
 after_build:
-  - ps: '$env:PKG_ZIP_NAME = "agdq18-layouts-$(-join $env:APPVEYOR_PROJECT_SLUG[0..7]).zip"'
+  - ps: '$env:PKG_ZIP_NAME = "agdq18-layouts-$(-join $env:APPVEYOR_REPO_COMMIT[0..7]).zip"'
   - 7z a %PKG_ZIP_NAME% nodecg.exe cfg
   - ps: 'Get-ChildItem -Recurse -ErrorAction SilentlyContinue bundles\$env:APPVEYOR_PROJECT_SLUG\node_modules\*.node | % { 7z a $env:PKG_ZIP_NAME $_.FullName }'
   - 'if not exist %APPVEYOR_BUILD_FOLDER% mkdir %APPVEYOR_BUILD_FOLDER%'
