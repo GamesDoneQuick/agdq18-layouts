@@ -29,7 +29,6 @@ module.exports.update = update;
 update();
 
 // Get latest schedule data every POLL_INTERVAL milliseconds
-nodecg.log.info('Polling schedule every %d seconds...', POLL_INTERVAL / 1000);
 updateInterval = setInterval(update, POLL_INTERVAL);
 
 // Dashboard can invoke manual updates

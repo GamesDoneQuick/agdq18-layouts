@@ -21,7 +21,6 @@ const allBidsRep = nodecg.Replicant('allBids', {defaultValue: []});
 const bitsTotal = nodecg.Replicant('bits:total');
 
 // Get latest bid data every POLL_INTERVAL milliseconds
-nodecg.log.info('Polling bids every %d seconds...', POLL_INTERVAL / 1000);
 update();
 
 /**
