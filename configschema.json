@@ -200,6 +200,10 @@
 				"adsPath": {
 					"type": "string",
 					"default": "casparcg/server/media"
+				},
+				"debug": {
+					"type": "boolean",
+					"default": false
 				}
 			},
 			"required": ["host", "port", "lockSecret", "localOscPort", "adsPath"]
