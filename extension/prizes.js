@@ -24,7 +24,6 @@ const allPrizes = nodecg.Replicant('allPrizes', {defaultValue: []});
 update();
 
 // Get latest prize data every POLL_INTERVAL milliseconds
-nodecg.log.info('Polling prizes every %d seconds...', POLL_INTERVAL / 1000);
 let updateInterval = setInterval(update.bind(this), POLL_INTERVAL);
 
 // Dashboard can invoke manual updates
