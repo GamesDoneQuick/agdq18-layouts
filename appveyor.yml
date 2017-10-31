@@ -30,9 +30,13 @@ build_script:
   - 'move %APPVEYOR_BUILD_FOLDER% bundles\%APPVEYOR_PROJECT_SLUG%'
   - dir bundles
   - pkg . --targets node8-win-x64 --public
+  - if not exist cfg mkdir cfg
+  - 'echo {"logging": {"console": {"level": "info"},"file": {"enabled": true,"level": "debug"},"replicants": false}} >> cfg/nodecg.json'
+  - ps: Start-FileDownload 'https://www.dropbox.com/s/5ts0l1mm0yaova5/agdq18-layouts.json?dl=1' -FileName 'cfg/agdq18-layouts.json'
+
 
 after_build:
-  - 7z a pkg-agdq18-layouts.zip nodecg.exe
+  - 7z a pkg-agdq18-layouts.zip nodecg.exe cfg
   - ps: 'Get-ChildItem -Recurse -ErrorAction SilentlyContinue bundles\$env:APPVEYOR_PROJECT_SLUG\node_modules\*.node | % { 7z a pkg-agdq18-layouts.zip $_.FullName }'
   - 'if not exist %APPVEYOR_BUILD_FOLDER% mkdir %APPVEYOR_BUILD_FOLDER%'
   - 'move pkg-agdq18-layouts.zip %APPVEYOR_BUILD_FOLDER%'
