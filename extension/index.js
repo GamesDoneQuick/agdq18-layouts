@@ -30,10 +30,14 @@ module.exports = function (nodecg) {
 	require('./nowplaying');
 	require('./countdown');
 
-	// This is a hack.
-	require('./caspar').osc.once('initialized', () => {
+	if (nodecg.bundleConfig.casparcg) {
+		// This is a hack.
+		require('./caspar').osc.once('initialized', () => {
+			require('./intermissions');
+		});
+	} else {
 		require('./intermissions');
-	});
+	}
 
 	loginToTracker().then(() => {
 		const schedule = require('./schedule');
