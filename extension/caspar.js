@@ -47,7 +47,9 @@ const connection = new CasparCG({
 		log.warn('Disconnected.');
 	},
 	onLog(str) {
-		log.debug(str);
+		if (nodecg.bundleConfig.casparcg.debug) {
+			log.debug(str);
+		}
 	},
 	onError(error) {
 		log.error(error);
