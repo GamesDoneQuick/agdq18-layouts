@@ -428,12 +428,14 @@ function calcFormattedSchedule({rawRuns, formattedRunners, formattedAds, formatt
 			if (!adBreak) {
 				adBreak = {
 					type: 'adBreak',
-					ads: [],
-					id: adBreakIdCounter++
+					ads: []
 				};
 			}
 
 			adBreak.ads.push(item);
+
+			// Always make the ID of the entire break be equal to the ID of the last item in that break.
+			adBreak.id = item.id;
 
 			const nextItem = flatSchedule[index + 1];
 			if (nextItem && nextItem.type === 'ad') {
