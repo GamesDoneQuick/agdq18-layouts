@@ -75,7 +75,8 @@ class GdqTronlines extends Polymer.Element {
 			},
 
 			/**
-			 * Distance traveled per frame, in pixels.
+			 * Expected distance traveled per frame, in pixels.
+			 * This is the "mu" value of the normal distribution.
 			 */
 			speed: {
 				type: Number,
@@ -83,9 +84,8 @@ class GdqTronlines extends Polymer.Element {
 			},
 
 			/**
-			 * Ratio by which the speed is allowed to vary by node.
-			 * A randomness of 0.2 with a speed of 1 will result in a speed range of 0.8-1.2
-			 * A randomness of 0.2 with a speed of 10 will result in a speed range of 8-12.
+			 * Variance in speed per node.
+			 * This is the "sigma" of the normal distribution.
 			 */
 			speedRandomness: {
 				type: Number,
@@ -93,7 +93,8 @@ class GdqTronlines extends Polymer.Element {
 			},
 
 			/**
-			 * Length of a node's tail, in pixels.
+			 * Expected distance tail length, in pixels.
+			 * This is the "mu" value of the normal distribution.
 			 */
 			tailLength: {
 				type: Number,
@@ -101,9 +102,8 @@ class GdqTronlines extends Polymer.Element {
 			},
 
 			/**
-			 * Ratio by which tail length is allowed to vary by node.
-			 * A randomness of 0.2 with a tailLength of 1 will result in a tail length range of 0.8-1.2
-			 * A randomness of 0.2 with a tailLength of 10 will result in a tail length range of 8-12.
+			 * Variance in tail length per node.
+			 * This is the "sigma" of the normal distribution.
 			 */
 			tailLengthRandomness: {
 				type: Number,
