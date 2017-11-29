@@ -1,0 +1,35 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../shared/imports/easeljs.html">
+<link rel="import" href="../../../shared/imports/random.html">
+
+<dom-module id="gdq-tronlines">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			:host([direction="left"]) #canvas {
+				transform-origin: top left;
+				transform: rotate(-90deg) translate(-100%, 0%);
+			}
+
+			:host([direction="right"]) #canvas {
+				transform-origin: top left;
+				transform: rotate(90deg) translate(0%, -100%);
+			}
+
+			:host([direction="down"]) #canvas {
+				transform: rotate(180deg);
+			}
+
+			#canvas {
+				position: absolute;
+			}
+		</style>
+
+		<canvas id="canvas"></canvas>
+	</template>
+
+	<script src="gdq-tronlines.js"></script>
+</dom-module>

@@ -183,11 +183,6 @@
         "height": 55
       },
       {
-        "file": "test_break.html",
-        "width": 1280,
-        "height": 720
-      },
-      {
         "file": "host.html",
         "width": 1920,
         "height": 1080
@@ -196,6 +191,16 @@
         "file": "audio_dashboard.html",
         "width": 1920,
         "height": 1080
+      },
+      {
+        "file": "test_break.html",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "file": "test_tronlines.html",
+        "width": 1280,
+        "height": 720
       }
     ],
     "assetCategories": [

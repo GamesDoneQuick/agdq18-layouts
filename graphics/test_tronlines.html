@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<title>Test Break</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="stylesheet" href="style/font/SF Pixelate.css">
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+	<link rel="import" href="elements/element-tester/element-tester.html">
+	<link rel="import" href="elements/gdq-tronlines/gdq-tronlines.html">
+	<custom-style>
+		<style>
+			body {
+				opacity: 1;
+				background: hsla(189, 58%, 25%, 1);
+				@apply --layout-vertical;
+				@apply --layout-start;
+			}
+
+			element-tester {
+				--element-tester-controls: {
+					width: 300px;
+				}
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+	<element-tester>
+		<gdq-tronlines></gdq-tronlines>
+	</element-tester>
+</body>
+</html>
