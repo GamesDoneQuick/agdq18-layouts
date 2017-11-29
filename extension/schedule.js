@@ -12,7 +12,6 @@ const nodecg = require('./util/nodecg-api-context').get();
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
 const POLL_INTERVAL = 60 * 1000;
-let adBreakIdCounter = 0;
 let updateInterval;
 
 const checklist = require('./checklist');
@@ -158,8 +157,6 @@ nodecg.listenFor('resetRun', (pk, cb) => {
  * @returns {Promise} - A a promise resolved with "true" if the schedule was updated, "false" if unchanged.
  */
 function update() {
-	adBreakIdCounter = 0;
-
 	const runnersPromise = request({
 		uri: nodecg.bundleConfig.useMockData ?
 			'https://www.dropbox.com/s/lmhh2tctyrvipdr/runners.json' :
