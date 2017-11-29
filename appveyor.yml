@@ -34,7 +34,6 @@ build_script:
   - 'echo {"logging": {"console": {"level": "info"},"file": {"enabled": true,"level": "debug"},"replicants": false}} >> cfg/nodecg.json'
   - ps: Start-FileDownload 'https://www.dropbox.com/s/5ts0l1mm0yaova5/agdq18-layouts.json?dl=1' -FileName 'cfg/agdq18-layouts.json'
 
-
 after_build:
   - ps: '$env:PKG_ZIP_NAME = "agdq18-layouts-$(-join $env:APPVEYOR_REPO_COMMIT[0..7]).zip"'
   - 7z a %PKG_ZIP_NAME% nodecg.exe cfg
