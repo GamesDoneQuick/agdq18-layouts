@@ -1,4 +1,5 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
@@ -32,12 +33,17 @@
 				padding: 0 4px;
 			}
 
-			.colorPrefix {
+			.prefix {
 				margin-right: 8px;
 			}
 
 			paper-item {
 				cursor: pointer;
+			}
+
+			paper-input[type="checkbox"] {
+				cursor: pointer;
+				user-select: none;
 			}
 		</style>
 
@@ -95,33 +101,54 @@
 				} else {
 					input = document.createElement('paper-input');
 					input.type = ElementTester.calcPropertyInputType(property.type);
+
 					if (elementTesterOpts.type) {
 						input.type = property.elementTester.type;
 					}
 
-					if (input.type === 'color') {
+					if (input.type === 'color' || input.type === 'checkbox') {
 						valuePrefix = document.createElement('div');
-						valuePrefix.classList.add('colorPrefix');
+						valuePrefix.classList.add('prefix');
 						valuePrefix.slot = 'prefix';
 						valuePrefix.setAttribute('prefix', true);
 						valuePrefix.innerText = property.value;
 						input.appendChild(valuePrefix);
 					}
+
+					if (input.type === 'checkbox') {
+						input.alwaysFloatLabel = true;
+						input.addEventListener('click', () => {
+							input.value = !input.value;
+						});
+					}
+
+					input.setAttribute('type', input.type);
 				}
 
 				input.label = propertyName;
 				input.value = property.value;
 				input.classList.add('control');
+
 				input.addEventListener('value-changed', e => {
 					let newValue = e.detail.value;
 					if (e.target.type === 'number') {
 						newValue = parseFloat(newValue);
+					} else if (e.target.type === 'checkbox') {
+						if (newValue === 'false') {
+							newValue = false;
+						} else if (newValue === 'true') {
+							newValue = true;
+						}
+						newValue = Boolean(newValue);
 					}
+
 					if (valuePrefix) {
 						valuePrefix.innerText = newValue;
 					}
+
 					element[propertyName] = newValue;
 				});
+
 				return input;
 			}
 
