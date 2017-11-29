@@ -1,4 +1,4 @@
-/* global Random */
+/* global Random, d3 */
 
 /**
  * @customElement
@@ -92,16 +92,6 @@ class GdqTronlines extends Polymer.Element {
 				value: 0.2
 			},
 
-			minSpeed: {
-				type: Number,
-				computed: '_computeMinSpeed(speed, speedRandomness)'
-			},
-
-			maxSpeed: {
-				type: Number,
-				computed: '_computeMaxSpeed(speed, speedRandomness)'
-			},
-
 			/**
 			 * Length of a node's tail, in pixels.
 			 */
@@ -118,16 +108,6 @@ class GdqTronlines extends Polymer.Element {
 			tailLengthRandomness: {
 				type: Number,
 				value: 0.2
-			},
-
-			minTailLength: {
-				type: Number,
-				computed: '_computeMinTailLength(tailLength, tailLengthRandomness)'
-			},
-
-			maxTailLength: {
-				type: Number,
-				computed: '_computeMaxTailLength(tailLength, tailLengthRandomness)'
 			},
 
 			/**
@@ -194,6 +174,16 @@ class GdqTronlines extends Polymer.Element {
 				value() {
 					return [];
 				}
+			},
+
+			_getRandomSpeed: {
+				type: Function,
+				computed: '_computeRandomSpeedFunc(speed, speedRandomness)'
+			},
+
+			_getRandomTailLength: {
+				type: Function,
+				computed: '_computeRandomTailLengthFunc(tailLength, tailLengthRandomness)'
 			}
 		};
 	}
@@ -204,7 +194,7 @@ class GdqTronlines extends Polymer.Element {
 		];
 	}
 
-	static getRandomReal(min, max) {
+	static getRandomUniform(min = 0, max = 1) {
 		return Random.real(min, max, true)(Random.engines.browserCrypto);
 	}
 
@@ -316,7 +306,7 @@ class GdqTronlines extends Polymer.Element {
 	 * @returns {undefined}
 	 */
 	_allocateNode(node) {
-		const tailLength = GdqTronlines.getRandomReal(this.minTailLength, this.maxTailLength);
+		const tailLength = this._getRandomTailLength();
 		const tailEndColor = createjs.Graphics.getRGB(parseInt(this.tailColor.slice(1), 16), 0.2);
 		const firstGradientStop = Math.min(this.nodeSize / this.tailLength, 1);
 
@@ -327,10 +317,10 @@ class GdqTronlines extends Polymer.Element {
 			.drawRect(0, 0, this.nodeSize, this.nodeSize);
 		node.cache(0, 0, this.nodeSize, tailLength);
 		node.tailLength = tailLength;
-		node.speed = GdqTronlines.getRandomReal(this.minSpeed, this.maxSpeed);
+		node.speed = this._getRandomSpeed();
 		node.alpha = this.opacityStart;
 		node.y = this._invertDimensions ? this.width : this.height;
-		node.x = GdqTronlines.getRandomReal(0, this._invertDimensions ? this.height : this.width);
+		node.x = GdqTronlines.getRandomUniform(0, this._invertDimensions ? this.height : this.width);
 
 		this.stage.addChild(node);
 		this._allocatedNodes.push(node);
@@ -387,20 +377,12 @@ class GdqTronlines extends Polymer.Element {
 		}
 	}
 
-	_computeMinSpeed(speed, randomness) {
-		return speed - (speed * randomness);
+	_computeRandomSpeedFunc(speed, speedRandomness) {
+		return d3.randomNormal.source(GdqTronlines.getRandomUniform)(speed, speedRandomness);
 	}
 
-	_computeMaxSpeed(speed, randomness) {
-		return speed + (speed * randomness);
-	}
-
-	_computeMinTailLength(tailLength, randomness) {
-		return tailLength - (tailLength * randomness);
-	}
-
-	_computeMaxTailLength(tailLength, randomness) {
-		return tailLength + (tailLength * randomness);
+	_computeRandomTailLengthFunc(tailLength, tailLengthRandomness) {
+		return d3.randomNormal.source(GdqTronlines.getRandomUniform)(tailLength, tailLengthRandomness);
 	}
 
 	_resizeCanvas(width, height, direction) {
