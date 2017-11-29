@@ -16,6 +16,10 @@ module.exports = function (nodecg) {
 	const loginLog = new nodecg.Logger(`${nodecg.bundleName}:tracker`);
 	let isFirstLogin = true;
 
+	if (!nodecg.bundleConfig.tracker) {
+		throw new Error(`You must popluate the "tracker" configuration object in cfg/${nodecg.bundleName}.json`);
+	}
+
 	if (nodecg.bundleConfig.useMockData) {
 		nodecg.log.warn('WARNING! useMockData is true, you will not receive real data from the tracker!');
 	}
