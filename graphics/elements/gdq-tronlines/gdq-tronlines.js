@@ -236,6 +236,7 @@ class GdqTronlines extends Polymer.Element {
 			.drawRect(0, 0, this.nodeSize, tailLength)
 			.beginFill(this.nodeColor)
 			.drawRect(0, 0, this.nodeSize, this.nodeSize);
+		node.cache(0, 0, this.nodeSize, tailLength);
 		node.tailLength = tailLength;
 		node.speed = GdqTronlines.getRandomReal(this.minSpeed, this.maxSpeed);
 		node.alpha = this.opacityStart;
