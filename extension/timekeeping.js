@@ -1,13 +1,15 @@
 'use strict';
 
-// Packages
-const NanoTimer = require('nanotimer');
-
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const TimeObject = require('../shared/classes/time-object');
+const liveSplitCore = require('livesplit-core');
 
-const timer = new NanoTimer();
+const lsRun = liveSplitCore.Run.new();
+const segment = liveSplitCore.Segment.new('finish');
+lsRun.pushSegment(segment);
+const timer = liveSplitCore.Timer.new(lsRun);
+
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
 const stopwatch = nodecg.Replicant('stopwatch', {
@@ -20,9 +22,12 @@ const stopwatch = nodecg.Replicant('stopwatch', {
 });
 
 // Load the existing time and start the stopwatch at that.
+let timeOffset = 0;
 if (stopwatch.value.state === 'running') {
-	const missedSeconds = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
-	TimeObject.setSeconds(stopwatch.value, stopwatch.value.raw + missedSeconds);
+	const missedTime = Math.round((Date.now() - stopwatch.value.timestamp) / 1000);
+	const previousTime = stopwatch.value.raw;
+	timeOffset = previousTime + missedTime;
+	console.log('timeOffset: %s', timeOffset);
 	start(true);
 }
 
@@ -65,7 +70,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 
 	// Poll for events
 	setInterval(gamepad.processEvents, 16);
-	// Scan for new gamepads as a slower rate
+	// Scan for new gamepads at a slower rate
 	// TODO: this breaks USB audio devices lmao
 	setInterval(gamepad.detectDevices, 1000);
 
@@ -113,6 +118,8 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 	});
 }
 
+setInterval(tick, 100); // 10 times per second.
+
 /**
  * Starts the timer.
  * @param {Boolean} [force=false] - Forces the timer to start again, even if already running.
@@ -123,17 +130,22 @@ function start(force) {
 		return;
 	}
 
-	timer.clearInterval();
 	stopwatch.value.state = 'running';
-	timer.setInterval(tick, '', '1s');
+	timer.start();
+	timer.resume();
 }
 
 /**
- * Increments the timer by one second.
+ * Updates the stopwatch replicant.
  * @returns {undefined}
  */
 function tick() {
-	TimeObject.increment(stopwatch.value);
+	const time = timer.currentTime();
+	const realTime = time.realTime();
+	if (!realTime) {
+		return;
+	}
+	TimeObject.setSeconds(stopwatch.value, Math.floor(realTime.totalSeconds() + timeOffset));
 }
 
 /**
@@ -141,7 +153,7 @@ function tick() {
  * @returns {undefined}
  */
 function stop() {
-	timer.clearInterval();
+	timer.pause();
 	stopwatch.value.state = 'stopped';
 }
 
@@ -151,6 +163,8 @@ function stop() {
  */
 function reset() {
 	stop();
+	timer.reset(true);
+	timeOffset = 0;
 	TimeObject.setSeconds(stopwatch.value, 0);
 	stopwatch.value.results = [];
 }
