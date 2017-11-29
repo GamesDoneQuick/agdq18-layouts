@@ -195,7 +195,6 @@ class GdqTronlines extends Polymer.Element {
 
 		let warnedLeak = false;
 		const stage = new createjs.Stage(this.$.canvas);
-		createjs.Ticker.framerate = 60;
 		createjs.Ticker.on('tick', () => {
 			this.advanceSimulation();
 			this.removeInvisibleNodes();

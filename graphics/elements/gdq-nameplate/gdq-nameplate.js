@@ -241,7 +241,6 @@
 			// Prep canvases
 			const leftCapStage = new createjs.Stage(this.$.leftCap);
 			const rightCapStage = new createjs.Stage(this.$.rightCap);
-			createjs.Ticker.setFPS(60);
 			createjs.Ticker.on('tick', () => {
 				if (!this.attachLeft) {
 					leftCapStage.update();
