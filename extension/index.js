@@ -17,7 +17,7 @@ module.exports = function (nodecg) {
 	let isFirstLogin = true;
 
 	if (!nodecg.bundleConfig.tracker) {
-		throw new Error(`You must popluate the "tracker" configuration object in cfg/${nodecg.bundleName}.json`);
+		throw new Error(`You must populate the "tracker" configuration object in cfg/${nodecg.bundleName}.json`);
 	}
 
 	if (nodecg.bundleConfig.useMockData) {
