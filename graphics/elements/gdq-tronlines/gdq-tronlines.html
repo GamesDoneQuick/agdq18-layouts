@@ -6,7 +6,9 @@
 	<template>
 		<style>
 			:host {
+				position: relative;
 				display: block;
+				font-family: Roboto, sans-serif;
 			}
 
 			:host([direction="left"]) #canvas {
@@ -26,9 +28,22 @@
 			#canvas {
 				position: absolute;
 			}
+
+			:host(:not([debug])) #debugInfo {
+				display: none;
+			}
+
+			#debugInfo {
+				position: absolute;
+				top: 0;
+				right: 5px;
+				font-size: 14px;
+				color: white;
+			}
 		</style>
 
 		<canvas id="canvas"></canvas>
+		<div id="debugInfo"></div>
 	</template>
 
 	<script src="gdq-tronlines.js"></script>
