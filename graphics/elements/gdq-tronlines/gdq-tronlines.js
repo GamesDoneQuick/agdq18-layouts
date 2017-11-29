@@ -253,6 +253,10 @@ class GdqTronlines extends Polymer.Element {
 
 		stage.addChild(bg);
 		this.stage = stage;
+
+		setInterval(() => {
+			this._sweepExcessFreeNodes();
+		}, 10000);
 	}
 
 	/**
@@ -368,6 +372,19 @@ class GdqTronlines extends Polymer.Element {
 		this._allocatedNodes.splice(index, 1);
 		this._freeNodes.push(node);
 		this.stage.removeChild(node);
+	}
+
+	/**
+	 * Removes excess free nodes.
+	 * Excess free nodes are caused by tabbing away from the page,
+	 * or after lowering the node creation rate.
+	 * @private
+	 * @returns {undefined}
+	 */
+	_sweepExcessFreeNodes() {
+		if (this._freeNodes.length > GdqTronlines.BLOCK_SIZE * 2) {
+			this._freeNodes.length = GdqTronlines.BLOCK_SIZE;
+		}
 	}
 
 	_computeMinSpeed(speed, randomness) {
