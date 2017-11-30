@@ -159,7 +159,6 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			_allocatedNodes: {
 				type: Array,
-				readOnly: true,
 				value() {
 					return [];
 				}
@@ -170,7 +169,6 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			_freeNodes: {
 				type: Array,
-				readOnly: true,
 				value() {
 					return [];
 				}
@@ -333,35 +331,38 @@ class GdqTronlines extends Polymer.Element {
 	 * @returns {undefined}
 	 */
 	_freeInvisibleNodes() {
-		this._allocatedNodes = this._allocatedNodes.filter((node, index) => {
+		const nodesToFree = [];
+		this._allocatedNodes = this._allocatedNodes.filter(node => {
 			// If a node's alpha is less than zero, remove it.
 			if (node.alpha <= 0) {
-				this._freeNode(node, index);
+				nodesToFree.push(node);
 				return false;
 			}
 
 			// If a node has completely scrolled off the canvas, remove it.
 			if ((node.y + node.tailLength) <= 0) {
-				this._freeNode(node, index);
+				nodesToFree.push(node);
 				return false;
 			}
 
 			// Else, keep it.
 			return true;
 		});
+
+		nodesToFree.forEach(node => {
+			this._freeNode(node);
+		});
 	}
 
 	/**
 	 * Frees a node, removing it from the stage and returning it to the pool.
 	 * @param {createjs.DisplayObject} node - The node to free.
-	 * @param {Number} index - The index node to free in the _allocatedNodes array.
 	 * @private
 	 * @returns {undefined}
 	 */
-	_freeNode(node, index) {
-		this._allocatedNodes.splice(index, 1);
-		this._freeNodes.push(node);
+	_freeNode(node) {
 		this.stage.removeChild(node);
+		this._freeNodes.push(node);
 	}
 
 	/**
