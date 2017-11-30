@@ -1,15 +1,18 @@
+'use strict';
+
 // Packages
+const NanoTimer = require('nanotimer');
 const request = require('request-promise');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
-const TimeObject = require('../shared/classes/time-object');
+const TimeUtils = require('./lib/time');
 
 const log = new nodecg.Logger(`${nodecg.bundleName}:twitch`);
-const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: new TimeObject(0)});
-const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: new TimeObject(0)});
-let timeSinceTicker;
-let timeLeftTicker;
+const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: TimeUtils.createTimeStruct()});
+const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
+const timeSinceTimer = new NanoTimer();
+const timeLeftTimer = new NanoTimer();
 
 // Load the existing timeSince and timeLeft and resume at the appropriate time.
 if (timeSince.value.raw > 0) {
@@ -59,25 +62,25 @@ nodecg.listenFor('twitch:playAd', duration => {
 });
 
 function resetTimeSinceTicker(startingSeconds = 0) {
-	clearInterval(timeSinceTicker);
-	TimeObject.setSeconds(timeSince.value, startingSeconds);
-	timeSinceTicker = setInterval(() => {
-		TimeObject.increment(timeSince.value);
-	}, 1000);
+	timeSinceTimer.clearInterval();
+	timeSince.value = TimeUtils.createTimeStruct(startingSeconds * 1000);
+	timeSinceTimer.setInterval(() => {
+		timeSince.value = TimeUtils.createTimeStruct(timeSince.value.raw + 1000);
+	}, '', '1s');
 }
 
 function resetTimeLeftTicker(duration) {
-	clearInterval(timeLeftTicker);
-	TimeObject.setSeconds(timeLeft.value, duration);
+	timeLeftTimer.clearInterval();
+	timeLeft.value = TimeUtils.createTimeStruct(duration * 1000);
 
 	if (duration < 0) {
 		return;
 	}
 
-	timeLeftTicker = setInterval(() => {
-		TimeObject.decrement(timeLeft.value);
+	timeLeftTimer.setInterval(() => {
+		timeLeft.value = TimeUtils.createTimeStruct(timeLeft.value.raw - 1000);
 		if (timeLeft.value.raw <= 0) {
-			clearInterval(timeLeftTicker);
+			timeLeftTimer.clearInterval();
 		}
-	}, 1000);
+	}, '', '1s');
 }

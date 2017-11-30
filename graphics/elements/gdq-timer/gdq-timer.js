@@ -42,7 +42,7 @@
 			const timerTL = new TimelineLite({autoRemoveChildren: true});
 
 			stopwatch.on('change', (newVal, oldVal) => {
-				this.time = newVal.formatted;
+				this.time = newVal.time.formatted;
 
 				if (oldVal) {
 					if (newVal.state === 'running' && oldVal.state !== 'running') {
@@ -53,7 +53,7 @@
 					}
 				}
 
-				if (newVal.state === 'stopped' && newVal.raw !== 0) {
+				if (newVal.state === 'stopped' && newVal.time.raw !== 0) {
 					this.paused = true;
 				} else if (newVal.state === 'finished') {
 					this.finished = true;

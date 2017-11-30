@@ -1,4 +1,3 @@
-/* global TimeObject */
 class GdqAdbreakAd extends Polymer.MutableData(Polymer.Element) {
 	static get is() {
 		return 'gdq-adbreak-ad';
@@ -31,7 +30,7 @@ class GdqAdbreakAd extends Polymer.MutableData(Polymer.Element) {
 			typeof frameNumber !== 'number' || Number.isNaN(frameNumber)) {
 			return ':??';
 		}
-		return TimeObject.formatSeconds(frameNumber / fps);
+		return this.formatSeconds(frameNumber / fps);
 	}
 
 	completeImageAd() {
@@ -61,6 +60,28 @@ class GdqAdbreakAd extends Polymer.MutableData(Polymer.Element) {
 
 		const lastAd = adBreak.ads[adBreak.ads.length - 1];
 		return ad.adType.toLowerCase() !== 'image' || ad === lastAd;
+	}
+
+	// TODO: Make this not have to be copy/pasted from extension/lib/time.js
+	/**
+	 * Formats a number of seconds into a string ([hh:]mm:ss).
+	 * @param {number} seconds - The number of seconds to format.
+	 * @returns {string} - The formatted time sting.
+	 */
+	formatSeconds(seconds) {
+		const hms = {
+			h: Math.floor(seconds / 3600),
+			m: Math.floor(seconds % 3600 / 60),
+			s: Math.floor(seconds % 3600 % 60)
+		};
+
+		let str = '';
+		if (hms.h) {
+			str += `${hms.h}:`;
+		}
+
+		str += `${(hms.m < 10 ? `0${hms.m}` : hms.m)}:${(hms.s < 10 ? `0${hms.s}` : hms.s)}`;
+		return str;
 	}
 }
 

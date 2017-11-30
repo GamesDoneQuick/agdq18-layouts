@@ -43,7 +43,7 @@
 
 			stopwatch.on('change', newVal => {
 				this.stopwatchState = newVal.state;
-				this.stopwatchTime = newVal.formatted;
+				this.stopwatchTime = newVal.time.formatted;
 				this.stopwatchResults = newVal.results;
 			});
 

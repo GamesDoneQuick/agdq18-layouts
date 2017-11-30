@@ -191,7 +191,7 @@
 				},
 				"lockSecret": {
 					"type": "string",
-					"default": "defaultLockSecret"
+					"default": ""
 				},
 				"localOscPort": {
 					"type": "number",

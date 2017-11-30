@@ -35,7 +35,7 @@ jobs:
           <<: *npm_path
       - run:
           name: Install global npm deps
-          command: npm install -g bower polymer-cli
+          command: npm install -g bower polymer-cli pkg
       - run:
           name: Install project npm deps
           command: npm install
@@ -70,6 +70,27 @@ jobs:
       - run:
           name: Test
           command: npm test
+  pkg:
+    <<: *defaults
+    working_directory: /tmp/workspace
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          <<: *npm_path
+      - run:
+          name: Clone NodeCG
+          command: git clone https://github.com/nodecg/nodecg.git # TODO: checkout a specific release
+      - run:
+          name: Install NodeCG's dependencies
+          command: cd nodecg && npm i && bower install
+      - run:
+          name: Move agdq18-layouts
+          command: mv /tmp/workspace/agdq18-layouts /tmp/workspace/nodecg/bundles/agdq18-layouts
+      - run:
+          name: pkg
+          command: pkg /tmp/workspace/nodecg
 
 workflows:
   version: 2
