@@ -262,6 +262,14 @@ class GdqTronlines extends Polymer.Element {
 		});
 	}
 
+	/**
+	 * Clears all nodes from the canvas.
+	 * @returns {undefined}
+	 */
+	clear() {
+		this._freeAllNodes();
+	}
+
 	_creationRateChanged(newVal) {
 		if (this._creationInterval) {
 			clearInterval(this._creationInterval);
@@ -350,6 +358,19 @@ class GdqTronlines extends Polymer.Element {
 		});
 
 		nodesToFree.forEach(node => {
+			this._freeNode(node);
+		});
+	}
+
+	/**
+	 * Removes all nodes from the stage, returning them to the pool.
+	 * @private
+	 * @returns {undefined}
+	 */
+	_freeAllNodes() {
+		const allocatedNodes = this._allocatedNodes;
+		this._allocatedNodes = [];
+		allocatedNodes.forEach(node => {
 			this._freeNode(node);
 		});
 	}
