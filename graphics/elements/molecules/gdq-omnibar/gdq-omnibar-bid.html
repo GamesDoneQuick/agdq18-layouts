@@ -1,7 +1,7 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
-<link rel="import" href="../../atoms/gdq-stepped-gradient-text/gdq-stepped-gradient-text.html">
-<link rel="import" href="../../atoms/gdq-stepped-gradient/gdq-stepped-gradient.html">
+<link rel="import" href="../../atoms/atom-stepped-gradient-text/atom-stepped-gradient-text.html">
+<link rel="import" href="../../atoms/atom-stepped-gradient/atom-stepped-gradient.html">
 
 <dom-module id="gdq-omnibar-bid">
 	<template>
@@ -83,11 +83,11 @@
 			}
 		</style>
 
-		<gdq-stepped-gradient
+		<atom-stepped-gradient
 			id="background"
 			steps="3"
 			start-color="#8b84c2"
-			end-color="#413a8b"></gdq-stepped-gradient>
+			end-color="#413a8b"></atom-stepped-gradient>
 
 		<div id="text">
 			<div id="description" class="shadow">[[formatDescription(bid)]]</div>
@@ -95,19 +95,19 @@
 				<div id="bitsIcon" hidden>
 					<img id="bitsIcon-image" width="24" src="img/bitsicon.png">
 				</div>
-				<gdq-stepped-gradient-text
+				<atom-stepped-gradient-text
 					id="total"
 					text="[[formatTotal(bid)]]"
 					steps="3"
 					start-color="#86D796"
-					end-color="#36A24D"></gdq-stepped-gradient-text>
+					end-color="#36A24D"></atom-stepped-gradient-text>
 
-				<gdq-stepped-gradient-text
+				<atom-stepped-gradient-text
 					id="delta"
 					text="[[delta]]"
 					steps="3"
 					start-color="#d78585"
-					end-color="#a33535"></gdq-stepped-gradient-text>
+					end-color="#a33535"></atom-stepped-gradient-text>
 			</div>
 		</div>
 	</template>

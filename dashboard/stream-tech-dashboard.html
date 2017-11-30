@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Stream Tech Dashboard</title>
 	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-	<link rel="import" href="../shared/elements/gdq-rundown/gdq-rundown.html">
+	<link rel="import" href="../shared/elements/interfaces/ui-rundown/ui-rundown.html">
 	<link rel="import" href="elements/gdq-checklist/gdq-checklist.html">
 	<link rel="import" href="elements/gdq-countdown/gdq-countdown.html">
 	<link rel="import" href="elements/gdq-schedule/gdq-schedule.html">
@@ -72,7 +72,7 @@
 				@apply --layout-flex-none;
 			}
 
-			gdq-rundown {
+			ui-rundown {
 				margin-top: 14px;
 				height: 424px;
 				@apply --layout-flex;
@@ -106,7 +106,7 @@
 
 			<div id="rightColumn" class="column">
 				<gdq-twitter-controls class="bordered"></gdq-twitter-controls>
-				<gdq-rundown class="bordered"></gdq-rundown>
+				<ui-rundown class="bordered"></ui-rundown>
 			</div>
 		</div>
 	</div>
