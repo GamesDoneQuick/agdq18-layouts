@@ -3,8 +3,8 @@
 <link rel="import" href="../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../shared/elements/interfaces/ui-timeago/ui-timeago.html">
 <link rel="import" href="../../../shared/style/gdq-text-styles.html">
-<link rel="import" href="../../../shared/elements/gdq-time-ago/gdq-time-ago.html">
 
 <dom-module id="tweet-item">
 	<template>
@@ -129,12 +129,16 @@
 			<div id="tweet">
 				<header>
 					<a id="tweetLink" href="[[tweetUrl]]" target="_blank">
-						<gdq-time-ago id="timeAgo" datetime="[[value.created_at]]"></gdq-time-ago>
+						<ui-timeago id="timeAgo" datetime="[[value.created_at]]"></ui-timeago>
 					</a>
 
 					<a id="profileLink" href="[[profileUrl]]" target="_blank">
-						<iron-image id="avatar" src="[[value.user.profile_image_url_https]]"
-									sizing="contain" fade></iron-image>
+						<iron-image
+							id="avatar"
+							src="[[value.user.profile_image_url_https]]"
+							sizing="contain"
+							fade>
+						</iron-image>
 						<span id="name">[[value.user.name]]</span>
 						<span id="screenName">@[[value.user.screen_name]]</span>
 					</a>

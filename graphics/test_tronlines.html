@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="style/font/SF Pixelate.css">
 	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../bower_components/paper-button/paper-button.html">
-	<link rel="import" href="elements/interfaces/element-tester/element-tester.html">
-	<link rel="import" href="elements/atoms/gdq-tronlines/gdq-tronlines.html">
+	<link rel="import" href="elements/interfaces/ui-element-tester/ui-element-tester.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
 	<custom-style>
 		<style>
 			body {
@@ -36,10 +36,10 @@
 	</custom-style>
 </head>
 <body>
-	<element-tester>
-		<gdq-tronlines></gdq-tronlines>
+	<ui-element-tester>
+		<atom-tronlines></atom-tronlines>
 		<paper-button id="clear" raised>Clear Nodes</paper-button>
-	</element-tester>
+	</ui-element-tester>
 
 	<script>
 		const clearButton = document.getElementById('clear');

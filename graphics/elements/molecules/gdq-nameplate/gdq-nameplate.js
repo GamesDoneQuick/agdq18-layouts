@@ -263,7 +263,7 @@
 			};
 
 			const leftCapSprite = new createjs.Sprite(new createjs.SpriteSheet({
-				images: ['elements/gdq-nameplate/img/leftCap.png'],
+				images: ['elements/molecules/gdq-nameplate/img/leftCap.png'],
 				frames: [
 					[1, 1, 15, 39, 0, -31, 0],
 					[18, 1, 17, 39, 0, -29, 0],
@@ -308,7 +308,7 @@
 			}));
 
 			const rightCapSprite = new createjs.Sprite(new createjs.SpriteSheet({
-				images: ['elements/gdq-nameplate/img/rightCap.png'],
+				images: ['elements/molecules/gdq-nameplate/img/rightCap.png'],
 				frames: [
 					[1, 1, 19, 39, 0, 0, 0],
 					[22, 1, 21, 39, 0, 0, 0],
