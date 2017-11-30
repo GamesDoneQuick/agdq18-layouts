@@ -133,9 +133,10 @@ Audio indicator comes out from side opposite placement indicator
 			#time span {
 				font-weight: 700;
 				flex-grow: 1;
-				text-align: center;
 				padding-right: 10px;
 				line-height: 32px;
+				@apply --layout-horizontal;
+				@apply --layout-center-justified;
 			}
 
 			#medal {
@@ -272,7 +273,14 @@ Audio indicator comes out from side opposite placement indicator
 
 		<div id="timeClip">
 			<div id="time" class="box-shadow">
-				<span class="shadow">[[time]]</span>
+				<span>
+					<sc-fitted-text
+						class="shadow"
+						max-width="82"
+						text="[[time]]"
+						align="center">
+					</sc-fitted-text>
+				</span>
 				<div id="medal" style$="background-image: url([[calcMedalImage(place, forfeit)]])"></div>
 			</div>
 			<div id="timeShine"></div>
