@@ -307,7 +307,7 @@ class GdqTronlines extends Polymer.Element {
 	 */
 	_allocateNode(node) {
 		const tailLength = this._getRandomTailLength();
-		const tailEndColor = createjs.Graphics.getRGB(parseInt(this.tailColor.slice(1), 16), 0.2);
+		const tailEndColor = createjs.Graphics.getRGB(parseInt(this.tailColor.slice(1), 16), 0);
 		const firstGradientStop = Math.min(this.nodeSize / this.tailLength, 1);
 
 		node.graphics
