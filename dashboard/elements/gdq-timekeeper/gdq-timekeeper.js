@@ -51,7 +51,7 @@
 
 		stopwatchChanged(newVal) {
 			this.state = newVal.state;
-			this.time = newVal.formatted;
+			this.time = newVal.time.formatted;
 			this.results = newVal.results.slice(0);
 			this.paused = newVal.state === 'stopped' && newVal.raw > 0;
 		}
@@ -98,14 +98,14 @@
 		editRunnerTime(e) {
 			this.$['editDialog-text'].innerHTML = `Enter a new final time for <b>${e.model.runner.name}.</b>`;
 			this.$.editDialog.setAttribute('data-index', e.model.index);
-			this.$['editDialog-input'].value = this.results[e.model.index].formatted;
+			this.$['editDialog-input'].value = this.results[e.model.index].time.formatted;
 			this.$.editDialog.open();
 		}
 
 		editCoopTime() {
 			this.$['editDialog-text'].innerHTML = `Enter a new final time for <b>all runners.</b>`;
 			this.$.editDialog.setAttribute('data-index', 0);
-			this.$['editDialog-input'].value = this.results[0].formatted;
+			this.$['editDialog-input'].value = this.results[0].time.formatted;
 			this.$.editDialog.open();
 		}
 	}

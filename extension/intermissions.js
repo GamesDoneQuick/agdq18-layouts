@@ -13,8 +13,12 @@ const schemaDefaults = require('json-schema-defaults');
 const caspar = require('./caspar');
 const nodecg = require('./util/nodecg-api-context').get();
 const obs = require('./obs');
-const TimeObject = require('../shared/classes/time-object');
+const TimeUtils = require('./lib/time');
 
+let currentAdBreak = null;
+let currentlyPlayingAd = null;
+let nextAd = null;
+let cancelledAdBreak = false;
 const log = new nodecg.Logger(`${nodecg.bundleName}:intermission`);
 const currentIntermission = nodecg.Replicant('currentIntermission');
 const canSeekSchedule = nodecg.Replicant('canSeekSchedule');
@@ -33,6 +37,8 @@ currentRun.on('change', (newVal, oldVal) => {
 	}
 });
 stopwatch.on('change', (newVal, oldVal) => {
+	checkCanSeek();
+
 	if (!oldVal || (hasRunStarted() ? 'post' : 'pre') !== currentIntermission.value.preOrPost) {
 		return debouncedUpdateCurrentIntermissionContent();
 	}
@@ -40,17 +46,11 @@ stopwatch.on('change', (newVal, oldVal) => {
 	if (newVal.state !== oldVal.state) {
 		debouncedUpdateCurrentIntermissionState();
 	}
-
-	checkCanSeek();
 });
 caspar.replicants.files.on('change', () => {
 	debouncedUpdateCurrentIntermissionState();
 });
 
-let currentAdBreak = null;
-let currentlyPlayingAd = null;
-let nextAd = null;
-let cancelledAdBreak = false;
 nodecg.listenFor('intermissions:startAdBreak', adBreakId => {
 	const adBreak = currentIntermission.value.content.find(item => {
 		return item.type === 'adBreak' && item.id === adBreakId;
@@ -336,7 +336,7 @@ function _updateCurrentIntermissionState() {
 					ad.state.durationFrames = casparFile.frames;
 					ad.state.fps = casparFile.frameRate;
 				} else if (casparFile.type.toLowerCase() === 'image') {
-					ad.state.durationFrames = TimeObject.parseSeconds(ad.duration) * 60;
+					ad.state.durationFrames = (TimeUtils.parseTimeString(ad.duration) / 1000) * 60;
 					ad.state.fps = 60;
 				} else {
 					log.error('Unexpected file type from CasparCG:', casparFile);
@@ -391,7 +391,7 @@ function calcIntermissionContent() {
  * @returns {boolean} - Whether or not the current run has started.
  */
 function hasRunStarted() {
-	return stopwatch.value.raw > 0 || stopwatch.value.state !== 'stopped';
+	return stopwatch.value.time.raw > 0 || stopwatch.value.state !== 'stopped';
 }
 
 function checkCanSeek() {

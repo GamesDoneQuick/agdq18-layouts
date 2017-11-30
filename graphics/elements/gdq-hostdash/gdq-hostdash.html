@@ -264,7 +264,7 @@
 					<div id="stopwatch-results">
 						<template is="dom-repeat" items="[[stopwatchResults]]" as="result" mutable-data>
 							<div class="result" display$="[[isValidResult(result, index, runners)]]">
-								<div class="result-time">[[result.formatted]]</div>
+								<div class="result-time">[[result.time.formatted]]</div>
 								<sc-fitted-text
 									class="result-name"
 									text="[[calcRunnerName(runners, index)]]"

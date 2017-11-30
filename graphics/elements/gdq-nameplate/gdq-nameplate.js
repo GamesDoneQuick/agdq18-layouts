@@ -440,7 +440,7 @@
 			if (newVal.results[this.index]) {
 				this.forfeit = newVal.results[this.index].forfeit;
 				this.place = newVal.results[this.index].place;
-				this.time = newVal.results[this.index].formatted;
+				this.time = newVal.results[this.index].time.formatted;
 			} else {
 				this.forfeit = false;
 				this.place = 0;
@@ -456,6 +456,18 @@
 			const canHearSd = !channels.sd.muted && !channels.sd.fadedBelowThreshold;
 			const canHearHd = !channels.hd.muted && !channels.hd.fadedBelowThreshold;
 			this.audio = canHearSd || canHearHd;
+		}
+
+		_calcTimeValueAlign(attachLeft, attachRight) {
+			if (attachLeft) {
+				return 'left';
+			}
+
+			if (attachRight) {
+				return 'right';
+			}
+
+			return 'center';
 		}
 	}
 

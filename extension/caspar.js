@@ -35,12 +35,14 @@ const connection = new CasparCG({
 		updateFiles();
 		updateFilesInterval = setInterval(updateFiles, 60000);
 
-		connection.lock(1, CasparEnum.Lock.ACQUIRE, nodecg.bundleConfig.casparcg.lockSecret).then(() => {
-			log.info('Lock acquired.');
-		}).catch(e => {
-			log.error('Failed to acquire lock:', e);
-			connected.value = false;
-		});
+		if (nodecg.bundleConfig.casparcg.lockSecret) {
+			connection.lock(1, CasparEnum.Lock.ACQUIRE, nodecg.bundleConfig.casparcg.lockSecret).then(() => {
+				log.info('Lock acquired.');
+			}).catch(e => {
+				log.error('Failed to acquire lock:', e);
+				connected.value = false;
+			});
+		}
 	},
 	onDisconnected() {
 		connected.value = false;

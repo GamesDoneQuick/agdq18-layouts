@@ -1,13 +1,15 @@
 'use strict';
 
-let timer = null;
+// Packages
+const NanoTimer = require('nanotimer');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
-const TimeObject = require('../shared/classes/time-object');
+const TimeUtils = require('./lib/time');
 
-const time = nodecg.Replicant('countdown', {defaultValue: new TimeObject(600), persistent: false});
+const time = nodecg.Replicant('countdown', {defaultValue: TimeUtils.createTimeStruct(600 * 1000), persistent: false});
 const running = nodecg.Replicant('countdownRunning', {defaultValue: false, persistent: false});
+const countdownTimer = new NanoTimer();
 
 nodecg.listenFor('startCountdown', start);
 nodecg.listenFor('stopCountdown', stop);
@@ -22,14 +24,15 @@ function start(startTime) {
 		return;
 	}
 
-	const timeObj = new TimeObject(TimeObject.parseSeconds(startTime));
-	if (timeObj.raw <= 0) {
+	const timeStruct = TimeUtils.createTimeStruct(TimeUtils.parseTimeString(startTime));
+	if (timeStruct.raw <= 0) {
 		return;
 	}
 
 	running.value = true;
-	time.value = timeObj;
-	timer = setInterval(tick, 1000);
+	time.value = timeStruct;
+	countdownTimer.clearInterval();
+	countdownTimer.setInterval(tick, '', '1s');
 }
 
 /**
@@ -42,7 +45,7 @@ function stop() {
 	}
 
 	running.value = false;
-	clearInterval(timer);
+	countdownTimer.clearInterval();
 }
 
 /**
@@ -50,8 +53,7 @@ function stop() {
  * @returns {undefined}
  */
 function tick() {
-	TimeObject.decrement(time.value);
-
+	time.value = TimeUtils.createTimeStruct(time.value.raw - 1000);
 	if (time.value.raw <= 0) {
 		stop();
 	}

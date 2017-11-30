@@ -31,7 +31,7 @@
 			currentRun.on('change', this._debounceUpdateScheduleSlice);
 			schedule.on('change', this._debounceUpdateScheduleSlice);
 			stopwatch.on('change', (newVal, oldVal) => {
-				if (!oldVal || newVal.state !== oldVal.state || newVal.raw < oldVal.raw) {
+				if (!oldVal || newVal.state !== oldVal.state || newVal.time.raw < oldVal.time.raw) {
 					return this._debounceUpdateScheduleSlice();
 				}
 			});
