@@ -17,7 +17,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			width: {
 				type: Number,
-				value: 350
+				value: 450
 			},
 
 			/**
@@ -25,7 +25,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			height: {
 				type: Number,
-				value: 200
+				value: 300
 			},
 
 			_invertDimensions: {
@@ -70,7 +70,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			creationRate: {
 				type: Number,
-				value: 3,
+				value: 20,
 				observer: '_creationRateChanged'
 			},
 
@@ -80,7 +80,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			speed: {
 				type: Number,
-				value: 0.5
+				value: 1.5
 			},
 
 			/**
@@ -89,7 +89,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			speedRandomness: {
 				type: Number,
-				value: 0.2
+				value: 0.25
 			},
 
 			/**
@@ -98,7 +98,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			tailLength: {
 				type: Number,
-				value: 100
+				value: 200
 			},
 
 			/**
@@ -107,7 +107,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			tailLengthRandomness: {
 				type: Number,
-				value: 0.2
+				value: 5
 			},
 
 			/**
@@ -115,7 +115,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			opacityStart: {
 				type: Number,
-				value: 0.9
+				value: 0.3
 			},
 
 			/**
@@ -131,7 +131,7 @@ class GdqTronlines extends Polymer.Element {
 			 */
 			nodeColor: {
 				type: String,
-				value: '#516d71',
+				value: '#abd3e9',
 				elementTester: {
 					type: 'color'
 				}
