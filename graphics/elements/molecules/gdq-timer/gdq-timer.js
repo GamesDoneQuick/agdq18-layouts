@@ -43,6 +43,10 @@
 
 			stopwatch.on('change', (newVal, oldVal) => {
 				this.time = newVal.time.formatted;
+				this.$.binaryClock.hours = newVal.time.hours;
+				this.$.binaryClock.minutes = newVal.time.minutes;
+				this.$.binaryClock.seconds = newVal.time.seconds;
+				this.$.binaryClock.milliseconds = newVal.time.milliseconds;
 
 				if (oldVal) {
 					if (newVal.state === 'running' && oldVal.state !== 'running') {

@@ -1,0 +1,65 @@
+<dom-module id="atom-binary-clock">
+	<template>
+		<style>
+			:host {
+				display: grid;
+				grid-auto-flow: column;
+				grid-gap: 2px;
+				grid-template-columns: repeat(6, 1fr);
+				grid-template-rows: repeat(4, 1fr);
+			}
+
+			.cell {
+				background: rgba(0, 255, 255, 0.11);
+				transition: background 500ms ease;
+			}
+
+			.cell.cell--on {
+				background: rgba(0, 255, 255, 0.25);
+				transition: background 200ms ease;
+			}
+
+			.cell.cell-fast {
+				transition: background 100ms ease;
+			}
+		</style>
+
+		<!-- Hours -->
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+
+		<!-- Minutes tens -->
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+
+		<!-- Minutes ones -->
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+
+		<!-- Seconds tens -->
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+
+		<!-- Seconds ones -->
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+		<div class="cell"></div>
+
+		<!-- Seconds tenths -->
+		<div class="cell cell--fast"></div>
+		<div class="cell cell--fast"></div>
+		<div class="cell cell--fast"></div>
+		<div class="cell cell--fast"></div>
+	</template>
+
+	<script src="atom-binary-clock.js"></script>
+</dom-module>
