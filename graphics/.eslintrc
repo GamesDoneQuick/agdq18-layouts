@@ -18,6 +18,7 @@
 		"Back": true,
 		"Sine": true,
 		"textFit": true,
-		"createjs": true
+		"createjs": true,
+		"SVG": true
 	}
 }

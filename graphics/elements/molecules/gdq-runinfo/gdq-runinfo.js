@@ -53,15 +53,7 @@
 		fitText() {
 			Polymer.flush();
 			textFit(this.$.name, {maxFontSize: this.maxNameSize});
-
-			const MAX_CATEGORY_WIDTH = this.clientWidth - 32;
-			const categorySpan = this.$.category.firstElementChild;
-			const categoryWidth = categorySpan.clientWidth;
-			if (categoryWidth > MAX_CATEGORY_WIDTH) {
-				TweenLite.set(categorySpan, {scaleX: MAX_CATEGORY_WIDTH / categoryWidth});
-			} else {
-				TweenLite.set(categorySpan, {scaleX: 1});
-			}
+			this.$.category.maxTextWidth = this.clientWidth - 76;
 		}
 
 		calcReleaseYearDisplay(releaseYear) {
