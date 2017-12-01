@@ -14,7 +14,7 @@
 					type: Number,
 					value: 45
 				},
-				singleLineName: {
+				forceSingleLineName: {
 					type: Boolean,
 					reflectToAttribute: true,
 					value: false
@@ -32,7 +32,7 @@
 		}
 
 		currentRunChanged(newVal) {
-			this.name = newVal.name.replace('\\n', this.singleLineName ? ' ' : '<br/>');
+			this.name = newVal.name.replace('\\n', this.forceSingleLineName ? ' ' : '<br/>');
 			this.category = newVal.category;
 			this.console = newVal.console;
 			this.releaseYear = newVal.releaseYear;
