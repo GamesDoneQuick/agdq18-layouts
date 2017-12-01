@@ -1,24 +1,17 @@
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../shared/style/gdq-fui-styles.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
+<link rel="import" href="../../atoms/atom-binary-clock/atom-binary-clock.html">
 
-<dom-module id="gdq-timer">
+an<dom-module id="gdq-timer">
 	<template>
-		<style include="gdq-text-styles">
+		<style include="gdq-fui-styles gdq-text-styles">
 			:host {
 				position: absolute;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				border-top: 1px solid #7d808f;
-				border-bottom: 1px solid #5f2e5a;
 				box-sizing: border-box;
-				font-size: 46px;
-				background-color: #0d122f;
-				box-shadow: 0 -2px 8px -1px black, 0 2px 8px -1px black;
-				font-weight: 700;
-				font-variant-numeric: tabular-nums;
-				font-feature-settings: "tnum";
-				color: white;
+				font-size: 42px;
+				@apply --fui-glow-rect;
 			}
 
 			:host([paused]) {
@@ -29,19 +22,54 @@
 				background: linear-gradient(to right, #012006 0%,#013705 13.5%,#2ab641 50%,#013705 86.5%,#012006 100%);
 			}
 
+			#innerRect {
+				width: calc(100% - 8px);
+				height: calc(100% + 2px);
+				margin: -1px 4px;
+				@apply --fui-glow-rect;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
 			#startFlash {
 				position: absolute;
 				display: flex;
-				background-color: #a5ffa9;
+				background-color: white;
 				width: 100%;
 				height: 100%;
 				bottom: 0;
 				mix-blend-mode: color-dodge;
 				opacity: 0;
 			}
+
+			#binaryClock {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				padding: 4px 8px;
+				box-sizing: border-box;
+			}
+
+			#time {
+				position: relative;
+				top: var(--gdq-timer-voffset, 0);
+				font-family: "Source Code Pro", sans-serif;
+				font-style: normal;
+				font-weight: 600;
+				line-height: normal;
+				text-align: center;
+				text-shadow: 0 0 16px rgba(58, 216, 255, 0.8);
+				z-index: 1;
+			}
 		</style>
-		<div id="startFlash"></div>
-		<span class="shadow">[[time]]</span>
+
+		<div id="innerRect">
+			<div id="startFlash"></div>
+			<atom-binary-clock id="binaryClock"></atom-binary-clock>
+			<span id="time" class="shadow">[[time]]</span>
+		</div>
 	</template>
 
 	<script src="gdq-timer.js"></script>
