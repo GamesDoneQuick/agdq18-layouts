@@ -59,6 +59,19 @@ an<dom-module id="gdq-timer">
 				@apply --layout-baseline;
 			}
 
+			/* .colon elements being relatively positioned seems to break inheritance of this bg image clipping. */
+			/* The fix is to just also apply it directly to .colon elements, instead of just their parent. */
+			#time,
+			.colon {
+				color: transparent;
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#93FFE4 0%,
+					#00ADFD 100%
+				));
+				-webkit-background-clip: text;
+			}
+
 			.colon {
 				position: relative;
 				top: -2px;
@@ -80,7 +93,7 @@ an<dom-module id="gdq-timer">
 				pulsating="[[notStarted]]"
 				randomized="[[finished]]">
 			</atom-binary-clock>
-			<html-echo id="time" class="shadow" html="[[time]]"></html-echo>
+			<html-echo id="time" html="[[time]]"></html-echo>
 		</div>
 	</template>
 
