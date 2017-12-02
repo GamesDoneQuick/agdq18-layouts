@@ -1,3 +1,5 @@
+<link rel="import" href="../../../../shared/imports/random.html">
+
 <dom-module id="atom-binary-clock">
 	<template>
 		<style>
@@ -24,8 +26,28 @@
 				transition: opacity 100ms ease;
 			}
 
-			.cell.cell-pulsating {
+			.cell.cell--flash {
+				animation-name: flash;
+				animation-duration: 450ms;
+				animation-iteration-count: 1;
+			}
 
+			:host([pulsating]) .cell {
+				transition: none;
+				animation-name: pulsate;
+				animation-duration: 7s;
+				animation-iteration-count: infinite;
+			}
+
+			@keyframes pulsate {
+				0%  {opacity: 0.17}
+				22.86% {opacity: 0.83}
+				100%  {opacity: 0.17}
+			}
+
+			@keyframes flash {
+				22.23%  {opacity: 0.20}
+				100% {opacity: 0.60}
 			}
 		</style>
 

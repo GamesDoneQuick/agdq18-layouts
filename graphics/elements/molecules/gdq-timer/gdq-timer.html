@@ -59,7 +59,11 @@ an<dom-module id="gdq-timer">
 
 		<div id="innerRect">
 			<div id="startFlash"></div>
-			<atom-binary-clock id="binaryClock"></atom-binary-clock>
+			<atom-binary-clock
+				id="binaryClock"
+				pulsating="[[notStarted]]"
+				randomized="[[finished]]">
+			</atom-binary-clock>
 			<span id="time" class="shadow">[[time]]</span>
 		</div>
 	</template>
