@@ -24,14 +24,6 @@ class AtomChevron extends Polymer.Element {
 		return 6;
 	}
 
-	static get DEFAULT_HEIGHT() {
-		return 16;
-	}
-
-	static get DEFAULT_WIDTH() {
-		return 27;
-	}
-
 	static get STROKE_SIZE() {
 		return 1;
 	}
