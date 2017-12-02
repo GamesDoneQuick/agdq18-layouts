@@ -36,7 +36,7 @@
 			this.name = newVal.name;
 			this.category = newVal.category;
 			this.console = newVal.console;
-			this.releaseYear = newVal.releaseYear;
+			this.releaseYear = newVal.releaseYear || '20XX';
 			this.estimate = newVal.estimate;
 
 			// Avoids some issues that can arise on the first time that fitText is run.
@@ -53,12 +53,7 @@
 			Polymer.flush();
 			textFit(this.$.name, {maxFontSize: this.maxNameSize});
 			this.$.category.maxTextWidth = this.clientWidth - 76;
-		}
-
-		calcReleaseYearDisplay(releaseYear) {
-			if (releaseYear) {
-				return ` - ${releaseYear}`;
-			}
+			this.$.misc.maxTextWidth = (this.clientWidth - 124) / 3;
 		}
 
 		_processName(name) {
