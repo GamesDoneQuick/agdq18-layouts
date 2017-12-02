@@ -10,17 +10,22 @@
 			}
 
 			.cell {
-				background: rgba(0, 255, 255, 0.11);
-				transition: background 500ms ease;
+				background: #00FFFF;
+				opacity: 0.11;
+				transition: opacity 500ms ease;
 			}
 
 			.cell.cell--on {
-				background: rgba(0, 255, 255, 0.25);
-				transition: background 200ms ease;
+				opacity: 0.25;
+				transition: opacity 200ms ease;
 			}
 
 			.cell.cell-fast {
-				transition: background 100ms ease;
+				transition: opacity 100ms ease;
+			}
+
+			.cell.cell-pulsating {
+
 			}
 		</style>
 
