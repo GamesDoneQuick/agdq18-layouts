@@ -2,6 +2,9 @@
 	'use strict';
 
 	const stopwatch = nodecg.Replicant('stopwatch');
+	const colonRegex = /:/g;
+	const decimalPointRegex = /\./;
+	const decimalValueRegex = /[0-9]*$/;
 
 	class GdqTimer extends Polymer.Element {
 		static get is() {
@@ -28,16 +31,11 @@
 			};
 		}
 
-		pausedChanged(newVal) {
-			if (newVal && this.finished) {
-				this.finished = false;
-			}
-		}
-
-		finishedChanged(newVal) {
-			if (newVal && this.paused) {
-				this.paused = false;
-			}
+		static formatTimeString(timeString) {
+			timeString = timeString.replace(colonRegex, '<span class="colon">:</span>');
+			timeString = timeString.replace(decimalPointRegex, '<span class="decimalPoint">.</span>');
+			timeString = timeString.replace(decimalValueRegex, match => `<span class="decimalValue">${match}</span>`);
+			return timeString;
 		}
 
 		ready() {
@@ -46,7 +44,7 @@
 			const timerTL = new TimelineLite({autoRemoveChildren: true});
 
 			stopwatch.on('change', (newVal, oldVal) => {
-				this.time = newVal.time.formatted;
+				this.time = GdqTimer.formatTimeString(newVal.time.formatted);
 				this.$.binaryClock.hours = newVal.time.hours;
 				this.$.binaryClock.minutes = newVal.time.minutes;
 				this.$.binaryClock.seconds = newVal.time.seconds;
@@ -68,6 +66,18 @@
 				this.paused = newVal.state === 'paused';
 				this.finished = newVal.state === 'finished';
 			});
+		}
+
+		pausedChanged(newVal) {
+			if (newVal && this.finished) {
+				this.finished = false;
+			}
+		}
+
+		finishedChanged(newVal) {
+			if (newVal && this.paused) {
+				this.paused = false;
+			}
 		}
 	}
 
