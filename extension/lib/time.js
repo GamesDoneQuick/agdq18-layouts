@@ -50,7 +50,7 @@ const TimeUtils = {
 
 		const paddedMinutes = String(minutes).padStart(2, '0');
 		const paddedSeconds = String(seconds).padStart(2, '0');
-		const tenths = String(milliseconds).charAt(0);
+		const tenths = milliseconds < 100 ? 0 : String(milliseconds).charAt(0);
 
 		str += `${paddedMinutes}:${paddedSeconds}.${tenths}`;
 		return str;
