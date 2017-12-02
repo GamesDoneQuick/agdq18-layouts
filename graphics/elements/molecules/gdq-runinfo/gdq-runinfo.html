@@ -1,3 +1,4 @@
+<link rel="import" href="../../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../shared/imports/textFit.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
@@ -53,9 +54,19 @@
 				align-items: center;
 				justify-content: center;
 			}
+
+			.name-line {
+				color: transparent;
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#93FFE4 0%,
+					#5AE0F0 100%
+				));
+				-webkit-background-clip: text;
+			}
 		</style>
 
-		<span id="name" class="shadow">&nbsp;</span>
+		<html-echo id="name" html="[[_processName(name)]]"></html-echo>
 		<gdq-runinfo-category id="category" category="[[category]]"></gdq-runinfo-category>
 		<div id="misc">
 			<span class="shadow">[[console]][[calcReleaseYearDisplay(releaseYear)]]</span>
