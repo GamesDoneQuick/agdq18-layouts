@@ -38,7 +38,7 @@ if (stopwatch.value.state === 'running') {
 }
 
 nodecg.listenFor('startTimer', start);
-nodecg.listenFor('stopTimer', stop);
+nodecg.listenFor('stopTimer', pause);
 nodecg.listenFor('resetTimer', reset);
 nodecg.listenFor('completeRunner', data => {
 	if (currentRun.value.coop) {
@@ -103,7 +103,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 
 				completeRunner({index, forfeit: false});
 			});
-		} else {
+		} else if (stopwatch.value.state === 'not_started') {
 			if (!checklistComplete.value) {
 				nodecg.log.warn('Footpedal was hit to start the timer, but the checklist is not complete so no action will be taken.');
 				return;
@@ -120,6 +120,8 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 
 				resumeRunner(index);
 			});
+		} else {
+			nodecg.log.warn('Footpedal was hit in a forbidden stopwatch state (%s), ignoring.', stopwatch.value.state);
 		}
 	});
 }
@@ -171,23 +173,24 @@ function tick() {
 }
 
 /**
- * Stops the timer.
+ * Pauses the timer.
  * @returns {undefined}
  */
-function stop() {
+function pause() {
 	timer.pause();
-	stopwatch.value.state = 'stopped';
+	stopwatch.value.state = 'paused';
 }
 
 /**
- * Stops and resets the timer, clearing the time and results.
+ * Pauses and resets the timer, clearing the time and results.
  * @returns {undefined}
  */
 function reset() {
-	stop();
+	pause();
 	timer.reset(true);
 	stopwatch.value.time = TimeUtils.createTimeStruct();
 	stopwatch.value.results = [null, null, null, null];
+	stopwatch.value.state = 'not_started';
 }
 
 /**
@@ -244,6 +247,10 @@ function editTime({index, newTime}) {
 	}
 
 	if (index === 'master' || currentRun.value.runners.length === 1) {
+		if (newMilliseconds === 0) {
+			return this.reset();
+		}
+
 		stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
 		timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000));
 	}
@@ -289,7 +296,7 @@ function recalcPlaces() {
 	});
 
 	if (allRunnersFinished) {
-		stop();
+		pause();
 		stopwatch.value.state = 'finished';
 	}
 }

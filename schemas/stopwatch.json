@@ -6,7 +6,7 @@
 	"properties": {
 		"state": {
 			"type": "string",
-			"enum": ["stopped", "running", "finished"],
+			"enum": ["not_started", "running", "paused", "finished"],
 			"default": "stopped"
 		},
 		"time": {

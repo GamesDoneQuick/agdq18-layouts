@@ -53,7 +53,8 @@
 			this.state = newVal.state;
 			this.time = newVal.time.formatted;
 			this.results = newVal.results.slice(0);
-			this.paused = newVal.state === 'stopped' && newVal.raw > 0;
+			this.notStarted = newVal.state === 'not_started';
+			this.paused = newVal.state === 'paused';
 		}
 
 		confirmReset() {
@@ -73,7 +74,16 @@
 		}
 
 		calcStartDisabled(checklistIncomplete, state) {
-			return checklistIncomplete || state !== 'stopped';
+			return checklistIncomplete || state === 'running' || state === 'finished';
+		}
+
+		calcStartText(state) {
+			switch (state) {
+				case 'paused':
+					return 'Resume';
+				default:
+					return 'Start';
+			}
 		}
 
 		calcPauseDisabled(state) {

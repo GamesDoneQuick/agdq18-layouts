@@ -54,22 +54,15 @@
 							opacity: 1,
 							ease: Power2.easeIn
 						});
+					} else if (newVal.state !== 'running' && newVal.state !== oldVal.state) {
+						timerTL.clear();
+						this.$.startFlash.style.opacity = 0;
 					}
 				}
 
-				if (newVal.state === 'stopped' && newVal.time.raw !== 0) {
-					this.paused = true;
-				} else if (newVal.state === 'finished') {
-					this.finished = true;
-				} else {
-					this.paused = false;
-					this.finished = false;
-				}
-
-				if (newVal.state !== 'running') {
-					timerTL.clear();
-					this.$.startFlash.style.opacity = 0;
-				}
+				this.notStarted = newVal.state === 'not_started';
+				this.paused = newVal.state === 'paused';
+				this.finished = newVal.state === 'finished';
 			});
 		}
 	}
