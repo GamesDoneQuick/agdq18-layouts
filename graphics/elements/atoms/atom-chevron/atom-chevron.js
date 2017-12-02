@@ -100,7 +100,7 @@ class AtomChevron extends Polymer.Element {
 		const strokeSize = AtomChevron.STROKE_SIZE;
 		const width = this.clientWidth;
 		const height = this.clientHeight;
-		const thickness = this.readCSSCustomProperty('--atom-chevron-thickness', 6);
+		const thickness = parseInt(this.readCSSCustomProperty('--atom-chevron-thickness', 6), 10);
 		this.svgDoc.size(width, height);
 
 		const fillTriangle = AtomChevron.createFillTriangle({
