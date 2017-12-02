@@ -186,19 +186,19 @@
 		calcMedalImage(newVal, forfeit) {
 			if (forfeit) {
 				this.showTime();
-				return 'elements/gdq-nameplate/img/medal-fail.png';
+				return 'elements/molecules/gdq-nameplate/img/medal-fail.png';
 			}
 
 			switch (newVal) {
 				case 1:
 					this.showTime();
-					return 'elements/gdq-nameplate/img/medal-gold.png';
+					return 'elements/molecules/gdq-nameplate/img/medal-gold.png';
 				case 2:
 					this.showTime();
-					return 'elements/gdq-nameplate/img/medal-silver.png';
+					return 'elements/molecules/gdq-nameplate/img/medal-silver.png';
 				case 3:
 					this.showTime();
-					return 'elements/gdq-nameplate/img/medal-bronze.png';
+					return 'elements/molecules/gdq-nameplate/img/medal-bronze.png';
 				case 4:
 					this.showTime();
 					return '';
