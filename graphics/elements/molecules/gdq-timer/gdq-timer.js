@@ -10,6 +10,10 @@
 
 		static get properties() {
 			return {
+				notStarted: {
+					type: Boolean,
+					reflectToAttribute: true
+				},
 				paused: {
 					type: Boolean,
 					observer: 'pausedChanged',

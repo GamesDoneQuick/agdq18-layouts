@@ -1,3 +1,4 @@
+/* global Random */
 (function () {
 	const NUM_BITS = 4;
 
@@ -27,6 +28,17 @@
 				milliseconds: {
 					type: Number,
 					observer: '_updateMilliseconds'
+				},
+				pulsating: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
+				},
+				randomized: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true,
+					observer: '_randomizedChanged'
 				}
 			};
 		}
@@ -48,6 +60,36 @@
 			});
 		}
 
+		startRandomFlashing() {
+			if (this._randomFlashingInterval) {
+				return this._randomFlashingInterval;
+			}
+
+			this._randomFlashingInterval = setInterval(() => {
+				this.flashRandomCell();
+			}, 100);
+		}
+
+		stopRandomFlashing() {
+			const cells = Array.from(this.shadowRoot.querySelectorAll('.cell--flash'));
+			cells.forEach(cell => cell.classList.remove('cell--flash'));
+			clearInterval(this._randomFlashingInterval);
+			this._randomFlashingInterval = null;
+		}
+
+		flashRandomCell() {
+			const availableCells = Array.from(this.shadowRoot.querySelectorAll('.cell:not(.cell--flash)'));
+			if (availableCells.length === 0) {
+				return;
+			}
+
+			const cell = Random.pick(Random.engines.browserCrypto, availableCells);
+			cell.classList.add('cell--flash');
+			setTimeout(() => {
+				cell.classList.remove('cell--flash', 'cell--on');
+			}, 450);
+		}
+
 		_updateHours() {
 			this._setColumn(numberPlace(this.hours, 1), this._$hourOnesCells);
 		}
@@ -64,6 +106,14 @@
 
 		_updateMilliseconds() {
 			this._setColumn(numberPlace(this.milliseconds, 100), this._$millisecondHundredthsCells);
+		}
+
+		_randomizedChanged(newVal) {
+			if (newVal) {
+				this.startRandomFlashing();
+			} else {
+				this.stopRandomFlashing();
+			}
 		}
 
 		_setColumn(number, cells) {
