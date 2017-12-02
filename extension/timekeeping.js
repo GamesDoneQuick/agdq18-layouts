@@ -248,7 +248,7 @@ function editTime({index, newTime}) {
 
 	if (index === 'master' || currentRun.value.runners.length === 1) {
 		if (newMilliseconds === 0) {
-			return this.reset();
+			return reset();
 		}
 
 		stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
