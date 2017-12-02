@@ -22,7 +22,8 @@
 				estimate: String,
 				releaseYear: String,
 				console: String,
-				category: String
+				category: String,
+				name: String
 			};
 		}
 
@@ -32,13 +33,11 @@
 		}
 
 		currentRunChanged(newVal) {
-			this.name = newVal.name.replace('\\n', this.forceSingleLineName ? ' ' : '<br/>');
+			this.name = newVal.name;
 			this.category = newVal.category;
 			this.console = newVal.console;
 			this.releaseYear = newVal.releaseYear;
 			this.estimate = newVal.estimate;
-
-			this.$.name.innerHTML = this.name;
 
 			// Avoids some issues that can arise on the first time that fitText is run.
 			// Currently unsure why these issues happen.
@@ -60,6 +59,20 @@
 			if (releaseYear) {
 				return ` - ${releaseYear}`;
 			}
+		}
+
+		_processName(name) {
+			if (!name) {
+				return '&nbsp;';
+			}
+
+			if (this.forceSingleLineName) {
+				return `<div class="name-line">${name.replace('\\n', ' ')}</div>`;
+			}
+
+			return name.split('\\n')
+				.map(lineText => `<div class="name-line">${lineText}</div>`)
+				.join('\n');
 		}
 	}
 
