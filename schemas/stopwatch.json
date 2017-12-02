@@ -7,7 +7,7 @@
 		"state": {
 			"type": "string",
 			"enum": ["not_started", "running", "paused", "finished"],
-			"default": "stopped"
+			"default": "not_started"
 		},
 		"time": {
 			"$ref": "types/timeStruct.json"
