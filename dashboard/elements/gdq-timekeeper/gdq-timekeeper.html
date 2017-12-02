@@ -104,7 +104,7 @@
 				<div class="layout horizontal">
 					<paper-button raised class="green" on-tap="startTimer" disabled="[[calcStartDisabled(checklistIncomplete, state)]]">
 						<iron-icon icon="av:play-arrow" title="Start/Resume All"></iron-icon>
-						&nbsp;Start
+						&nbsp;[[calcStartText(state)]]
 					</paper-button>
 
 					<paper-button raised class="yellow" on-tap="stopTimer" disabled="[[calcPauseDisabled(state)]]">

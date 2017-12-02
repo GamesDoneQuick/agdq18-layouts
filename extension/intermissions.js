@@ -391,7 +391,7 @@ function calcIntermissionContent() {
  * @returns {boolean} - Whether or not the current run has started.
  */
 function hasRunStarted() {
-	return stopwatch.value.time.raw > 0 || stopwatch.value.state !== 'stopped';
+	return stopwatch.value.state !== 'not_started';
 }
 
 function checkCanSeek() {
