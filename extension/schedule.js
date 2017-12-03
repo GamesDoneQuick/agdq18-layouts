@@ -9,6 +9,7 @@ const request = require('request-promise').defaults({jar: true}); // <= Automati
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
+const timer = require('./timekeeping');
 const {calcOriginalValues, mergeChangesFromTracker} = require('./lib/diff-run');
 
 const POLL_INTERVAL = 60 * 1000;
@@ -314,6 +315,7 @@ function _seekToPreviousRun() {
 	nextRunRep.value = clone(currentRunRep.value);
 	currentRunRep.value = clone(prevRun);
 	checklist.reset();
+	timer.reset();
 }
 
 /**
@@ -328,6 +330,7 @@ function _seekToNextRun() {
 	currentRunRep.value = clone(nextRunRep.value);
 	nextRunRep.value = clone(newNextRun);
 	checklist.reset();
+	timer.reset();
 }
 
 /**
@@ -372,6 +375,7 @@ function _seekToArbitraryRun(runOrOrder) {
 		}
 
 		checklist.reset();
+		timer.reset();
 	}
 }
 
