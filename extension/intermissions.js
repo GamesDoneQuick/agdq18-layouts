@@ -15,6 +15,14 @@ const nodecg = require('./util/nodecg-api-context').get();
 const obs = require('./obs');
 const TimeUtils = require('./lib/time');
 
+const CANT_START_REASONS = {
+	ALREADY_STARTED: 'already started',
+	ALREADY_COMPLETED: 'already completed',
+	RUN_ACTIVE: 'run in progress',
+	PRIOR_BREAK_INCOMPLETE: 'a prior ad break is not complete',
+	MUST_ADVANCE_SCHEDULE: 'stream tech must go to next run'
+};
+
 let currentAdBreak = null;
 let currentlyPlayingAd = null;
 let nextAd = null;
@@ -68,6 +76,7 @@ nodecg.listenFor('intermissions:startAdBreak', adBreakId => {
 	obs.setCurrentScene('Advertisements').then(() => {
 		return playAd(adBreak.ads[0]).then(() => {
 			adBreak.state.canStart = false;
+			adBreak.state.cantStartReason = CANT_START_REASONS.ALREADY_STARTED;
 			adBreak.state.started = true;
 		});
 	}).catch(e => {
@@ -244,6 +253,7 @@ function finishAd(ad) {
 function finishAdBreak(adBreak) {
 	adBreak.state.started = true;
 	adBreak.state.canStart = false;
+	adBreak.state.cantStartReason = CANT_START_REASONS.ALREADY_COMPLETED;
 	adBreak.state.completed = true;
 	adBreak.state.canComplete = false;
 }
@@ -311,38 +321,60 @@ function _updateCurrentIntermissionState() {
 
 	let allPriorAdBreaksAreComplete = true;
 	currentIntermission.value.content.forEach(item => {
-		if (item.type === 'adBreak') {
-			if (!item.state.completed && !item.state.started && !hasRunStarted() && allPriorAdBreaksAreComplete) {
-				item.state.canStart = true;
-			} else {
-				item.state.canStart = false;
-			}
-
-			if (!item.state.completed) {
-				allPriorAdBreaksAreComplete = false;
-			}
-
-			item.ads.forEach(ad => {
-				const casparFile = caspar.replicants.files.value.find(file => {
-					return file.nameWithExt.toLowerCase() === ad.filename.toLowerCase();
-				});
-
-				if (!casparFile) {
-					log.error(`Ad points to file that does not exist in CasparCG: ${ad.filename}`);
-					return;
-				}
-
-				if (casparFile.type.toLowerCase() === 'video') {
-					ad.state.durationFrames = casparFile.frames;
-					ad.state.fps = casparFile.frameRate;
-				} else if (casparFile.type.toLowerCase() === 'image') {
-					ad.state.durationFrames = (TimeUtils.parseTimeString(ad.duration) / 1000) * 60;
-					ad.state.fps = 60;
-				} else {
-					log.error('Unexpected file type from CasparCG:', casparFile);
-				}
-			});
+		if (item.type !== 'adBreak') {
+			return;
 		}
+
+		item.state.canStart = true;
+		item.state.cantStartReason = '';
+
+		if (item.state.started) {
+			item.state.canStart = false;
+			item.state.cantStartReason = CANT_START_REASONS.ALREADY_STARTED;
+		}
+
+		if (item.state.completed) {
+			item.state.canStart = false;
+			item.state.cantStartReason = CANT_START_REASONS.ALREADY_COMPLETED;
+		}
+
+		if (!allPriorAdBreaksAreComplete) {
+			item.state.canStart = false;
+			item.state.cantStartReason = CANT_START_REASONS.PRIOR_BREAK_INCOMPLETE;
+		}
+
+		if (hasRunFinished()) {
+			item.state.canStart = false;
+			item.state.cantStartReason = CANT_START_REASONS.MUST_ADVANCE_SCHEDULE;
+		} else if (hasRunStarted()) {
+			item.state.canStart = false;
+			item.state.cantStartReason = CANT_START_REASONS.RUN_ACTIVE;
+		}
+
+		if (!item.state.completed) {
+			allPriorAdBreaksAreComplete = false;
+		}
+
+		item.ads.forEach(ad => {
+			const casparFile = caspar.replicants.files.value.find(file => {
+				return file.nameWithExt.toLowerCase() === ad.filename.toLowerCase();
+			});
+
+			if (!casparFile) {
+				log.error(`Ad points to file that does not exist in CasparCG: ${ad.filename}`);
+				return;
+			}
+
+			if (casparFile.type.toLowerCase() === 'video') {
+				ad.state.durationFrames = casparFile.frames;
+				ad.state.fps = casparFile.frameRate;
+			} else if (casparFile.type.toLowerCase() === 'image') {
+				ad.state.durationFrames = (TimeUtils.parseTimeString(ad.duration) / 1000) * 60;
+				ad.state.fps = 60;
+			} else {
+				log.error('Unexpected file type from CasparCG:', casparFile);
+			}
+		});
 	});
 }
 
@@ -392,6 +424,14 @@ function calcIntermissionContent() {
  */
 function hasRunStarted() {
 	return stopwatch.value.state !== 'not_started';
+}
+
+/**
+ * Returns true if the current run has completed, false otherwise.
+ * @returns {boolean} - Whether or not the current run has finished.
+ */
+function hasRunFinished() {
+	return stopwatch.value.state === 'finished';
 }
 
 function checkCanSeek() {

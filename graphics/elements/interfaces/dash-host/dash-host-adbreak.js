@@ -41,6 +41,18 @@ class DashHostAdbreak extends Polymer.MutableData(Polymer.Element) {
 		}));
 	}
 
+	_calcStartButtonText(adBreakState) {
+		if (adBreakState.canStart) {
+			return 'Start Break';
+		}
+
+		if (adBreakState.cantStartReason) {
+			return adBreakState.cantStartReason;
+		}
+
+		return 'Prequisites unmet';
+	}
+
 	_calcCompleteButtonHidden(adBreak) {
 		const lastAd = adBreak.ads[adBreak.ads.length - 1];
 		return lastAd.adType.toLowerCase() !== 'image';
