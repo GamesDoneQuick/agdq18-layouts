@@ -379,9 +379,12 @@
 			}
 
 			this.coop = newVal.coop;
+			this.updateNames(newVal.runners);
+		}
 
+		updateNames(runners) {
 			let canConflateAllRunners = true;
-			newVal.runners.forEach(runner => {
+			runners.forEach(runner => {
 				if (runner) {
 					if (!runner.stream || runner.name.toLowerCase() !== runner.stream.toLowerCase()) {
 						canConflateAllRunners = false;
@@ -392,11 +395,12 @@
 			TweenLite.to(this.$.names, NAME_FADE_DURATION, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE,
-				onComplete: function () {
+				callbackScope: this,
+				onComplete() {
 					this.$.namesName.classList.add('hidden');
 					this.$.namesTwitch.classList.remove('hidden');
 
-					const runner = newVal.runners[this.index];
+					const runner = runners[this.index];
 					if (runner) {
 						this.name = runner.name;
 
@@ -423,7 +427,7 @@
 					}
 
 					Polymer.RenderStatus.afterNextRender(this, this.fitName);
-				}.bind(this)
+				}
 			});
 		}
 
