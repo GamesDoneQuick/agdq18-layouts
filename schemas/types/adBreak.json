@@ -24,6 +24,10 @@
 					"type": "boolean",
 					"default": false
 				},
+				"cantStartReason": {
+					"type": "string",
+					"default": ""
+				},
 				"started": {
 					"type": "boolean",
 					"default": false

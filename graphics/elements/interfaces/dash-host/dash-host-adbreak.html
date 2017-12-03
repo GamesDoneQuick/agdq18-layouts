@@ -48,7 +48,9 @@
 			hidden="[[adBreak.state.started]]"
 			disabled="[[!adBreak.state.canStart]]"
 			on-tap="start"
-			raised>Start Break</paper-button>
+			raised>
+			[[_calcStartButtonText(adBreak.state)]]
+		</paper-button>
 
 		<paper-button
 			id="cancel"
