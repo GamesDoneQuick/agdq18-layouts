@@ -114,7 +114,7 @@ function renewSubscriptions() {
 	udpPort.send({
 		address: '/batchsubscribe',
 		args: [
-			// This first argument seems to define local endpoint that the X32 will send this subscription data to.
+			// First defines the local endpoint that the X32 will send this subscription data to.
 			{type: 's', value: '/chMutes'},
 			{type: 's', value: '/mix/on'},
 			{type: 'i', value: 0},
@@ -126,7 +126,7 @@ function renewSubscriptions() {
 	udpPort.send({
 		address: '/batchsubscribe',
 		args: [
-			// This first argument seems to define local endpoint that the X32 will send this subscription data to.
+			// First defines the local endpoint that the X32 will send this subscription data to.
 			{type: 's', value: '/chFaders'},
 			{type: 's', value: '/mix/fader'},
 			{type: 'i', value: 0},
