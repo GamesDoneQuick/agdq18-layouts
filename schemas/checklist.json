@@ -43,7 +43,6 @@
 			{"name": "Check for Interview", "complete": false}
 		],
 		"techStationDuties": [
-			{"name": "Reset Timer", "complete": false},
 			{"name": "Check Tech Notes", "complete": false},
 			{"name": "Stream Layout", "complete": false},
 			{"name": "Runner Info/Position", "complete": false},
