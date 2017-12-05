@@ -1,0 +1,110 @@
+<dom-module id="gdq-nameplate-result">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				display: block;
+				width: 154px;
+				box-sizing: border-box;
+				will-change: transform;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#time {
+				position: relative;
+				top: -1px;
+				font-weight: 700;
+				font-size: 24px;
+				letter-spacing: -0.05em;
+				color: transparent;
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#FFFFFF 0%,
+					#8CFFFF 100%
+				));
+				-webkit-background-clip: text;
+			}
+
+			#place {
+				position: absolute;
+				width: 15px;
+				height: 15px;
+				top: calc(50% - 7.5px);
+				background: #00FFFF;
+				transform-origin: center;
+				will-change: transform;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#place-text {
+				position: relative;
+				top: -0.5px;
+				font-weight: bold;
+				font-size: 11px;
+				text-align: center;
+				letter-spacing: -0.05em;
+				color: #000000;
+			}
+
+			#cover {
+				position: absolute;
+				top: -1px;
+				left: -1px;
+				width: calc(100% + 2px);
+				height: calc(100% + 2px);
+				background-color: white;
+				will-change: transform;
+			}
+
+			:host([first-place]) #time {
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#FFF493 0%,
+					#E4F05A 100%
+				));
+			}
+
+			:host([last-place]) #time {
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#4A8C8C 0%,
+					#233636 100%
+				));
+			}
+
+			:host([side="left"]) {
+				left: 0;
+			}
+
+			:host([side="right"]) {
+				right: 0;
+			}
+
+			:host([side="left"]) #place {
+				left: -7px;
+			}
+
+			:host([side="right"]) #place {
+				right: -7px;
+			}
+
+			:host([side="left"]) #cover {
+				transform-origin: left;
+			}
+
+			:host([side="right"]) #cover {
+				transform-origin: right;
+			}
+		</style>
+
+		<div id="time">[[time]]</div>
+		<div id="place">
+			<div id="place-text">[[place]]</div>
+		</div>
+		<div id="cover"></div>
+	</template>
+
+	<script src="gdq-nameplate-result.js"></script>
+</dom-module>

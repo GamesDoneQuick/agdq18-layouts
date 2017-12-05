@@ -5,13 +5,14 @@
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
 <link rel="import" href="../../atoms/atom-binary-clock/atom-binary-clock.html">
 
-an<dom-module id="gdq-timer">
-	<template>
+<dom-module id="gdq-timer">
+	<template strip-whitespace>
 		<style include="gdq-fui-styles gdq-text-styles">
 			:host {
 				position: absolute;
 				box-sizing: border-box;
 				font-size: 42px;
+				contain: strict;
 				@apply --fui-glow-rect;
 			}
 
@@ -43,8 +44,10 @@ an<dom-module id="gdq-timer">
 				height: 100%;
 				padding: 4px 8px;
 				box-sizing: border-box;
+				contain: strict;
 			}
 
+			/* Can't be a flex div due to: https://bugs.chromium.org/p/chromium/issues/detail?id=670292 */
 			#time {
 				position: relative;
 				top: var(--gdq-timer-voffset, 0);
@@ -55,8 +58,8 @@ an<dom-module id="gdq-timer">
 				text-align: center;
 				text-shadow: 0 0 16px rgba(58, 216, 255, 0.8);
 				z-index: 1;
-				@apply --layout-horizontal;
-				@apply --layout-baseline;
+				contain: layout style;
+				will-change: transform;
 			}
 
 			/* .colon elements being relatively positioned seems to break inheritance of this bg image clipping. */
@@ -91,9 +94,23 @@ an<dom-module id="gdq-timer">
 			<atom-binary-clock
 				id="binaryClock"
 				pulsating="[[notStarted]]"
-				randomized="[[finished]]">
+				randomized="[[finished]]"
+				hours="[[hours]]"
+				minutes="[[minutes]]"
+				seconds="[[seconds]]"
+				milliseconds="[[milliseconds]]">
 			</atom-binary-clock>
-			<html-echo id="time" html="[[time]]"></html-echo>
+			<div id="time">
+				<span hidden="[[_lessThanEqZero(hours)]]">[[hours]]</span>
+				<span class="colon" hidden="[[_lessThanEqZero(hours)]]">:</span>
+
+				<span>[[_padTime(minutes)]]</span>
+				<span class="colon">:</span>
+
+				<span>[[_padTime(seconds)]]</span>
+				<span class="decimalPoint">.</span>
+				<span class="decimalValue">[[_formatMilliseconds(milliseconds)]]</span>
+			</div>
 		</div>
 	</template>
 

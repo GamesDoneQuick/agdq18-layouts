@@ -1,32 +1,24 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../bower_components/sc-fitted-text/sc-fitted-text.html">
-<link rel="import" href="../../../../shared/imports/easeljs.html">
+<link rel="import" href="../../../../shared/style/gdq-fui-styles.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
-
-<!--
-Attached left, right, or none
-	No greebles on attachment side
-	Placement indicator comes out from attachment side w/ constant margin
-	Placement indicators & audio indicators only used when attached to a side
-
-Width configurable
-Height constant
-
-Audio indicator comes out from side opposite placement indicator
--->
+<link rel="import" href="gdq-nameplate-audio-indicator.html">
+<link rel="import" href="gdq-nameplate-result.html">
+<link rel="import" href="gdq-nameplate-twitch-logo.html">
 
 <dom-module id="gdq-nameplate">
 	<template>
-		<style include="gdq-text-styles">
+		<style include="gdq-fui-styles gdq-text-styles">
 			:host {
 				position: absolute;
 				display: flex;
 				height: 35px;
-				font-size: 25px;
+				font-size: 24px;
 				text-transform: uppercase;
 				z-index: 1;
 				color: white;
+				font-family: "Source Code Pro", monospace;
 			}
 
 			#main {
@@ -34,127 +26,101 @@ Audio indicator comes out from side opposite placement indicator
 				height: 100%;
 				align-items: flex-start;
 				@apply --layout-horizontal;
-			}
-
-			#leftCapContainer,
-			#rightCapContainer {
-				display: flex;
-				flex-direction: column;
-			}
-
-			#leftCapContainer {
-				width: 14px;
-				align-items: flex-end;
-			}
-
-			#rightCapContainer {
-				width: 18px;
-				align-items: flex-start;
+				@apply --fui-glow-rect;
 			}
 
 			#body {
-				height: 100%;
-				background: url("img/center.png");
-				flex: 1;
+				position: relative;
+				width: calc(100% - 8px);
+				height: calc(100% + 2px);
+				margin: -1px 4px;
 				min-width: 1px; /* needed to prevent overflow */
-				box-shadow: 0 4px rgba(0,0,0,0.33);
+				flex: 1;
+				@apply --fui-glow-rect;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
 			}
 
 			#names {
 				position: relative;
-				top: 2px;
+				top: -1px;
 				display: flex;
 				justify-content: center;
 				flex: 1;
 				white-space: nowrap;
 				padding: 0 16px;
-				font-weight: 600;
 				opacity: 0;
+				font-weight: 600;
+				z-index: 1;
+				text-shadow: 0 0 16px rgba(58, 216, 255, 0.8);
 			}
 
 			#namesTwitch sc-fitted-text {
 				display: inline-block;
+				--sc-fitted-text-content: {
+					color: transparent;
+					background-image: var(--atom-gradient-text-gradient, linear-gradient(
+						180deg,
+						#FFFFFF 0%,
+						#CDCDCD 100%
+					));
+					-webkit-background-clip: text;
+				};
 			}
 
-			#timeClip {
-				display: none;
-				position: absolute;
-				width: 150px;
-				height: 39px;
-				-webkit-clip-path: polygon(0 0, 0% 0%, calc(0% - 15px) 100%, 0% 100%);
-				transition: -webkit-clip-path 1700ms cubic-bezier(0.86, 0, 0.07, 1);
-				z-index: -1;
-			}
-
-			#timeShine {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 0;
-				height: 100%;
-				transition: width 1700ms cubic-bezier(0.86, 0, 0.07, 1);
-				-webkit-mask: url("img/time-mask-right.png") no-repeat;
-			}
-
-			#timeShine:after {
-				position: absolute;
-				top: 0;
-				right: 0;
-				content: '';
-				width: 37px;
-				height: 100%;
-				background: white;
-				transform: skewX(-22deg);
-				will-change: transform;
-			}
-
-			#time {
-				display: flex;
-				width: 121px;
-				height: 35px;
-				background: url("img/time-center.png");
-				position: relative;
-			}
-
-			#time:before {
-				content: '';
-				height: 100%;
-				width: 1px;
-				background: url("img/time-left.png");
-			}
-
-			#time:after {
-				content: '';
-				height: 100%;
-				width: 1px;
-				background: url("img/time-right.png");
-			}
-
-			#time span {
-				font-weight: 700;
-				flex-grow: 1;
-				padding-right: 10px;
-				line-height: 32px;
-				@apply --layout-horizontal;
-				@apply --layout-center-justified;
-			}
-
-			#medal {
-				position: absolute;
+			#twitchLogo {
+				display: inline-block;
+				margin-right: -12px;
 				top: 5px;
-				right: -8px;
-				width: 26px;
-				height: 26px;
-				background-repeat: no-repeat;
 			}
 
-			#medal.shine {
-				animation: shine 334ms steps(20);
+			#result {
+				position: absolute;
+				height: 100%;
+				top: 0;
+				z-index: -1;
+				@apply --fui-glow-rect;
 			}
 
-			@keyframes shine {
-				from { background-position-x: 0; }
-				to { background-position-x: -520px; } /* <-- width of spritesheet */
+			.dotGreeble {
+				position: absolute;
+				width: 2px;
+				height: 2px;
+				background: #00ffff;
+			}
+
+			.dotGreeble--top {
+				top: 0;
+			}
+
+			.dotGreeble--bottom {
+				bottom: 0;
+			}
+
+			.dotGreeble--left {
+				left: 0;
+			}
+
+			.dotGreeble--right {
+				right: 0;
+			}
+
+			:host([no-left-cap]) .dotGreeble--left {
+				display: none;
+			}
+
+			:host([no-right-cap]) .dotGreeble--right {
+				display: none;
+			}
+
+			:host([no-left-cap]) #body {
+				border-left: 0;
+				margin-left: 0;
+			}
+
+			:host([no-right-cap]) #body {
+				border-right: 0;
+				margin-right: 0;
 			}
 
 			.hidden {
@@ -163,127 +129,42 @@ Audio indicator comes out from side opposite placement indicator
 				pointer-events: none;
 			}
 
-			/* attachment styles */
-			:host([attach-left]) #timeClip,
-			:host([attach-right]) #timeClip {
-				display: block;
-			}
-
-			:host([attach-left]) #timeClip {
-				left: -150px;
-				-webkit-clip-path: polygon(100% 0, 100% 0%, 100% 100%, calc(100% + 15px) 100%);
-			}
-
-			:host([attach-left]) #time {
-				position: absolute;
-				right: 0;
-			}
-
-			:host([attach-left]) #time span {
-				padding-right: 0;
-				padding-left: 10px;
-			}
-
-			:host([attach-left]) #timeShine {
-				right: 0;
-				left: auto;
-				-webkit-mask: url("img/time-mask-left.png") no-repeat right;
-			}
-
-			:host([attach-left]) #timeShine:after {
-				transform: skewX(22deg);
-				left: 0;
-				right: auto;
-			}
-
-			:host([attach-right]) #timeClip {
-				right: -150px;
-			}
-
-			:host([attach-left]) #medal {
-				left: -8px;
-				right: auto;
-				background-position-y: -26px;
-			}
-
-			:host([attach-left]) #audio {
-				left: auto;
-				right: -39px;
-			}
-
-			:host([attach-left]) #audio,
-			:host([attach-right]) #audio {
-				visibility: visible;
-			}
-
-			:host([attach-left]) #audioIcon {
-				background-position-x: right;
-				transform: translateX(-39px);
-			}
-
-			/* state styles */
-			:host([forfeit]) #time {
-				background: url("img/time-center-forfeit.png");
-			}
-
-			:host([forfeit]) #time:before {
-				background: url("img/time-left-forfeit.png");
-			}
-
-			:host([forfeit]) #time:after {
-				background: url("img/time-right-forfeit.png");
-			}
-
-			:host([audio][attach-left]) #rightCap-img {
-				transform: translateX(-6px);
-			}
-
-			:host([audio][attach-right]) #leftCap-img {
-				transform: translateX(0);
-			}
-
-			:host([coop]) #timeClip {
-				display: none;
-			}
-
 			[hidden] {
 				display: none !important;
 			}
 		</style>
 
 		<div id="main">
-			<div id="leftCapContainer" hidden="[[attachLeft]]">
-				<canvas id="leftCap" width="46" height="39"></canvas>
-			</div>
-
 			<div id="body">
+				<div class="dotGreeble dotGreeble--top dotGreeble--left"></div>
+				<div class="dotGreeble dotGreeble--bottom dotGreeble--left"></div>
+				<div class="dotGreeble dotGreeble--top dotGreeble--right"></div>
+				<div class="dotGreeble dotGreeble--bottom dotGreeble--right"></div>
 				<div id="names">
 					<sc-fitted-text id="namesName" class="shadow" text="[[name]]" align="center"></sc-fitted-text>
 					<div id="namesTwitch">
-						<img src="[[importPath]]img/twitch.png" style="position: relative; top: 4px;">
-						<sc-fitted-text class="shadow" text="[[twitch]]" align="left"></sc-fitted-text>
+						<gdq-nameplate-twitch-logo id="twitchLogo"></gdq-nameplate-twitch-logo>
+						<sc-fitted-text text="[[twitch]]" align="left"></sc-fitted-text>
 					</div>
 				</div>
 			</div>
 
-			<div id="rightCapContainer" hidden="[[attachRight]]">
-				<canvas id="rightCap" width="46" height="39"></canvas>
-			</div>
-		</div>
+			<gdq-nameplate-audio-indicator
+				id="audioIndicator"
+				showing="[[audio]]"
+				vert-pos="[[audioVertPos]]"
+				horiz-pos="[[audioHorizPos]]">
+			</gdq-nameplate-audio-indicator>
 
-		<div id="timeClip">
-			<div id="time" class="box-shadow">
-				<span>
-					<sc-fitted-text
-						class="shadow"
-						max-width="82"
-						text="[[time]]"
-						align="center">
-					</sc-fitted-text>
-				</span>
-				<div id="medal" style$="background-image: url([[calcMedalImage(place, forfeit)]])"></div>
-			</div>
-			<div id="timeShine"></div>
+			<gdq-nameplate-result
+				id="result"
+				showing="[[finished]]"
+				side="[[resultSide]]"
+				place="[[place]]"
+				first-place="[[firstPlace]]"
+				last-place="[[lastPlace]]"
+				time="[[time]]">
+			</gdq-nameplate-result>
 		</div>
 	</template>
 
