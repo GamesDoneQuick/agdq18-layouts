@@ -16,23 +16,22 @@
 		static get properties() {
 			return {
 				index: Number,
+				audioVertPos: String,
+				audioHorizPos: String,
 				audio: {
-					reflectToAttribute: true,
-					observer: 'audioChanged'
-				},
-				attachLeft: {
 					type: Boolean,
 					reflectToAttribute: true,
-					observer: 'attachLeftChanged'
+					value: false
 				},
-				attachRight: {
-					type: Boolean,
-					reflectToAttribute: true,
-					observer: 'attachRightChanged'
-				},
+				resultSide: String,
 				coop: {
 					type: Boolean,
 					reflectToAttribute: true
+				},
+				finished: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
 				},
 				forfeit: {
 					type: Boolean,
@@ -41,6 +40,14 @@
 				},
 				time: String,
 				place: Number,
+				firstPlace: {
+					type: Boolean,
+					computed: '_computeFirstPlace(place)'
+				},
+				lastPlace: {
+					type: Boolean,
+					computed: '_computeLastPlace(place, _numRunners)'
+				},
 				name: {
 					type: String,
 					value: ''
@@ -49,171 +56,29 @@
 					type: String,
 					value: ''
 				},
-				timeTL: {
-					type: TimelineLite,
-					value() {
-						return new TimelineLite({autoRemoveChildren: true});
-					},
-					readOnly: true
+				_numRunners: {
+					type: Number,
+					value: 1
 				},
-				audioTL: {
-					type: TimelineLite,
+				_nameTL: {
+					type: TimelineMax,
+					readOnly: true,
 					value() {
-						return new TimelineLite({autoRemoveChildren: true});
-					},
-					readOnly: true
+						return new TimelineMax({repeat: -1, paused: true});
+					}
 				}
 			};
-		}
-
-		audioChanged(newVal) {
-			// I have no idea why, but sometimes an empty string makes its way into this function??
-			if (typeof newVal !== 'boolean') {
-				return;
-			}
-
-			if (newVal) {
-				if (this.attachRight) {
-					this.audioTL.to({}, 0.633, {
-						onStart() {
-							if (this._leftCapOpen) {
-								return;
-							}
-
-							this._leftCapOpen = true;
-							this._leftCapSprite.gotoAndPlay('open');
-						},
-						onStartScope: this
-					});
-				}
-
-				if (this.attachLeft) {
-					this.audioTL.to({}, 0.633, {
-						onStart() {
-							if (this._rightCapOpen) {
-								return;
-							}
-
-							this._rightCapOpen = true;
-							this._rightCapSprite.gotoAndPlay('open');
-						},
-						onStartScope: this
-					});
-				}
-			} else {
-				if (this.attachRight) {
-					this.audioTL.to({}, 0.35, {
-						onStart() {
-							if (!this._leftCapOpen) {
-								return;
-							}
-
-							this._leftCapOpen = false;
-							this._leftCapSprite.gotoAndPlay('close');
-						},
-						onStartScope: this
-					});
-				}
-
-				if (this.attachLeft) {
-					this.audioTL.to({}, 0.35, {
-						onStart() {
-							if (!this._rightCapOpen) {
-								return;
-							}
-
-							this._rightCapOpen = false;
-							this._rightCapSprite.gotoAndPlay('close');
-						},
-						onStartScope: this
-					});
-				}
-			}
-		}
-
-		attachLeftChanged(newVal) {
-			if (newVal && this.attachRight) {
-				this.attachRight = false;
-			}
-		}
-
-		attachRightChanged(newVal) {
-			if (newVal && this.attachLeft) {
-				this.attachLeft = false;
-			}
-		}
-
-		showTime() {
-			if (this._timeShowing) {
-				return;
-			}
-
-			this._timeShowing = true;
-
-			this.timeTL.clear();
-			this.timeTL.call(() => {
-				this.$.timeShine.style.width = '140%';
-				if (this.attachRight) {
-					this.$.timeClip.style.webkitClipPath = 'polygon(0 0, 140% 0%, calc(140% - 15px) 100%, 0% 100%)';
-				} else {
-					this.$.timeClip.style.webkitClipPath = 'polygon(-40% 0, 100% 0, 100% 100%, calc(-40% + 15px) 100%)';
-				}
-			});
-
-			this.timeTL.set(this.$.timeShine, {transition: 'none', width: 0}, '+=1');
-			this.timeTL.set(this.$.medal, {zIndex: 1});
-			this.timeTL.set(this.$.timeShine, {transition: 'width 400ms linear', width: '140%', opacity: 0.5});
-			this.timeTL.set(this.$.medal, {className: '+=shine'}, '+=0.25');
-			this.timeTL.set(this.$.medal, {className: '-=shine'}, '+=0.35');
-		}
-
-		hideTime() {
-			if (!this._timeShowing) {
-				return;
-			}
-
-			this._timeShowing = false;
-
-			this.timeTL.clear();
-			this.timeTL.set(this.$.medal, {clearProps: 'zIndex'});
-			this.timeTL.set(this.$.timeShine, {width: 0, clearProps: 'opacity', transition: 'width 325ms ease-in'});
-			this.timeTL.set(this.$.timeClip, {
-				clearProps: 'webkitClipPath',
-				transition: '-webkit-clip-path 325ms ease-in'
-			});
-		}
-
-		calcMedalImage(newVal, forfeit) {
-			if (forfeit) {
-				this.showTime();
-				return 'elements/molecules/gdq-nameplate/img/medal-fail.png';
-			}
-
-			switch (newVal) {
-				case 1:
-					this.showTime();
-					return 'elements/molecules/gdq-nameplate/img/medal-gold.png';
-				case 2:
-					this.showTime();
-					return 'elements/molecules/gdq-nameplate/img/medal-silver.png';
-				case 3:
-					this.showTime();
-					return 'elements/molecules/gdq-nameplate/img/medal-bronze.png';
-				case 4:
-					this.showTime();
-					return '';
-				default:
-					this.hideTime();
-					return '';
-			}
 		}
 
 		ready() {
 			super.ready();
 
+			this.currentRunChanged = this.currentRunChanged.bind(this);
+			this.stopwatchChanged = this.stopwatchChanged.bind(this);
+			this.gameAudioChannelsChanged = this.gameAudioChannelsChanged.bind(this);
+
 			// Create looping anim for main nameplate.
-			this.nameTL = new TimelineMax({repeat: -1, paused: true});
-			this.nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
 				onStart: function () {
 					this.$.namesTwitch.classList.remove('hidden');
 					this.$.namesName.classList.add('hidden');
@@ -221,11 +86,11 @@
 				opacity: 1,
 				ease: NAME_FADE_IN_EASE
 			});
-			this.nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE
 			}, '+=10');
-			this.nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
 				onStart: function () {
 					this.$.namesTwitch.classList.add('hidden');
 					this.$.namesName.classList.remove('hidden');
@@ -233,138 +98,15 @@
 				opacity: 1,
 				ease: NAME_FADE_IN_EASE
 			});
-			this.nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE
 			}, '+=80');
 
-			// Prep canvases
-			const leftCapStage = new createjs.Stage(this.$.leftCap);
-			const rightCapStage = new createjs.Stage(this.$.rightCap);
-			createjs.Ticker.on('tick', () => {
-				if (!this.attachLeft) {
-					leftCapStage.update();
-				}
-
-				if (!this.attachRight) {
-					rightCapStage.update();
-				}
-			});
-
-			const _anims = {
-				// start, end, next*, speed*
-				open: [0, 37, 'opened'],
-				close: {
-					frames: [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
-					next: 'closed'
-				},
-				opened: 37,
-				closed: 0
-			};
-
-			const leftCapSprite = new createjs.Sprite(new createjs.SpriteSheet({
-				images: ['elements/molecules/gdq-nameplate/img/leftCap.png'],
-				frames: [
-					[1, 1, 15, 39, 0, -31, 0],
-					[18, 1, 17, 39, 0, -29, 0],
-					[37, 1, 19, 39, 0, -27, 0],
-					[58, 1, 21, 39, 0, -25, 0],
-					[81, 1, 23, 39, 0, -23, 0],
-					[106, 1, 24, 39, 0, -22, 0],
-					[132, 1, 26, 39, 0, -20, 0],
-					[160, 1, 28, 39, 0, -18, 0],
-					[190, 1, 30, 39, 0, -16, 0],
-					[222, 1, 32, 39, 0, -14, 0],
-					[256, 1, 33, 39, 0, -13, 0],
-					[291, 1, 35, 39, 0, -11, 0],
-					[328, 1, 36, 39, 0, -10, 0],
-					[366, 1, 38, 39, 0, -8, 0],
-					[406, 1, 39, 39, 0, -7, 0],
-					[447, 1, 40, 39, 0, -6, 0],
-					[1, 42, 41, 39, 0, -5, 0],
-					[44, 42, 42, 39, 0, -4, 0],
-					[88, 42, 43, 39, 0, -3, 0],
-					[133, 42, 43, 39, 0, -3, 0],
-					[178, 42, 43, 39, 0, -3, 0],
-					[178, 42, 43, 39, 0, -3, 0],
-					[178, 42, 43, 39, 0, -3, 0],
-					[223, 42, 43, 39, 0, -3, 0],
-					[268, 42, 43, 39, 0, -3, 0],
-					[313, 42, 43, 39, 0, -3, 0],
-					[358, 42, 43, 39, 0, -3, 0],
-					[403, 42, 43, 39, 0, -3, 0],
-					[1, 83, 43, 39, 0, -3, 0],
-					[46, 83, 43, 39, 0, -3, 0],
-					[91, 83, 43, 39, 0, -3, 0],
-					[136, 83, 43, 39, 0, -3, 0],
-					[181, 83, 43, 39, 0, -3, 0],
-					[226, 83, 43, 39, 0, -3, 0],
-					[271, 83, 43, 39, 0, -3, 0],
-					[316, 83, 43, 39, 0, -3, 0],
-					[361, 83, 43, 39, 0, -3, 0],
-					[406, 83, 43, 39, 0, -3, 0]
-				],
-				animations: _anims
-			}));
-
-			const rightCapSprite = new createjs.Sprite(new createjs.SpriteSheet({
-				images: ['elements/molecules/gdq-nameplate/img/rightCap.png'],
-				frames: [
-					[1, 1, 19, 39, 0, 0, 0],
-					[22, 1, 21, 39, 0, 0, 0],
-					[45, 1, 23, 39, 0, 0, 0],
-					[70, 1, 25, 39, 0, 0, 0],
-					[97, 1, 27, 39, 0, 0, 0],
-					[126, 1, 28, 39, 0, 0, 0],
-					[156, 1, 30, 39, 0, 0, 0],
-					[188, 1, 32, 39, 0, 0, 0],
-					[222, 1, 34, 39, 0, 0, 0],
-					[258, 1, 36, 39, 0, 0, 0],
-					[296, 1, 37, 39, 0, 0, 0],
-					[335, 1, 39, 39, 0, 0, 0],
-					[376, 1, 40, 39, 0, 0, 0],
-					[418, 1, 42, 39, 0, 0, 0],
-					[462, 1, 43, 39, 0, 0, 0],
-					[1, 42, 44, 39, 0, 0, 0],
-					[47, 42, 45, 39, 0, 0, 0],
-					[94, 42, 46, 39, 0, 0, 0],
-					[142, 42, 46, 39, 0, 0, 0],
-					[190, 42, 46, 39, 0, 0, 0],
-					[238, 42, 46, 39, 0, 0, 0],
-					[238, 42, 46, 39, 0, 0, 0],
-					[238, 42, 46, 39, 0, 0, 0],
-					[238, 42, 46, 39, 0, 0, 0],
-					[286, 42, 46, 39, 0, 0, 0],
-					[334, 42, 46, 39, 0, 0, 0],
-					[382, 42, 46, 39, 0, 0, 0],
-					[430, 42, 46, 39, 0, 0, 0],
-					[1, 83, 46, 39, 0, 0, 0],
-					[49, 83, 46, 39, 0, 0, 0],
-					[97, 83, 46, 39, 0, 0, 0],
-					[145, 83, 46, 39, 0, 0, 0],
-					[193, 83, 46, 39, 0, 0, 0],
-					[241, 83, 46, 39, 0, 0, 0],
-					[289, 83, 46, 39, 0, 0, 0],
-					[337, 83, 46, 39, 0, 0, 0],
-					[385, 83, 46, 39, 0, 0, 0],
-					[433, 83, 46, 39, 0, 0, 0]
-				],
-				animations: _anims
-			}));
-
-			leftCapSprite.gotoAndStop(0);
-			rightCapSprite.gotoAndStop(0);
-
-			leftCapStage.addChild(leftCapSprite);
-			rightCapStage.addChild(rightCapSprite);
-
-			this._leftCapSprite = leftCapSprite;
-			this._rightCapSprite = rightCapSprite;
-
 			// Attach replicant change listeners.
-			currentRun.on('change', this.currentRunChanged.bind(this));
-			stopwatch.on('change', this.stopwatchChanged.bind(this));
-			gameAudioChannels.on('change', this.gameAudioChannelsChanged.bind(this));
+			currentRun.on('change', this.currentRunChanged);
+			stopwatch.on('change', this.stopwatchChanged);
+			gameAudioChannels.on('change', this.gameAudioChannelsChanged);
 		}
 
 		/*
@@ -373,13 +115,17 @@
 		 *    if even one person needs to show both, everyone shows both.
 		 */
 		currentRunChanged(newVal, oldVal) {
-			// If nothing has changed, do nothing.
-			if (oldVal && JSON.stringify(newVal.runners) === JSON.stringify(oldVal.runners)) {
+			if (!newVal || typeof newVal !== 'object') {
 				return;
 			}
 
 			this.coop = newVal.coop;
-			this.updateNames(newVal.runners);
+			this._numRunners = newVal.runners.length;
+
+			// Only invoke updateNames if the names could have changed.
+			if (!oldVal || JSON.stringify(newVal.runners) !== JSON.stringify(oldVal.runners)) {
+				this.updateNames(newVal.runners);
+			}
 		}
 
 		updateNames(runners) {
@@ -415,15 +161,15 @@
 					}
 
 					if (!this.twitch) {
-						this.nameTL.pause();
+						this._nameTL.pause();
 						this.$.namesName.classList.remove('hidden');
 						this.$.namesTwitch.classList.add('hidden');
 						TweenLite.to(this.$.names, NAME_FADE_DURATION, {opacity: 1, ease: NAME_FADE_IN_EASE});
 					} else if (canConflateAllRunners) {
-						this.nameTL.pause();
+						this._nameTL.pause();
 						TweenLite.to(this.$.names, NAME_FADE_DURATION, {opacity: 1, ease: NAME_FADE_IN_EASE});
 					} else {
-						this.nameTL.restart();
+						this._nameTL.restart();
 					}
 
 					Polymer.RenderStatus.afterNextRender(this, this.fitName);
@@ -445,9 +191,12 @@
 				this.forfeit = newVal.results[this.index].forfeit;
 				this.place = newVal.results[this.index].place;
 				this.time = newVal.results[this.index].time.formatted;
+				this.finished = true;
 			} else {
 				this.forfeit = false;
 				this.place = 0;
+				this.time = '';
+				this.finished = false;
 			}
 		}
 
@@ -462,16 +211,12 @@
 			this.audio = canHearSd || canHearHd;
 		}
 
-		_calcTimeValueAlign(attachLeft, attachRight) {
-			if (attachLeft) {
-				return 'left';
-			}
+		_computeFirstPlace(place) {
+			return place === 1;
+		}
 
-			if (attachRight) {
-				return 'right';
-			}
-
-			return 'center';
+		_computeLastPlace(place, numRunners) {
+			return place === numRunners;
 		}
 	}
 

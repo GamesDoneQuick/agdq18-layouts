@@ -12,6 +12,10 @@
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
 	<custom-style>
 		<style>
+			body {
+				background: black;
+			}
+
 			gdq-nameplate {
 				--gdq-nameplate-width: 330px;
 			}
@@ -59,10 +63,10 @@
 		<img id="background" src="img/backgrounds/standard_4_bg.png">
 		<gdq-runinfo></gdq-runinfo>
 		<gdq-timer></gdq-timer>
-		<gdq-nameplate index="0" attach-left></gdq-nameplate>
-		<gdq-nameplate index="1" attach-right></gdq-nameplate>
-		<gdq-nameplate index="2" attach-left></gdq-nameplate>
-		<gdq-nameplate index="3" attach-right></gdq-nameplate>
+		<gdq-nameplate index="0" no-left-cap result-side="left"></gdq-nameplate>
+		<gdq-nameplate index="1" no-right-cap result-side="right"></gdq-nameplate>
+		<gdq-nameplate index="2" no-left-cap result-side="left"></gdq-nameplate>
+		<gdq-nameplate index="3" no-right-cap result-side="right"></gdq-nameplate>
 		<img id="foreground" src="img/backgrounds/standard_4_fg.png">
 	</div>
 
