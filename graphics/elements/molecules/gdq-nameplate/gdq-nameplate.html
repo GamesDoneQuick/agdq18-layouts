@@ -30,6 +30,7 @@
 			}
 
 			#body {
+				position: relative;
 				width: calc(100% - 8px);
 				height: calc(100% + 2px);
 				margin: -1px 4px;
@@ -81,6 +82,47 @@
 				@apply --fui-glow-rect;
 			}
 
+			.dotGreeble {
+				position: absolute;
+				width: 2px;
+				height: 2px;
+				background: #00ffff;
+			}
+
+			.dotGreeble--top {
+				top: 0;
+			}
+
+			.dotGreeble--bottom {
+				bottom: 0;
+			}
+
+			.dotGreeble--left {
+				left: 0;
+			}
+
+			.dotGreeble--right {
+				right: 0;
+			}
+
+			:host([no-left-cap]) .dotGreeble--left {
+				display: none;
+			}
+
+			:host([no-right-cap]) .dotGreeble--right {
+				display: none;
+			}
+
+			:host([no-left-cap]) #body {
+				border-left: 0;
+				margin-left: 0;
+			}
+
+			:host([no-right-cap]) #body {
+				border-right: 0;
+				margin-right: 0;
+			}
+
 			.hidden {
 				position: absolute;
 				opacity: 0 !important;
@@ -94,6 +136,10 @@
 
 		<div id="main">
 			<div id="body">
+				<div class="dotGreeble dotGreeble--top dotGreeble--left"></div>
+				<div class="dotGreeble dotGreeble--bottom dotGreeble--left"></div>
+				<div class="dotGreeble dotGreeble--top dotGreeble--right"></div>
+				<div class="dotGreeble dotGreeble--bottom dotGreeble--right"></div>
 				<div id="names">
 					<sc-fitted-text id="namesName" class="shadow" text="[[name]]" align="center"></sc-fitted-text>
 					<div id="namesTwitch">

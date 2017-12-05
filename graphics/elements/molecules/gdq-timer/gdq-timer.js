@@ -2,9 +2,6 @@
 	'use strict';
 
 	const stopwatch = nodecg.Replicant('stopwatch');
-	const colonRegex = /:/g;
-	const decimalPointRegex = /\./;
-	const decimalValueRegex = /[0-9]*$/;
 
 	class GdqTimer extends Polymer.Element {
 		static get is() {
@@ -27,15 +24,11 @@
 					observer: 'finishedChanged',
 					reflectToAttribute: true
 				},
-				time: String
+				hours: Number,
+				minutes: Number,
+				seconds: Number,
+				milliseconds: Number
 			};
-		}
-
-		static formatTimeString(timeString) {
-			timeString = timeString.replace(colonRegex, '<span class="colon">:</span>');
-			timeString = timeString.replace(decimalPointRegex, '<span class="decimalPoint">.</span>');
-			timeString = timeString.replace(decimalValueRegex, match => `<span class="decimalValue">${match}</span>`);
-			return timeString;
 		}
 
 		ready() {
@@ -43,12 +36,15 @@
 
 			const timerTL = new TimelineLite({autoRemoveChildren: true});
 
+			stopwatch.once('change', newVal => {
+				console.log(newVal);
+			});
+
 			stopwatch.on('change', (newVal, oldVal) => {
-				this.time = GdqTimer.formatTimeString(newVal.time.formatted);
-				this.$.binaryClock.hours = newVal.time.hours;
-				this.$.binaryClock.minutes = newVal.time.minutes;
-				this.$.binaryClock.seconds = newVal.time.seconds;
-				this.$.binaryClock.milliseconds = newVal.time.milliseconds;
+				this.hours = newVal.time.hours;
+				this.minutes = newVal.time.minutes;
+				this.seconds = newVal.time.seconds;
+				this.milliseconds = newVal.time.milliseconds;
 
 				if (oldVal) {
 					if (newVal.state === 'running' && oldVal.state !== 'running') {
@@ -78,6 +74,18 @@
 			if (newVal && this.paused) {
 				this.paused = false;
 			}
+		}
+
+		_lessThanEqZero(number) {
+			return number <= 0;
+		}
+
+		_padTime(number) {
+			return String(number).padStart(2, '0');
+		}
+
+		_formatMilliseconds(milliseconds) {
+			return Math.floor(milliseconds / 100);
 		}
 	}
 

@@ -24,6 +24,16 @@
 					value: false
 				},
 				resultSide: String,
+				noLeftCap: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
+				},
+				noRightCap: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
+				},
 				coop: {
 					type: Boolean,
 					reflectToAttribute: true
@@ -194,8 +204,6 @@
 				this.finished = true;
 			} else {
 				this.forfeit = false;
-				this.place = 0;
-				this.time = '';
 				this.finished = false;
 			}
 		}
