@@ -1,6 +1,9 @@
 (function () {
-	const timeSince = nodecg.Replicant('twitch:timeSinceLastAd');
+	'use strict';
+
+	const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
 	const timeLeft = nodecg.Replicant('twitch:timeLeftInAd');
+	const timeSince = nodecg.Replicant('twitch:timeSinceLastAd');
 
 	class DashHostTwitchAds extends Polymer.Element {
 		static get is() {
@@ -9,6 +12,14 @@
 
 		static get properties() {
 			return {
+				canPlay: {
+					type: Boolean,
+					value: false
+				},
+				cantPlayReason: {
+					type: String,
+					value: ''
+				},
 				timeLeft: {
 					type: String,
 					value: '8:88'
@@ -23,14 +34,18 @@
 		ready() {
 			super.ready();
 
-			timeSince.on('change', newVal => {
-				this.timeSince = newVal.formatted.split('.')[0];
-				this.updatePlayDisabled();
+			canPlayTwitchAd.on('change', newVal => {
+				console.log('canPlayTwitchAd:', newVal);
+				this.canPlay = newVal.canPlay;
+				this.cantPlayReason = newVal.reason;
 			});
 
 			timeLeft.on('change', newVal => {
 				this.timeLeft = newVal.formatted.split('.')[0];
-				this.updatePlayDisabled();
+			});
+
+			timeSince.on('change', newVal => {
+				this.timeSince = newVal.formatted.split('.')[0];
 			});
 		}
 
@@ -38,24 +53,19 @@
 			this.$.confirmDialog.open();
 		}
 
-		updatePlayDisabled() {
-			if (timeSince.status !== 'declared' || timeLeft.status !== 'declared') {
-				this.$.play.setAttribute('disabled', 'true');
-				return;
-			}
-
-			if ((timeSince.value.raw > 0 && timeSince.value.raw < 480) || timeLeft.value.raw > 0) {
-				this.$.play.setAttribute('disabled', 'true');
-			} else {
-				this.$.play.removeAttribute('disabled');
-			}
-		}
-
 		_handleConfirmDialogClosed(e) {
 			if (e.detail.confirmed === true) {
 				const duration = parseInt(this.$.listbox.selectedItem.getAttribute('data-value'), 10);
 				nodecg.sendMessage('twitch:playAd', duration);
 			}
+		}
+
+		_calcPlayButtonLabel(canPlay, cantPlayReason) {
+			if (canPlay) {
+				return 'Play Twitch Ad';
+			}
+
+			return cantPlayReason;
 		}
 	}
 

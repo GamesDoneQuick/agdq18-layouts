@@ -66,7 +66,13 @@
 		</style>
 
 		<div id="left">
-			<paper-button id="play" raised on-tap="play">Play Twitch Ad</paper-button>
+			<paper-button
+				id="play"
+				on-tap="play"
+				disabled="[[!canPlay]]"
+				raised>
+				[[_calcPlayButtonLabel(canPlay, cantPlayReason)]]
+			</paper-button>
 			<paper-dropdown-menu no-animations label="Twitch Ad Duration">
 				<paper-listbox
 					disabled
