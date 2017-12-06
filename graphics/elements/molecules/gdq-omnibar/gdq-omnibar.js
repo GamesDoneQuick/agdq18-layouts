@@ -457,10 +457,6 @@
 			return tl;
 		}
 
-		/**
-		 * Adds an animation to the global timeline for showing the current prizes
-		 * @returns {undefined}
-		 */
 		showCurrentPrizes() {
 			const tl = new TimelineLite();
 
