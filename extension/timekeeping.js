@@ -23,12 +23,18 @@ const timer = liveSplitCore.Timer.new(lsRun);
 const checklistComplete = nodecg.Replicant('checklistComplete');
 const currentRun = nodecg.Replicant('currentRun');
 const stopwatch = nodecg.Replicant('stopwatch');
+const STOPWATCH_STATES = {
+	NOT_STARTED: 'not_started',
+	RUNNING: 'running',
+	PAUSED: 'paused',
+	FINISHED: 'finished'
+};
 
 // Load the existing time and start the stopwatch at that.
 timer.start();
 timer.pause();
 initGameTime();
-if (stopwatch.value.state === 'running') {
+if (stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
 	const missedTime = Date.now() - stopwatch.value.time.timestamp;
 	const previousTime = stopwatch.value.time.raw;
 	const timeOffset = previousTime + missedTime;
@@ -86,7 +92,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 			return;
 		}
 
-		if (stopwatch.value.state === 'running') {
+		if (stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
 			// If this is a race, don't let the pedal finish the timer.
 			if (currentRun.value.runners.length > 1 && !currentRun.value.coop) {
 				nodecg.log.warn('Footpedal was hit to finish the timer, but this is a race so no action will be taken.');
@@ -103,7 +109,7 @@ if (nodecg.bundleConfig.footpedal.enabled) {
 
 				completeRunner({index, forfeit: false});
 			});
-		} else if (stopwatch.value.state === 'not_started') {
+		} else if (stopwatch.value.state === STOPWATCH_STATES.NOT_STARTED) {
 			if (!checklistComplete.value) {
 				nodecg.log.warn('Footpedal was hit to start the timer, but the checklist is not complete so no action will be taken.');
 				return;
@@ -134,11 +140,11 @@ setInterval(tick, 100); // 10 times per second.
  * @returns {undefined}
  */
 function start(force) {
-	if (!force && stopwatch.value.state === 'running') {
+	if (!force && stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
 		return;
 	}
 
-	stopwatch.value.state = 'running';
+	stopwatch.value.state = STOPWATCH_STATES.RUNNING;
 	if (timer.currentPhase() === LS_TIMER_PHASE.NotRunning) {
 		timer.start();
 		initGameTime();
@@ -159,7 +165,7 @@ function initGameTime() {
  * @returns {undefined}
  */
 function tick() {
-	if (stopwatch.value.state !== 'running') {
+	if (stopwatch.value.state !== STOPWATCH_STATES.RUNNING) {
 		return;
 	}
 
@@ -178,7 +184,7 @@ function tick() {
  */
 function pause() {
 	timer.pause();
-	stopwatch.value.state = 'paused';
+	stopwatch.value.state = STOPWATCH_STATES.PAUSED;
 }
 
 /**
@@ -190,7 +196,7 @@ function reset() {
 	timer.reset(true);
 	stopwatch.value.time = TimeUtils.createTimeStruct();
 	stopwatch.value.results = [null, null, null, null];
-	stopwatch.value.state = 'not_started';
+	stopwatch.value.state = STOPWATCH_STATES.NOT_STARTED;
 }
 
 /**
@@ -221,7 +227,7 @@ function resumeRunner(index) {
 	stopwatch.value.results[index] = null;
 	recalcPlaces();
 
-	if (stopwatch.value.state === 'finished') {
+	if (stopwatch.value.state === STOPWATCH_STATES.FINISHED) {
 		const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
 		const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
 		stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
@@ -297,12 +303,13 @@ function recalcPlaces() {
 
 	if (allRunnersFinished) {
 		pause();
-		stopwatch.value.state = 'finished';
+		stopwatch.value.state = STOPWATCH_STATES.FINISHED;
 	}
 }
 
 module.exports = {
 	start,
 	pause,
-	reset
+	reset,
+	STOPWATCH_STATES
 };
