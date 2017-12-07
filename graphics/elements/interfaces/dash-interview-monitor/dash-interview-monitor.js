@@ -141,7 +141,7 @@
 			});
 
 			interviewStopwatch.on('change', newVal => {
-				this.timeElapsed = newVal.formatted.split('.')[0];
+				this.timeElapsed = newVal.time.formatted.split('.')[0];
 			});
 
 			checklistComplete.on('change', newVal => {

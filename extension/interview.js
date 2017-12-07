@@ -2,7 +2,6 @@
 
 // Packages
 const firebase = require('firebase-admin');
-const NanoTimer = require('nanotimer');
 
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
@@ -21,13 +20,23 @@ const questionPulseTimeRemaining = nodecg.Replicant('interview:questionTimeRemai
 const questionShowing = nodecg.Replicant('interview:questionShowing', {defaultValue: false, persistent: false});
 const questionSortMap = nodecg.Replicant('interview:questionSortMap');
 const questionTweetsRep = nodecg.Replicant('interview:questionTweets');
-const interviewStopwatch = nodecg.Replicant('interview:stopwatch', {defaultValue: TimeUtils.createTimeStruct()});
+const interviewStopwatch = nodecg.Replicant('interview:stopwatch');
 const currentLayout = nodecg.Replicant('gdq:currentLayout');
-const interviewTimer = new NanoTimer();
 const pulseIntervalMap = new Map();
 const pulseTimeoutMap = new Map();
+let interviewTimer;
+let offset;
 let _repliesListener;
 let _repliesRef;
+
+// Restore lost time, if applicable.
+if (interviewStopwatch.value.running) {
+	const missedTime = Date.now() - interviewStopwatch.value.time.timestamp;
+	const previousTime = interviewStopwatch.value.time.raw;
+	offset = previousTime + missedTime;
+	interviewStopwatch.value.running = false;
+	startInterviewTimer();
+}
 
 nodecg.Replicant('interview:names', {defaultValue: []});
 
@@ -179,7 +188,7 @@ function updateQuestionSortMap() {
  * @param {Replicant} showingRep - The Boolean replicant that controls if the element is showing or not.
  * @param {Replicant} pulseTimeRemainingRep - The Number replicant that tracks the remaining time in this pulse.
  * @param {Number} duration - The desired duration of the pulse in seconds.
- * @returns {undefined}
+ * @returns {Promise<undefined>} - A promise which resolves when the pulse has completed.
  */
 function pulse(showingRep, pulseTimeRemainingRep, duration) {
 	return new Promise(resolve => {
@@ -220,17 +229,33 @@ function clearTimerFromMap(key, map) {
 }
 
 function startInterviewTimer() {
-	interviewStopwatch.value = TimeUtils.createTimeStruct();
-	interviewTimer.clearInterval();
-	interviewTimer.setInterval(tickInterviewTimer, '', '1s');
-}
+	if (interviewStopwatch.value.running) {
+		return;
+	}
 
-function tickInterviewTimer() {
-	interviewStopwatch.value = TimeUtils.createTimeStruct(interviewStopwatch.value.raw + 1000);
+	interviewStopwatch.value.running = true;
+	interviewStopwatch.value.time = TimeUtils.createTimeStruct();
+	if (interviewTimer) {
+		interviewTimer.stop();
+		interviewTimer.removeAllListeners();
+	}
+
+	interviewTimer = new TimeUtils.CountupTimer({offset});
+	interviewTimer.on('tick', elapsedTimeStruct => {
+		interviewStopwatch.value.time = elapsedTimeStruct;
+	});
+	offset = 0;
 }
 
 function stopInterviewTimer() {
-	interviewTimer.clearInterval();
+	if (!interviewStopwatch.value.running) {
+		return;
+	}
+
+	interviewStopwatch.value.running = false;
+	if (interviewTimer) {
+		interviewTimer.stop();
+	}
 }
 
 /* Disabled for now. Can't get drag sort and button sort to work simultaneously.

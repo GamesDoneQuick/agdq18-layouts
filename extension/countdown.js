@@ -1,15 +1,12 @@
 'use strict';
 
-// Packages
-const NanoTimer = require('nanotimer');
-
 // Ours
 const nodecg = require('./util/nodecg-api-context').get();
 const TimeUtils = require('./lib/time');
 
 const time = nodecg.Replicant('countdown', {defaultValue: TimeUtils.createTimeStruct(600 * 1000), persistent: false});
 const running = nodecg.Replicant('countdownRunning', {defaultValue: false, persistent: false});
-const countdownTimer = new NanoTimer();
+let countdownTimer;
 
 nodecg.listenFor('startCountdown', start);
 nodecg.listenFor('stopCountdown', stop);
@@ -24,15 +21,23 @@ function start(startTime) {
 		return;
 	}
 
-	const timeStruct = TimeUtils.createTimeStruct(TimeUtils.parseTimeString(startTime));
-	if (timeStruct.raw <= 0) {
+	const durationMs = TimeUtils.parseTimeString(startTime);
+	if (durationMs <= 0) {
 		return;
 	}
 
 	running.value = true;
-	time.value = timeStruct;
-	countdownTimer.clearInterval();
-	countdownTimer.setInterval(tick, '', '1s');
+	time.value = TimeUtils.createTimeStruct(durationMs);
+
+	if (countdownTimer) {
+		countdownTimer.stop();
+		countdownTimer.removeAllListeners();
+	}
+
+	countdownTimer = new TimeUtils.CountdownTimer(Date.now() + durationMs);
+	countdownTimer.on('tick', remainingTimeStruct => {
+		time.value = remainingTimeStruct;
+	});
 }
 
 /**
@@ -45,16 +50,7 @@ function stop() {
 	}
 
 	running.value = false;
-	countdownTimer.clearInterval();
-}
-
-/**
- * Ticks the countdown timer down by one second, stopping the timer if it hits zero.
- * @returns {undefined}
- */
-function tick() {
-	time.value = TimeUtils.createTimeStruct(time.value.raw - 1000);
-	if (time.value.raw <= 0) {
-		stop();
+	if (countdownTimer) {
+		countdownTimer.stop();
 	}
 }
