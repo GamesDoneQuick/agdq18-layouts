@@ -3,7 +3,6 @@
 // Native
 const EventEmitter = require('events');
 const fs = require('fs');
-const format = require('util').format;
 const path = require('path');
 
 // Packages
@@ -62,7 +61,7 @@ connection.clear(1);
 
 module.exports = {
 	play(filename) {
-		log.info('Playing %s...', filename);
+		log.info('Attempting to play %s...', filename);
 		return connection.play(1, undefined, filename);
 	},
 	info() {
@@ -100,18 +99,7 @@ const udpPort = new osc.UDPPort({
 });
 
 const emitForegroundChanged = debounce(() => {
-	const logStr = format(
-		'%s, %s, %s\n',
-		new Date().toISOString(), foregroundFileName, currentRun.value.name
-	);
-
-	log.info('Ad play:', logStr.replace('\n', ''));
-	fs.appendFile('logs/ad_log.csv', logStr, err => {
-		if (err) {
-			nodecg.log.error('[advertisements] Error appending to log:', err.stack);
-		}
-	});
-
+	log.info('Media began playing: %s, %s, %s', new Date().toISOString(), foregroundFileName, currentRun.value.name);
 	module.exports.osc.emit('foregroundChanged', foregroundFileName);
 }, 250);
 

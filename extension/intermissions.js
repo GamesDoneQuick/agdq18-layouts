@@ -15,6 +15,7 @@ const nodecg = require('./util/nodecg-api-context').get();
 const obs = require('./obs');
 const TimeUtils = require('./lib/time');
 
+const AD_LOG_PATH = 'logs/ad_log.csv';
 const CANT_START_REASONS = {
 	ALREADY_STARTED: 'already started',
 	ALREADY_COMPLETED: 'already completed',
@@ -38,6 +39,8 @@ const adBreakSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/a
 const adSchema = JSON.parse(fs.readFileSync(path.join(schemasPath, 'types/ad.json')));
 const debouncedUpdateCurrentIntermissionContent = debounce(_updateCurrentIntermissionContent, 33);
 const debouncedUpdateCurrentIntermissionState = debounce(_updateCurrentIntermissionState, 33);
+const clearableTimeouts = new Set();
+const clearableIntervals = new Set();
 
 currentRun.on('change', (newVal, oldVal) => {
 	if (!oldVal || newVal.order !== oldVal.order) {
@@ -98,6 +101,10 @@ nodecg.listenFor('intermissions:cancelAdBreak', adBreakId => {
 	cancelledAdBreak = true;
 	currentAdBreak = null;
 	currentlyPlayingAd = null;
+	clearableTimeouts.forEach(timeout => clearTimeout(timeout));
+	clearableTimeouts.clear();
+	clearableIntervals.forEach(interval => clearInterval(interval));
+	clearableIntervals.clear();
 	caspar.clear().then(() => {
 		_updateCurrentIntermissionContent();
 	}).catch(err => {
@@ -191,6 +198,11 @@ caspar.osc.on('foregroundChanged', filename => {
 		});
 		return;
 	}
+
+	if (adThatJustStarted.state.started) {
+		return;
+	}
+
 	currentlyPlayingAd = adThatJustStarted;
 	adThatJustStarted.state.started = true;
 	adThatJustStarted.state.canStart = false;
@@ -198,7 +210,7 @@ caspar.osc.on('foregroundChanged', filename => {
 	const adThatJustCompleted = indexOfAdThatJustStarted > 0 ?
 		currentAdBreak.ads[indexOfAdThatJustStarted - 1] :
 		null;
-	if (adThatJustCompleted) {
+	if (adThatJustCompleted && !adThatJustCompleted.state.completed) {
 		finishAd(adThatJustCompleted);
 	}
 
@@ -209,9 +221,9 @@ caspar.osc.on('foregroundChanged', filename => {
 		caspar.loadbgAuto(nextAdFilenameNoExt).catch(e => {
 			log.error('Failed to play ad:', e);
 		});
-	} else {
+	} else if (currentlyPlayingAd.adType.toLowerCase() === 'video') {
 		const frameTime = 1000 / adThatJustStarted.state.fps;
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			if (!currentlyPlayingAd) {
 				log.warn('Had no currentlyPlayingAd after the timeout, that\'s weird.');
 				caspar.clear().catch(err => {
@@ -222,26 +234,42 @@ caspar.osc.on('foregroundChanged', filename => {
 
 			if (currentlyPlayingAd.adType.toLowerCase() === 'video') {
 				finishCurrentAdBreak();
-			} else {
-				currentAdBreak.state.canComplete = true;
 			}
 		}, frameTime * adThatJustStarted.state.durationFrames);
+		clearableTimeouts.add(timeout);
 	}
 
 	if (adThatJustStarted.adType.toLowerCase() === 'image') {
+		const MS_PER_FRAME = 1000 / 60;
+		const startTime = Date.now();
 		const interval = setInterval(() => {
-			adThatJustStarted.state.frameNumber++;
+			adThatJustStarted.state.frameNumber = Math.min(
+				(Date.now() - startTime) / MS_PER_FRAME,
+				adThatJustStarted.state.durationFrames
+			);
+
 			adThatJustStarted.state.framesLeft =
 				adThatJustStarted.state.durationFrames - adThatJustStarted.state.frameNumber;
+
 			if (adThatJustStarted.state.framesLeft <= 0) {
 				clearInterval(interval);
 				adThatJustStarted.state.canComplete = true;
+				if (!nextAd) {
+					currentAdBreak.state.canComplete = true;
+				}
 			}
-		}, 1000 / 60);
+		}, MS_PER_FRAME);
+		clearableIntervals.add(interval);
 	}
 });
 
 function finishAd(ad) {
+	try {
+		writeAdToLog(ad);
+	} catch (error) {
+		nodecg.log.error('writeAdToLog failed:', error);
+	}
+
 	ad.state.started = true;
 	ad.state.canStart = false;
 	ad.state.completed = true;
@@ -282,10 +310,7 @@ caspar.osc.on('frameChanged', (currentFrame, durationFrames) => {
 function playAd(ad) {
 	const adFilenameNoExt = path.parse(ad.filename).name;
 	caspar.resetState();
-	return caspar.play(adFilenameNoExt).then(() => {
-		ad.state.started = true;
-		ad.state.canStart = false;
-	});
+	return caspar.play(adFilenameNoExt);
 }
 
 /**
@@ -449,4 +474,37 @@ function checkCanSeek() {
 
 	// Else, allow seeking.
 	canSeekSchedule.value = true;
+}
+
+/**
+ * Writes detailed information about an ad to the ad log.
+ * @param {Object} ad - The ad to log.
+ * @returns {undefined}
+ */
+function writeAdToLog(ad) {
+	const data = [
+		ad.id,
+		new Date().toISOString(),
+		ad.adType,
+		ad.sponsorName,
+		ad.name,
+		ad.filename,
+		currentRun.value.name
+	];
+
+	const logStr = data.join(', ');
+	log.info('Ad successfully completed:', logStr);
+
+	// If the ad log does not exist yet, create it and add the header row.
+	if (!fs.existsSync(AD_LOG_PATH)) {
+		const headerRow = 'id, timestamp, type, sponsor_name, ad_name, file_name, current_run\n';
+		fs.writeFileSync(AD_LOG_PATH, headerRow);
+	}
+
+	// Append this ad play to the ad log.
+	fs.appendFile(AD_LOG_PATH, logStr + '\n', err => {
+		if (err) {
+			log.error('Error appending to log:', err.stack);
+		}
+	});
 }
