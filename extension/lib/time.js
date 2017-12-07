@@ -1,5 +1,8 @@
 'use strict';
 
+// Native
+const EventEmitter = require('events');
+
 // Packages
 const parseMsToObj = require('parse-ms');
 const convertUnitToMs = require('milliseconds');
@@ -102,6 +105,53 @@ const TimeUtils = {
 		}
 
 		throw new Error(`Unexpected format of timeString argument: ${timeString}`);
+	},
+
+	/**
+	 * A timer which counts down to a specified end time.
+	 */
+	CountdownTimer: class CountdownTimer extends EventEmitter {
+		constructor(endTime, {tickRate = 100} = {}) {
+			if (typeof endTime !== 'number') {
+				throw new Error('endTime must be defined and it must be a number');
+			}
+
+			super();
+			this._interval = setInterval(() => {
+				const currentTime = Date.now();
+				const timeRemaining = Math.max(endTime - currentTime, 0);
+				this.emit('tick', TimeUtils.createTimeStruct(timeRemaining));
+				if (timeRemaining <= 0) {
+					this.emit('done');
+				}
+			}, tickRate);
+		}
+
+		stop() {
+			clearInterval(this._interval);
+		}
+	},
+
+	/**
+	 * A timer which counts up, with no specified end time.
+	 */
+	CountupTimer: class CountupTimer extends EventEmitter {
+		constructor({tickRate = 100, offset = 0} = {}) {
+			super();
+			const startTime = Date.now() - offset;
+			this._interval = setInterval(() => {
+				const currentTime = Date.now();
+				const timeElapsed = currentTime - startTime;
+				this.emit('tick', TimeUtils.createTimeStruct(timeElapsed));
+				if (timeElapsed <= 0) {
+					this.emit('done');
+				}
+			}, tickRate);
+		}
+
+		stop() {
+			clearInterval(this._interval);
+		}
 	}
 };
 

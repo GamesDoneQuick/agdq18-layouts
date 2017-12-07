@@ -1,7 +1,6 @@
 'use strict';
 
 // Packages
-const NanoTimer = require('nanotimer');
 const request = require('request-promise');
 
 // Ours
@@ -14,14 +13,14 @@ const timeSince = nodecg.Replicant('twitch:timeSinceLastAd', {defaultValue: Time
 const timeLeft = nodecg.Replicant('twitch:timeLeftInAd', {defaultValue: TimeUtils.createTimeStruct()});
 const canPlayTwitchAd = nodecg.Replicant('twitch:canPlayAd');
 const stopwatch = nodecg.Replicant('stopwatch');
-const timeSinceTimer = new NanoTimer();
-const timeLeftTimer = new NanoTimer();
 const CANT_PLAY_REASONS = {
 	AD_IN_PROGRESS: 'ad in progress',
 	RUN_IN_PROGRESS: 'run in progress',
 	ON_COOLDOWN: 'on cooldown',
 	NONE: ''
 };
+let timeSinceTimer;
+let timeLeftTimer;
 
 // Load the existing timeSince and timeLeft and resume at the appropriate time.
 if (timeSince.value.raw > 0) {
@@ -70,27 +69,34 @@ nodecg.listenFor('twitch:playAd', durationSeconds => {
 });
 
 function resetTimeSinceTicker(startingMilliseconds = 0) {
-	timeSinceTimer.clearInterval();
+	if (timeSinceTimer) {
+		timeSinceTimer.stop();
+		timeSinceTimer.removeAllListeners();
+	}
+
 	timeSince.value = TimeUtils.createTimeStruct(startingMilliseconds);
-	timeSinceTimer.setInterval(() => {
-		timeSince.value = TimeUtils.createTimeStruct(timeSince.value.raw + 1000);
-	}, '', '1s');
+	timeSinceTimer = new TimeUtils.CountupTimer({offset: startingMilliseconds});
+	timeSinceTimer.on('tick', elapsedTimeStruct => {
+		timeSince.value = elapsedTimeStruct;
+	});
 }
 
 function resetTimeLeftTicker(durationMilliseconds) {
-	timeLeftTimer.clearInterval();
-	timeLeft.value = TimeUtils.createTimeStruct(durationMilliseconds);
+	if (timeLeftTimer) {
+		timeLeftTimer.stop();
+		timeLeftTimer.removeAllListeners();
+	}
 
 	if (durationMilliseconds < 0) {
+		timeLeft.value = TimeUtils.createTimeStruct(0);
 		return;
 	}
 
-	timeLeftTimer.setInterval(() => {
-		timeLeft.value = TimeUtils.createTimeStruct(timeLeft.value.raw - 1000);
-		if (timeLeft.value.raw <= 0) {
-			timeLeftTimer.clearInterval();
-		}
-	}, '', '1s');
+	timeLeft.value = TimeUtils.createTimeStruct(durationMilliseconds);
+	timeLeftTimer = new TimeUtils.CountdownTimer(Date.now() + durationMilliseconds);
+	timeLeftTimer.on('tick', elapsedTimeStruct => {
+		timeLeft.value = elapsedTimeStruct;
+	});
 }
 
 /**
