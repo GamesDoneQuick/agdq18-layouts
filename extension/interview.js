@@ -25,7 +25,6 @@ const currentLayout = nodecg.Replicant('gdq:currentLayout');
 const pulseIntervalMap = new Map();
 const pulseTimeoutMap = new Map();
 let interviewTimer;
-let offset;
 let _repliesListener;
 let _repliesRef;
 
@@ -33,9 +32,9 @@ let _repliesRef;
 if (interviewStopwatch.value.running) {
 	const missedTime = Date.now() - interviewStopwatch.value.time.timestamp;
 	const previousTime = interviewStopwatch.value.time.raw;
-	offset = previousTime + missedTime;
+	const offset = previousTime + missedTime;
 	interviewStopwatch.value.running = false;
-	startInterviewTimer();
+	startInterviewTimer(offset);
 }
 
 nodecg.Replicant('interview:names', {defaultValue: []});
@@ -228,7 +227,7 @@ function clearTimerFromMap(key, map) {
 	map.delete(key);
 }
 
-function startInterviewTimer() {
+function startInterviewTimer(offset) {
 	if (interviewStopwatch.value.running) {
 		return;
 	}
@@ -244,7 +243,6 @@ function startInterviewTimer() {
 	interviewTimer.on('tick', elapsedTimeStruct => {
 		interviewStopwatch.value.time = elapsedTimeStruct;
 	});
-	offset = 0;
 }
 
 function stopInterviewTimer() {
