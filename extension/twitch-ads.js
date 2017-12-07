@@ -53,7 +53,7 @@ nodecg.listenFor('twitch:playAd', durationSeconds => {
 			'Client-ID': nodecg.bundleConfig.twitch.clientId,
 			'Content-Type': 'application/json'
 		},
-		body: {durationSeconds},
+		body: {length: durationSeconds},
 		json: true
 	}).then(res => {
 		resetTimeSinceTicker();
