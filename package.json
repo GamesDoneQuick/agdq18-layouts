@@ -75,8 +75,8 @@
     "graphics": [
       {
         "file": "interview_monitor.html",
-        "width": 1280,
-        "height": 720
+        "width": 1920,
+        "height": 1080
       },
       {
         "file": "interview_tier2.html",
