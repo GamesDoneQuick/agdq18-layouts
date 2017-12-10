@@ -251,26 +251,7 @@
 		}
 
 		showCTA() {
-			const tl = new TimelineLite();
-
-			tl.set(this.$.cta, {y: '100%'});
-
-			tl.to(this.$.cta, 0.55, {
-				y: '0%',
-				ease: Power2.easeOut
-			}, '+=1');
-
-			tl.to(this.$.cta, 0.8, {
-				y: '-100%',
-				ease: Power2.easeInOut
-			}, `+=${displayDuration}`);
-
-			tl.to(this.$.cta, 0.55, {
-				y: '-200%',
-				ease: Power2.easeIn
-			}, `+=${displayDuration}`);
-
-			return tl;
+			return this.$.cta.show(displayDuration);
 		}
 
 		showUpNext() {
