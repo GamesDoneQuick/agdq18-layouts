@@ -16,6 +16,14 @@ class AtomChevron extends Polymer.Element {
 			direction: {
 				type: String,
 				value: 'right'
+			},
+			noFillTriangle: {
+				type: Boolean,
+				value: false
+			},
+			noAutoRender: {
+				type: Boolean,
+				value: false
 			}
 		};
 	}
@@ -24,7 +32,7 @@ class AtomChevron extends Polymer.Element {
 		return 6;
 	}
 
-	static get STROKE_SIZE() {
+	static get DEFAULT_STROKE_SIZE() {
 		return 1;
 	}
 
@@ -36,12 +44,24 @@ class AtomChevron extends Polymer.Element {
 	 * @param {Number} height - How tall, in pixels, to draw the chevron.
 	 * @param {Number} thickness - How thick, in pixels, to draw the chevron.
 	 * @param {String} fillColor - The color to apply to the interior of the chevron.
+	 * @param {Number} strokeSize - The thickness of the chevron border.
 	 * @param {String} strokeColor - The color to apply to the border of the chevron.
 	 * @returns {svgjs.Polygon} - The constructed SVG.js Polygon instance.
 	 */
-	static createChevron({width, height, thickness, fillColor, strokeColor}) {
+	static createChevron({width, height, thickness, fillColor, strokeSize, strokeColor}) {
 		const chevron = new SVG.Polygon();
-		chevron.plot([
+		const pointArray = AtomChevron.createChevronPointArray({width, height, thickness});
+		chevron.plot(pointArray);
+		chevron.fill(fillColor);
+		if (strokeSize > 0) {
+			chevron.stroke({width: strokeSize, color: strokeColor});
+		}
+
+		return chevron;
+	}
+
+	static createChevronPointArray({width, height, thickness}) {
+		return new SVG.PointArray([
 			[0, 0],
 			[thickness, 0],
 			[width, height / 2],
@@ -49,10 +69,6 @@ class AtomChevron extends Polymer.Element {
 			[0, height],
 			[width - thickness, height / 2]
 		]);
-
-		chevron.fill(fillColor);
-		chevron.stroke({width: 1, color: strokeColor});
-		return chevron;
 	}
 
 	/**
@@ -83,15 +99,24 @@ class AtomChevron extends Polymer.Element {
 
 	connectedCallback() {
 		super.connectedCallback();
-		Polymer.RenderStatus.afterNextRender(this, this.render);
+		if (!this.noAutoRender) {
+			Polymer.RenderStatus.afterNextRender(this, this.render);
+		}
 	}
 
-	render() {
+	render(width, height) {
+		console.log('render:', width, height);
 		this.svgDoc.clear();
 
-		const strokeSize = AtomChevron.STROKE_SIZE;
-		const width = this.clientWidth;
-		const height = this.clientHeight;
+		width = typeof width === 'number' ? width : this.scrollWidth;
+		height = typeof height === 'number' ? height : this.clientHeight;
+		const strokeSize = parseInt(
+			this.readCSSCustomProperty(
+				'--atom-chevron-stroke-size',
+				AtomChevron.DEFAULT_STROKE_SIZE
+			),
+			10
+		);
 		const thickness = parseInt(
 			this.readCSSCustomProperty(
 				'--atom-chevron-thickness',
@@ -101,27 +126,34 @@ class AtomChevron extends Polymer.Element {
 		);
 		this.svgDoc.size(width, height);
 
-		const fillTriangle = AtomChevron.createFillTriangle({
-			width: width - thickness,
-			height: height - 2,
-			fillColor: this.readCSSCustomProperty('--atom-chevron-background-color')
-		});
-
 		const chevron = AtomChevron.createChevron({
 			width: width - strokeSize,
 			height: height - strokeSize,
 			thickness,
 			fillColor: this.readCSSCustomProperty('--atom-chevron-fill-color'),
+			strokeSize,
 			strokeColor: this.readCSSCustomProperty('--atom-chevron-stroke-color')
 		});
 
-		fillTriangle.move(0, strokeSize);
-		chevron.move(strokeSize / 2, strokeSize / 2);
-		this.svgDoc.add(fillTriangle);
+		if (!this.noFillTriangle) {
+			const fillTriangle = AtomChevron.createFillTriangle({
+				width: width - thickness,
+				height: height - 2,
+				fillColor: this.readCSSCustomProperty('--atom-chevron-background-color')
+			});
+
+			fillTriangle.move(0, strokeSize);
+			chevron.move(strokeSize / 2, strokeSize / 2);
+			this.fillTriangle = fillTriangle;
+			this.svgDoc.add(fillTriangle);
+		}
+
+		this.chevron = chevron;
 		this.svgDoc.add(chevron);
 
-		if (this.direction === 'left') {
+		if (this.direction === 'left' && this._lastDirection !== 'left') {
 			this.svgDoc.transform({scaleX: -1});
+			this._lastDirection = 'left';
 		}
 	}
 
