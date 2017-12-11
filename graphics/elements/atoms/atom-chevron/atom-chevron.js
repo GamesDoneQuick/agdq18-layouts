@@ -105,7 +105,6 @@ class AtomChevron extends Polymer.Element {
 	}
 
 	render(width, height) {
-		console.log('render:', width, height);
 		this.svgDoc.clear();
 
 		width = typeof width === 'number' ? width : this.scrollWidth;
