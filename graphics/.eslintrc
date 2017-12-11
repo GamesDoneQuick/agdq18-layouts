@@ -17,6 +17,7 @@
 		"Elastic": true,
 		"Back": true,
 		"Sine": true,
+		"SlowMo": true,
 		"textFit": true,
 		"createjs": true,
 		"SVG": true
