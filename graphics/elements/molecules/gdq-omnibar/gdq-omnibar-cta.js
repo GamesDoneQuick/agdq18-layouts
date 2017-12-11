@@ -98,7 +98,7 @@
 			this._$chevrons.forEach(chevron => {
 				tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand1');
 			});
-			tl.to(this, displayDuration, {});
+			tl.to(this, displayDuration, {}); // Hold for displayDuration.
 
 			// Hide first line.
 			tl.addLabel('contract');
@@ -139,7 +139,7 @@
 			this._$chevrons.forEach(chevron => {
 				tl.add(this.bendChevron(chevron, EXPAND_DURATION), 'expand2');
 			});
-			tl.to(this, displayDuration, {});
+			tl.to(this, displayDuration, {}); // Hold for displayDuration.
 
 			// Hide second line.
 			tl.addLabel('contract2');
