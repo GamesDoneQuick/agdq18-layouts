@@ -56,7 +56,7 @@
 		run() {
 			const self = this;
 			const parts = [
-				this.showRecordTracker,
+				// this.showRecordTracker,
 				this.showCTA,
 				this.showUpNext,
 				this.showChallenges,
@@ -89,6 +89,7 @@
 		alertNewRecord() {
 			const tl = new TimelineLite();
 
+			/* Disabled for now.
 			// Enter
 			tl.set(this.$['newRecord-text'], {y: '-100%'});
 			tl.set(this.$.newRecord, {visibility: 'visible'});
@@ -112,20 +113,27 @@
 			tl.to([this.$.main, this.$.label], 0.25, {
 				opacity: 1,
 				ease: Power1.easeOut
-			}, 'exit+=0.2');
+			}, 'exit+=0.2'); */
+
+			return tl;
 		}
 
-		showLabel(...args) {
-			return TweenLite.to({}, 0.334, {
-				onStart() {
-					this.$.label.show(...args);
-				},
-				callbackScope: this
-			});
-		}
+		/**
+		 * Creates an animation timeline for showing the label.
+		 * @param {String} text - The text to show.
+		 * @param {LabelShowAndChangeOptions} [options={}] - Options for this animation.
+		 * @returns {TimelineLite} - An animation timeline.
+		 */
+		showLabel(text, options = {}) {
+			const tl = new TimelineLite();
+			options.flagHoldDuration = displayDuration;
+			if (this.$.label._showing) {
+				tl.add(this.$.label.change(text, options));
+			} else {
+				tl.add(this.$.label.show(text, options));
+			}
 
-		changeLabelText(...args) {
-			return this.$.label.changeText(...args);
+			return tl;
 		}
 
 		hideLabel() {
@@ -155,7 +163,7 @@
 			const afterContentEnterLabel = `afterContentEnter${contentEnterCounter}`;
 			contentEnterCounter++;
 
-			tl.add(contentEnterLabel);
+			tl.addLabel(contentEnterLabel);
 			tl.call(() => {
 				const contentEnterAnim = new TimelineLite();
 				elements.forEach((element, index) => {
@@ -164,7 +172,7 @@
 				tl.shiftChildren(contentEnterAnim.duration(), true, tl.getLabelTime(afterContentEnterLabel));
 				tl.add(contentEnterAnim, contentEnterLabel);
 			}, null, null, contentEnterLabel);
-			tl.add(afterContentEnterLabel, '+=0.03');
+			tl.addLabel(afterContentEnterLabel, '+=0.03');
 
 			// Display the content cards long enough for people to read.
 			// Scroll the list of cards if necessary to show them all.
@@ -234,6 +242,7 @@
 				return tl;
 			}
 
+			/* Disabled for now.
 			const elements = [document.createElement('gdq-omnibar-record')];
 
 			this.setMainContent(tl, elements);
@@ -244,14 +253,16 @@
 			}), '+=0.03');
 
 			this.showMainContent(tl, elements);
-			this.hideMainContent(tl, elements);
-			tl.add(this.hideLabel(), 'afterContentExit');
+			this.hideMainContent(tl, elements); */
 
 			return tl;
 		}
 
 		showCTA() {
-			return this.$.cta.show(displayDuration);
+			const tl = new TimelineLite();
+			tl.add(this.hideLabel());
+			tl.add(this.$.cta.show(displayDuration));
+			return tl;
 		}
 
 		showUpNext() {
@@ -289,14 +300,14 @@
 
 			this.setMainContent(tl, elements);
 
-			tl.add(this.showLabel('COMING UP NEXT', '20px', {
-				startColor: '#fffdd4',
-				endColor: '#ffcd00'
+			tl.add(this.showLabel('Up Next', {
+				avatarIconName: 'upnext',
+				flagColor: '#7EF860',
+				ringColor: '#50A914'
 			}), '+=0.03');
 
 			this.showMainContent(tl, elements);
 			this.hideMainContent(tl, elements);
-			tl.add(this.hideLabel(), 'afterContentExit');
 
 			return tl;
 		}
@@ -345,14 +356,14 @@
 
 			this.setMainContent(tl, elements);
 
-			tl.add(this.showLabel('CHALLENGES', '24px', {
-				startColor: '#7fbac1',
-				endColor: '#33838a'
+			tl.add(this.showLabel('Challenges', {
+				avatarIconName: 'challenges',
+				flagColor: '#82EFFF',
+				ringColor: '#FFFFFF'
 			}), '+=0.03');
 
 			this.showMainContent(tl, elements);
 			this.hideMainContent(tl, elements);
-			tl.add(this.hideLabel(), 'afterContentExit');
 
 			return tl;
 		}
@@ -419,21 +430,17 @@
 				this.setMainContent(tl, elements);
 
 				// First bid shows the label.
-				// Subsequent bids just change the text of the label.
 				if (index === 0) {
-					tl.add(this.showLabel(bid.description.replace('||', ' -- '), '16px', {
-						startColor: '#ae7fc1',
-						endColor: '#71338a'
+					tl.add(this.showLabel('Bid Wars', {
+						avatarIconName: 'bidwars',
+						flagColor: '#FF4D4A',
+						ringColor: '#FF4D4D'
 					}), '+=0.03');
-				} else {
-					tl.add(this.changeLabelText(bid.description.replace('||', ' -- ')), '+=0.03');
 				}
 
 				this.showMainContent(tl, elements);
 				this.hideMainContent(tl, elements);
 			});
-
-			tl.add(this.hideLabel(), 'afterContentExit');
 
 			return tl;
 		}
@@ -465,14 +472,14 @@
 
 			this.setMainContent(tl, elements);
 
-			tl.add(this.showLabel('PRIZES', '32px', {
-				startColor: '#cc7e7e',
-				endColor: '#803030'
+			tl.add(this.showLabel('Prizes', {
+				avatarIconName: 'prizes',
+				flagColor: '#FF70C8',
+				ringColor: '#EC0793'
 			}), '+=0.03');
 
 			this.showMainContent(tl, elements);
 			this.hideMainContent(tl, elements);
-			tl.add(this.hideLabel(), 'afterContentExit');
 
 			return tl;
 		}
