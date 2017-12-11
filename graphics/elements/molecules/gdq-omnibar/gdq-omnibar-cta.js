@@ -168,10 +168,6 @@
 				}
 			});
 
-			// tl.timeScale(0.2);
-
-			tl.to({}, 0.5, {});
-
 			return tl;
 		}
 
