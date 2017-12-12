@@ -13,6 +13,17 @@
 			"description": "How long (in seconds) most things show on-screen for.",
 			"default": 10
 		},
+		"omnibar": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"scrollHoldDuration": {
+					"type": "number",
+					"description": "How long (in seconds) to hold items during a scroll.",
+					"default": 7
+				}
+			}
+		},
 		"osc": {
 			"type": ["object", "null"],
 			"properties": {
