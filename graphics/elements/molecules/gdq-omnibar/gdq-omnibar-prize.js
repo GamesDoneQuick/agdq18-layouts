@@ -1,3 +1,7 @@
+/**
+ * @customElement
+ * @polymer
+ */
 class GdqOmnibarPrize extends Polymer.Element {
 	static get is() {
 		return 'gdq-omnibar-prize';
@@ -5,31 +9,16 @@ class GdqOmnibarPrize extends Polymer.Element {
 
 	static get properties() {
 		return {
-			prize: {
-				type: Object
-			}
+			prize: Object
 		};
 	}
 
 	enter() {
-		const enterTL = new TimelineLite();
-		enterTL.set(this.$.text, {y: '100%'});
-		enterTL.add(this.$.background.enter('below'));
-		enterTL.to(this.$.text, 0.334, {
-			y: '0%',
-			ease: Power1.easeInOut
-		}, 0.2);
-		return enterTL;
+		return this.$.listItem.enter();
 	}
 
 	exit() {
-		const exitTL = new TimelineLite();
-		exitTL.add(this.$.background.exit('above'));
-		exitTL.to(this.$.text, 0.334, {
-			y: '-100%',
-			ease: Power1.easeInOut
-		}, 0.2);
-		return exitTL;
+		return this.$.listItem.exit();
 	}
 
 	calcBidAmountText(prize) {

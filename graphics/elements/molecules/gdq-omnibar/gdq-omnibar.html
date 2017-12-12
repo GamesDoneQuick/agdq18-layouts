@@ -56,12 +56,8 @@
 				@apply --layout-horizontal;
 			}
 
-			#main-content > * {
-				margin: 0 1.5px;
-			}
-
-			#main-content > *:last-child {
-				margin-right: 0;
+			#main-content > :not(:last-child) {
+				margin-right: 6px;
 			}
 
 			#cta {
@@ -126,12 +122,6 @@
 			</div>
 			<gdq-omnibar-cta id="cta"></gdq-omnibar-cta>
 			<div id="newRecord" class="shadow">
-				<atom-stepped-gradient
-					id="newRecord-bg"
-					steps="3"
-					start-color="#e52a2a"
-					end-color="#ad1616">
-				</atom-stepped-gradient>
 				<div id="newRecord-text">NEW RECORD DONATION TOTAL FOR GDQ!</div>
 			</div>
 		</div>

@@ -1,18 +1,39 @@
 (function () {
 	'use strict';
 
+	/* Minimum amount of content overflow, in pixels, required before the scrolling behavior kicks in.
+	 * We have this because if the content just scrolls a few pixels, it looks kinda bad.
+	 * We've found it's better to just not scroll it at all in those cases, and let it
+	 * cut off those few pixels. */
+	const MIN_CONTENT_SCROLL_DISTANCE = 3;
+
+	// How much time, in seconds, to spend scrolling on a single pixel.
+	const CONTENT_SCROLL_TIME_PER_PIXEL = 0.024;
+
+	// The minimum amount of time, in seconds, to "hold" at either end of a content scroll.
+	const MIN_CONTENT_HOLD_TIME = 0.35;
+
+	// The opacity to set on list items which are partially occluded by the total.
+	const OCCLUDED_OPACITY = 0.25;
+
+	// Used by the record tracker functionality.
 	const AGDQ17_TOTAL = 2222790.52;
 	window.AGDQ17_TOTAL = AGDQ17_TOTAL;
 
+	// Configuration consts.
+	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
+
+	// Replicants.
 	const currentBids = nodecg.Replicant('currentBids');
 	const currentLayout = nodecg.Replicant('gdq:currentLayout');
 	const currentPrizes = nodecg.Replicant('currentPrizes');
 	const currentRun = nodecg.Replicant('currentRun');
-	const displayDuration = nodecg.bundleConfig.displayDuration;
 	const nextRun = nodecg.Replicant('nextRun');
 	const recordTrackerEnabled = nodecg.Replicant('recordTrackerEnabled');
 	const schedule = nodecg.Replicant('schedule');
 	const total = nodecg.Replicant('total');
+
+	// State variables.
 	let contentEnterCounter = 0;
 	let contentExitCounter = 0;
 
@@ -126,7 +147,7 @@
 		 */
 		showLabel(text, options = {}) {
 			const tl = new TimelineLite();
-			options.flagHoldDuration = displayDuration;
+			options.flagHoldDuration = DISPLAY_DURATION;
 			if (this.$.label._showing) {
 				tl.add(this.$.label.change(text, options));
 			} else {
@@ -136,6 +157,10 @@
 			return tl;
 		}
 
+		/**
+		 * Creates an animation timeline for hiding the label.
+		 * @returns {TimelineLite} - An animation timeline.
+		 */
 		hideLabel() {
 			return this.$.label.hide();
 		}
@@ -163,6 +188,28 @@
 			const afterContentEnterLabel = `afterContentEnter${contentEnterCounter}`;
 			contentEnterCounter++;
 
+			const observers = elements.map(element => {
+				TweenLite.set(element, {opacity: OCCLUDED_OPACITY});
+				const observer = new IntersectionObserver(entries => {
+					if (!entries || entries.length < 1) {
+						return;
+					}
+
+					const entry = entries[0];
+					TweenLite.to(element, 0.224, {
+						opacity: entry.intersectionRatio >= 1 ? 1 : OCCLUDED_OPACITY,
+						ease: Sine.easeInout
+					});
+				}, {
+					root: this.$.main,
+					rootMargin: '0px',
+					threshold: [0, 1]
+				});
+
+				observer.observe(element);
+				return observer;
+			});
+
 			tl.addLabel(contentEnterLabel);
 			tl.call(() => {
 				const contentEnterAnim = new TimelineLite();
@@ -182,14 +229,13 @@
 				const mainWidth = this.$.main.clientWidth;
 				const mainContentWidth = this.$['main-content'].clientWidth;
 				const diff = mainContentWidth - mainWidth;
-				if (diff > 3) {
+				if (diff > MIN_CONTENT_SCROLL_DISTANCE) {
 					let holdTime = 0;
-					const timePerPixel = 0.024;
-					const totalScrollTime = timePerPixel * diff;
-					if (totalScrollTime < displayDuration) {
-						holdTime = (displayDuration - totalScrollTime) / 2;
+					const totalScrollTime = CONTENT_SCROLL_TIME_PER_PIXEL * diff;
+					if (totalScrollTime < DISPLAY_DURATION) {
+						holdTime = (DISPLAY_DURATION - totalScrollTime) / 2;
 					}
-					holdTime = Math.max(holdTime, 0.35); // Clamp to 0.35 minimum;
+					holdTime = Math.max(holdTime, MIN_CONTENT_HOLD_TIME); // Clamp to MIN_CONTENT_HOLD_TIME minimum.
 
 					TweenLite.to(this.$['main-content'], totalScrollTime, {
 						x: -diff,
@@ -197,17 +243,22 @@
 						delay: holdTime,
 						onComplete() {
 							setTimeout(() => {
-								tl.resume(null, false);
+								continueTimeline();
 							}, holdTime * 1000);
 						},
 						callbackScope: this
 					});
 				} else {
 					setTimeout(() => {
-						tl.resume(null, false);
-					}, displayDuration * 1000);
+						continueTimeline();
+					}, DISPLAY_DURATION * 1000);
 				}
 			}, null, null, afterContentEnterLabel);
+
+			function continueTimeline() {
+				observers.forEach(observer => observer.disconnect());
+				tl.resume(null, false);
+			}
 		}
 
 		hideMainContent(tl, elements) {
@@ -261,7 +312,7 @@
 		showCTA() {
 			const tl = new TimelineLite();
 			tl.add(this.hideLabel());
-			tl.add(this.$.cta.show(displayDuration));
+			tl.add(this.$.cta.show(DISPLAY_DURATION));
 			return tl;
 		}
 
