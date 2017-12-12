@@ -1,3 +1,7 @@
+/**
+ * @customElement
+ * @polymer
+ */
 class GdqOmnibarBid extends Polymer.Element {
 	static get is() {
 		return 'gdq-omnibar-bid';
@@ -5,45 +9,17 @@ class GdqOmnibarBid extends Polymer.Element {
 
 	static get properties() {
 		return {
-			bid: {
-				type: Object
-			},
+			bid: Object,
 			delta: String
 		};
 	}
 
 	enter() {
-		const enterTL = new TimelineLite({
-			onStart() {
-				if (this.bid.isBitsChallenge) {
-					this.$.background.startColor = '#7e31b2';
-					this.$.background.endColor = '#4a196b';
-					this.$.totalAndDelta.style.justifyContent = 'flex-start';
-					this.$.bitsIcon.removeAttribute('hidden');
-					this.$.total.text = `${this.bid.total} / ${this.bid.goal}`.replace(/\$/ig, '');
-					this.$.total.startColor = '#e4ffff';
-					this.$.total.endColor = '#94d9d0';
-				}
-			},
-			callbackScope: this
-		});
-		enterTL.set(this.$.text, {y: '100%'});
-		enterTL.add(this.$.background.enter('below'));
-		enterTL.to(this.$.text, 0.334, {
-			y: '0%',
-			ease: Power1.easeInOut
-		}, 0.2);
-		return enterTL;
+		return this.$.listItem.enter();
 	}
 
 	exit() {
-		const exitTL = new TimelineLite();
-		exitTL.add(this.$.background.exit('above'));
-		exitTL.to(this.$.text, 0.334, {
-			y: '-100%',
-			ease: Power1.easeInOut
-		}, 0.2);
-		return exitTL;
+		return this.$.listItem.exit();
 	}
 
 	formatDescription(bid) {
