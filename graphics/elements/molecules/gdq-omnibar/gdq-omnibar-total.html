@@ -1,14 +1,12 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
-<link rel="import" href="../../atoms/atom-stepped-gradient/atom-stepped-gradient.html">
 
 <dom-module id="gdq-omnibar-total">
 	<template>
 		<style include="gdq-text-styles">
 			:host {
 				position: relative;
-				height: calc(100% - 1px);
-				margin-top: 1px;
+				height: 100%;
 				white-space: nowrap;
 				padding-left: 16px;
 				padding-right: 8px;
@@ -17,85 +15,57 @@
 				@apply --layout-center-center;
 			}
 
-			#background {
-				position: absolute;
-				width: 100%;
+			#leftEdge {
+				width: 3px;
 				height: 100%;
-				top: 0;
-				left: 0;
-			}
-
-			#leftCap {
-				position: absolute;
-				top: 0;
-				left: 0;
-				z-index: 4;
+				background: linear-gradient(180deg, #FD0087 0%, #900653 100%);
+				box-shadow: 0 0 10px #FB0086;
+				margin-right: 15px;
 			}
 
 			#totals {
 				@apply --layout-vertical;
 			}
 
-			#totalText,
-			#bitsTotal {
-				color: white;
-				font-family: gdqpixel, 'sans-serif';
-				font-weight: 400;
-				z-index: 4;
+			#totalText {
+				font-size: 24px;
+				font-family: gdqpixel, monospace;
 				@apply --layout-horizontal;
 				@apply --layout-center;
 			}
 
-			#totalText {
-				position: relative;
-				top: -2px;
-				font-size: 20px;
+			#totalTextAmount {
+				display: block;
+				position: absolute;
+				top: 11px;
+				left: 53px;
 			}
 
-			#bitsTotal {
-				position: relative;
-				top: 1px;
-				align-self: flex-end;
+			#totalTextAmountPlaceholder {
+				opacity: 0;
 			}
 
-			#bitsTotalIcon-container {
-				width: 6px;
-				height: 0;
-				margin-right: 5px;
-				@apply --layout-horizontal;
-				@apply --layout-center-center;
-			}
-
-			#bitsTotalIcon {
-				position: relative;
-				top: 1px;
-			}
-
-			#bitsTotalAmount {
-				font-size: 10px;
+			.gradientText {
+				color: transparent;
+				text-shadow: 0 0 12px rgba(121, 241, 234, 0.5);
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#93FFE5 0%,
+					#30C7F5 100%
+				));
+				-webkit-background-clip: text;
 			}
 		</style>
 
-		<atom-stepped-gradient
-			id="background"
-			start-entered
-			steps="3"
-			start-color="#4f40b5"
-			end-color="#312871"></atom-stepped-gradient>
-
-		<img id="leftCap" src="[[importPath]]img/total-leftcap.png">
+		<div id="leftEdge"></div>
 
 		<div id="totals">
-			<div id="totalText" class="shadow">
-				<div id="totalTextDollars">$</div>
-				<div id="totalTextAmount"></div>
-			</div>
+			<div id="totalText">
+				<div id="totalTextDollars" class="gradientText">$</div>
 
-			<div id="bitsTotal">
-				<div id="bitsTotalIcon-container">
-					<img id="bitsTotalIcon" width="16" src="img/bitsicon.png">
-				</div>
-				<div id="bitsTotalAmount" class="shadow"></div>
+				<!-- Workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=670292 -->
+				<div id="totalTextAmountPlaceholder"></div>
+				<div id="totalTextAmount" class="gradientText"></div>
 			</div>
 		</div>
 	</template>

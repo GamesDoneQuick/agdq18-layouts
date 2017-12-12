@@ -3,7 +3,6 @@
 
 	const TIME_PER_DOLLAR = 0.03;
 	const total = nodecg.Replicant('total');
-	const bitsTotal = nodecg.Replicant('bits:total');
 
 	class GdqOmnibarTotal extends Polymer.Element {
 		static get is() {
@@ -21,11 +20,6 @@
 				total.on('change', newVal => {
 					this._handleTotalChanged(this.$.totalTextAmount, newVal.raw);
 				});
-
-				this.$.bitsTotalAmount.rawValue = 0;
-				bitsTotal.on('change', newVal => {
-					this._handleTotalChanged(this.$.bitsTotalAmount, newVal);
-				});
 			});
 		}
 
@@ -33,19 +27,29 @@
 			if (!this._totalInitialized) {
 				this._totalInitialized = true;
 				$element.rawValue = newTotal;
-				$element.textContent = this.formatRawValue(newTotal);
+
+				const formattedRawValue = this.formatRawValue(newTotal);
+				$element.textContent = formattedRawValue;
+
+				// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
+				this.$.totalTextAmountPlaceholder.textContent = formattedRawValue;
 				return;
 			}
 
 			const delta = newTotal - $element.rawValue;
 			const duration = Math.min(delta * TIME_PER_DOLLAR, 3);
-			TweenLite.to($element, duration, {
+			TweenMax.to($element, duration, {
 				rawValue: newTotal,
 				ease: Power2.easeOut,
+
+				callbackScope: this,
 				onUpdate() {
-					$element.textContent = this.formatRawValue($element.rawValue);
-				},
-				callbackScope: this
+					const formattedRawValue = this.formatRawValue($element.rawValue);
+					$element.textContent = formattedRawValue;
+
+					// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
+					this.$.totalTextAmountPlaceholder.textContent = formattedRawValue;
+				}
 			});
 		}
 
