@@ -8,10 +8,7 @@
 	const MIN_CONTENT_SCROLL_DISTANCE = 3;
 
 	// How much time, in seconds, to spend scrolling on a single pixel.
-	const CONTENT_SCROLL_TIME_PER_PIXEL = 0.024;
-
-	// The minimum amount of time, in seconds, to "hold" at either end of a content scroll.
-	const MIN_CONTENT_HOLD_TIME = 0.35;
+	const CONTENT_SCROLL_TIME_PER_PIXEL = 0.002;
 
 	// The opacity to set on list items which are partially occluded by the total.
 	const OCCLUDED_OPACITY = 0.25;
@@ -22,6 +19,7 @@
 
 	// Configuration consts.
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
+	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
 
 	// Replicants.
 	const currentBids = nodecg.Replicant('currentBids');
@@ -184,10 +182,13 @@
 		}
 
 		showMainContent(tl, elements) {
+			let contentOverflowAmount;
 			const contentEnterLabel = `contentEnter${contentEnterCounter}`;
 			const afterContentEnterLabel = `afterContentEnter${contentEnterCounter}`;
 			contentEnterCounter++;
 
+			const occludedElements = new Set();
+			const observerMap = new Map();
 			const observers = elements.map(element => {
 				TweenLite.set(element, {opacity: OCCLUDED_OPACITY});
 				const observer = new IntersectionObserver(entries => {
@@ -196,8 +197,15 @@
 					}
 
 					const entry = entries[0];
+					const occluded = entry.intersectionRatio < 1;
+					if (occluded) {
+						occludedElements.add(element);
+					} else {
+						occludedElements.delete(element);
+					}
+
 					TweenLite.to(element, 0.224, {
-						opacity: entry.intersectionRatio >= 1 ? 1 : OCCLUDED_OPACITY,
+						opacity: occluded ? OCCLUDED_OPACITY : 1,
 						ease: Sine.easeInout
 					});
 				}, {
@@ -207,11 +215,21 @@
 				});
 
 				observer.observe(element);
+				observerMap.set(element, observer);
 				return observer;
 			});
 
 			tl.addLabel(contentEnterLabel);
 			tl.call(() => {
+				const mainWidth = this.$.main.clientWidth;
+				const mainContentWidth = this.$['main-content'].clientWidth;
+				contentOverflowAmount = mainContentWidth - mainWidth;
+
+				if (contentOverflowAmount < MIN_CONTENT_SCROLL_DISTANCE) {
+					TweenLite.set(Array.from(occludedElements), {opacity: 1});
+					occludedElements.clear();
+				}
+
 				const contentEnterAnim = new TimelineLite();
 				elements.forEach((element, index) => {
 					contentEnterAnim.add(element.enter(), index * 0.1134);
@@ -226,33 +244,39 @@
 			tl.call(() => {
 				tl.pause();
 
-				const mainWidth = this.$.main.clientWidth;
-				const mainContentWidth = this.$['main-content'].clientWidth;
-				const diff = mainContentWidth - mainWidth;
-				if (diff > MIN_CONTENT_SCROLL_DISTANCE) {
-					let holdTime = 0;
-					const totalScrollTime = CONTENT_SCROLL_TIME_PER_PIXEL * diff;
-					if (totalScrollTime < DISPLAY_DURATION) {
-						holdTime = (DISPLAY_DURATION - totalScrollTime) / 2;
-					}
-					holdTime = Math.max(holdTime, MIN_CONTENT_HOLD_TIME); // Clamp to MIN_CONTENT_HOLD_TIME minimum.
-
-					TweenLite.to(this.$['main-content'], totalScrollTime, {
-						x: -diff,
-						ease: Linear.easeNone,
-						delay: holdTime,
-						onComplete() {
-							setTimeout(() => {
-								continueTimeline();
-							}, holdTime * 1000);
-						},
-						callbackScope: this
-					});
-				} else {
+				if (contentOverflowAmount < MIN_CONTENT_SCROLL_DISTANCE || occludedElements.length <= 0) {
 					setTimeout(() => {
 						continueTimeline();
 					}, DISPLAY_DURATION * 1000);
+					return;
 				}
+
+				const removeLeadingItem = () => {
+					if (occludedElements.size <= 0) {
+						continueTimeline();
+						return;
+					}
+
+					const firstElement = this.$['main-content'].firstChild;
+					const remainderElements = Array.from(this.$['main-content'].childNodes).slice(1);
+					const tl = new TimelineLite();
+					tl.add(firstElement.exit());
+					tl.to(remainderElements, firstElement.clientWidth * CONTENT_SCROLL_TIME_PER_PIXEL, {
+						x: -firstElement.clientWidth - 6, // This "6" is the list item margin.
+						ease: Power2.easeInOut
+					});
+					tl.call(() => {
+						this.$['main-content'].removeChild(firstElement);
+						observerMap.get(firstElement).disconnect();
+						occludedElements.delete(firstElement);
+						TweenLite.set(remainderElements, {x: 0});
+					});
+					tl.call(removeLeadingItem, null, null, SCROLL_HOLD_DURATION);
+				};
+
+				setTimeout(() => {
+					removeLeadingItem();
+				}, SCROLL_HOLD_DURATION * 1000);
 			}, null, null, afterContentEnterLabel);
 
 			function continueTimeline() {
@@ -271,7 +295,7 @@
 			tl.call(() => {
 				const contentExitAnim = new TimelineLite();
 				elements.slice(0).reverse().forEach((element, index) => {
-					contentExitAnim.add(element.exit(), index * 0.1134);
+					contentExitAnim.add(element.exit(), index * 0.3134);
 				});
 				tl.shiftChildren(contentExitAnim.duration(), true, tl.getLabelTime(afterContentExitLabel));
 				tl.add(contentExitAnim, contentExitLabel);
