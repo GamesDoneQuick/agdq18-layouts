@@ -127,7 +127,7 @@
 			const playFlagTL = new TimelineLite();
 
 			playFlagTL.addLabel('enter');
-			playFlagTL.addLabel('exit', 'enter+=5');
+			playFlagTL.addLabel('exit', `enter+=${holdDuration}`);
 
 			// Enter.
 			playFlagTL.to(this.$.avatar, 0.232, {
@@ -141,9 +141,6 @@
 				immediateRender: false,
 				ease: Sine.easeInOut
 			}, 'enter');
-
-			// Hold.
-			playFlagTL.to({}, holdDuration, {});
 
 			// Exit.
 			playFlagTL.fromTo(this.$.flag, FLAG_ENTRANCE_DURATION, {

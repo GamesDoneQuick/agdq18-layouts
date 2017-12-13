@@ -145,7 +145,7 @@
 		 */
 		showLabel(text, options = {}) {
 			const tl = new TimelineLite();
-			options.flagHoldDuration = DISPLAY_DURATION;
+			options.flagHoldDuration = Math.max(DISPLAY_DURATION / 2, 5);
 			if (this.$.label._showing) {
 				tl.add(this.$.label.change(text, options));
 			} else {
@@ -228,6 +228,7 @@
 				if (contentOverflowAmount < MIN_CONTENT_SCROLL_DISTANCE) {
 					TweenLite.set(Array.from(occludedElements), {opacity: 1});
 					occludedElements.clear();
+					observers.forEach(observer => observer.disconnect());
 				}
 
 				const contentEnterAnim = new TimelineLite();
