@@ -368,9 +368,12 @@
 				return upcomingRuns.length >= 3;
 			});
 
-			const elements = upcomingRuns.map(run => {
+			const elements = upcomingRuns.map((run, index) => {
 				const element = document.createElement('gdq-omnibar-run');
 				element.run = run;
+				if (index === 0) {
+					element.first = true;
+				}
 				return element;
 			});
 
