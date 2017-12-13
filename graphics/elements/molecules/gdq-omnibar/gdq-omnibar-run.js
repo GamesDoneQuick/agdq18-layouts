@@ -9,7 +9,11 @@ class GdqOmnibarRun extends Polymer.Element {
 
 	static get properties() {
 		return {
-			run: Object
+			run: Object,
+			first: {
+				type: Boolean,
+				reflectToAttribute: true
+			}
 		};
 	}
 
