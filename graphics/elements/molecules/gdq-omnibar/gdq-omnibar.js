@@ -1,21 +1,8 @@
 (function () {
 	'use strict';
 
-	/* Minimum amount of content overflow, in pixels, required before the scrolling behavior kicks in.
-	 * We have this because if the content just scrolls a few pixels, it looks kinda bad.
-	 * We've found it's better to just not scroll it at all in those cases, and let it
-	 * cut off those few pixels. */
-	const MIN_CONTENT_SCROLL_DISTANCE = 3;
-
-	// How much time, in seconds, to spend scrolling on a single pixel.
-	const CONTENT_SCROLL_TIME_PER_PIXEL = 0.002;
-
-	// The opacity to set on list items which are partially occluded by the total.
-	const OCCLUDED_OPACITY = 0.25;
-
 	// Configuration consts.
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
-	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
 
 	// Replicants.
 	const currentBids = nodecg.Replicant('currentBids');
@@ -25,10 +12,6 @@
 	const nextRun = nodecg.Replicant('nextRun');
 	const schedule = nodecg.Replicant('schedule');
 	const total = nodecg.Replicant('total');
-
-	// State variables.
-	let contentEnterCounter = 0;
-	let contentExitCounter = 0;
 
 	class GdqOmnibar extends Polymer.Element {
 		static get is() {
@@ -64,7 +47,6 @@
 		run() {
 			const self = this;
 			const parts = [
-				// this.showRecordTracker,
 				this.showCTA,
 				this.showUpNext,
 				this.showChallenges,
@@ -120,14 +102,12 @@
 			return this.$.label.hide();
 		}
 
-		setMainContent(tl, elements) {
+		setContent(tl, element) {
 			tl.to({}, 0.03, {}); // Safety buffer to avoid issues where GSAP might skip our `call`.
 			tl.call(() => {
 				tl.pause();
-				this.$['main-content'].innerHTML = '';
-				elements.forEach(element => {
-					this.$['main-content'].appendChild(element);
-				});
+				this.$.content.innerHTML = '';
+				this.$.content.appendChild(element);
 				Polymer.flush(); // Might not be necessary, but better safe than sorry.
 				Polymer.RenderStatus.afterNextRender(this, () => {
 					Polymer.flush(); // Might not be necessary, but better safe than sorry.
@@ -138,128 +118,22 @@
 			});
 		}
 
-		showMainContent(tl, elements) {
-			let contentOverflowAmount;
-			const contentEnterLabel = `contentEnter${contentEnterCounter}`;
-			const afterContentEnterLabel = `afterContentEnter${contentEnterCounter}`;
-			contentEnterCounter++;
-
-			const occludedElements = new Set();
-			const observerMap = new Map();
-			const observers = elements.map(element => {
-				TweenLite.set(element, {opacity: OCCLUDED_OPACITY});
-				const observer = new IntersectionObserver(entries => {
-					if (!entries || entries.length < 1) {
-						return;
-					}
-
-					const entry = entries[0];
-					const occluded = entry.intersectionRatio < 1;
-					if (occluded) {
-						occludedElements.add(element);
-					} else {
-						occludedElements.delete(element);
-					}
-
-					TweenLite.to(element, 0.224, {
-						opacity: occluded ? OCCLUDED_OPACITY : 1,
-						ease: Sine.easeInout
-					});
-				}, {
-					root: this.$.main,
-					rootMargin: '0px',
-					threshold: [0, 1]
-				});
-
-				observer.observe(element);
-				observerMap.set(element, observer);
-				return observer;
-			});
-
-			tl.addLabel(contentEnterLabel);
-			tl.call(() => {
-				const mainWidth = this.$.main.clientWidth;
-				const mainContentWidth = this.$['main-content'].clientWidth;
-				contentOverflowAmount = mainContentWidth - mainWidth;
-
-				if (contentOverflowAmount < MIN_CONTENT_SCROLL_DISTANCE) {
-					TweenLite.set(Array.from(occludedElements), {opacity: 1});
-					occludedElements.clear();
-					observers.forEach(observer => observer.disconnect());
-				}
-
-				const contentEnterAnim = new TimelineLite();
-				elements.forEach((element, index) => {
-					contentEnterAnim.add(element.enter(), index * 0.1134);
-				});
-				tl.shiftChildren(contentEnterAnim.duration(), true, tl.getLabelTime(afterContentEnterLabel));
-				tl.add(contentEnterAnim, contentEnterLabel);
-			}, null, null, contentEnterLabel);
-			tl.addLabel(afterContentEnterLabel, '+=0.03');
-
-			// Display the content cards long enough for people to read.
-			// Scroll the list of cards if necessary to show them all.
+		showContent(tl, element) {
+			tl.to({}, 0.03, {}); // Safety buffer to avoid issues where GSAP might skip our `call`.
 			tl.call(() => {
 				tl.pause();
-
-				if (contentOverflowAmount < MIN_CONTENT_SCROLL_DISTANCE || occludedElements.length <= 0) {
-					setTimeout(() => {
-						continueTimeline();
-					}, DISPLAY_DURATION * 1000);
-					return;
-				}
-
-				const removeLeadingItem = () => {
-					if (occludedElements.size <= 0) {
-						continueTimeline();
-						return;
-					}
-
-					const firstElement = this.$['main-content'].firstChild;
-					const remainderElements = Array.from(this.$['main-content'].childNodes).slice(1);
-					const tl = new TimelineLite();
-					tl.add(firstElement.exit());
-					tl.to(remainderElements, firstElement.clientWidth * CONTENT_SCROLL_TIME_PER_PIXEL, {
-						x: -firstElement.clientWidth - 6, // This "6" is the list item margin.
-						ease: Power2.easeInOut
-					});
-					tl.call(() => {
-						this.$['main-content'].removeChild(firstElement);
-						observerMap.get(firstElement).disconnect();
-						occludedElements.delete(firstElement);
-						TweenLite.set(remainderElements, {x: 0});
-					});
-					tl.call(removeLeadingItem, null, null, SCROLL_HOLD_DURATION);
-				};
-
-				setTimeout(() => {
-					removeLeadingItem();
-				}, SCROLL_HOLD_DURATION * 1000);
-			}, null, null, afterContentEnterLabel);
-
-			function continueTimeline() {
-				observers.forEach(observer => observer.disconnect());
-				tl.resume(null, false);
-			}
+				const elementEntranceAnim = element.enter();
+				elementEntranceAnim.call(tl.resume, null, tl);
+			});
 		}
 
-		hideMainContent(tl, elements) {
-			const contentExitLabel = `contentExit${contentExitCounter}`;
-			const afterContentExitLabel = `afterContentExit${contentExitCounter}`;
-			contentExitCounter++;
-
-			// Exit the content cards.
-			tl.add(contentExitLabel, '+=0.03');
+		hideContent(tl, element) {
+			tl.to({}, 0.03, {}); // Safety buffer to avoid issues where GSAP might skip our `call`.
 			tl.call(() => {
-				const contentExitAnim = new TimelineLite();
-				elements.slice(0).reverse().forEach((element, index) => {
-					contentExitAnim.add(element.exit(), index * 0.3134);
-				});
-				tl.shiftChildren(contentExitAnim.duration(), true, tl.getLabelTime(afterContentExitLabel));
-				tl.add(contentExitAnim, contentExitLabel);
-			}, null, null, contentExitLabel);
-			tl.add(afterContentExitLabel, '+=0.03');
-			tl.set(this.$['main-content'], {x: 0}, afterContentExitLabel);
+				tl.pause();
+				const elementExitAnim = element.exit();
+				elementExitAnim.call(tl.resume, null, tl);
+			});
 		}
 
 		showCTA() {
@@ -296,16 +170,17 @@
 				return upcomingRuns.length >= 3;
 			});
 
-			const elements = upcomingRuns.map((run, index) => {
+			const listElement = document.createElement('gdq-omnibar-list');
+			upcomingRuns.forEach((run, index) => {
 				const element = document.createElement('gdq-omnibar-run');
 				element.run = run;
 				if (index === 0) {
 					element.first = true;
 				}
-				return element;
+				listElement.appendChild(element);
 			});
 
-			this.setMainContent(tl, elements);
+			this.setContent(tl, listElement);
 
 			tl.add(this.showLabel('Up Next', {
 				avatarIconName: 'upnext',
@@ -313,8 +188,8 @@
 				ringColor: '#50A914'
 			}), '+=0.03');
 
-			this.showMainContent(tl, elements);
-			this.hideMainContent(tl, elements);
+			this.showContent(tl, listElement);
+			this.hideContent(tl, listElement);
 
 			return tl;
 		}
@@ -355,13 +230,14 @@
 				return tl;
 			}
 
-			const elements = bidsToDisplay.map(bid => {
+			const listElement = document.createElement('gdq-omnibar-list');
+			bidsToDisplay.forEach(bid => {
 				const element = document.createElement('gdq-omnibar-bid');
 				element.bid = bid;
-				return element;
+				listElement.appendChild(element);
 			});
 
-			this.setMainContent(tl, elements);
+			this.setContent(tl, listElement);
 
 			tl.add(this.showLabel('Challenges', {
 				avatarIconName: 'challenges',
@@ -369,8 +245,8 @@
 				ringColor: '#FFFFFF'
 			}), '+=0.03');
 
-			this.showMainContent(tl, elements);
-			this.hideMainContent(tl, elements);
+			this.showContent(tl, listElement);
+			this.hideContent(tl, listElement);
 
 			return tl;
 		}
@@ -434,7 +310,12 @@
 					elements.push(placeholder);
 				}
 
-				this.setMainContent(tl, elements);
+				const listElement = document.createElement('gdq-omnibar-list');
+				elements.forEach(element => {
+					listElement.appendChild(element);
+				});
+
+				this.setContent(tl, listElement);
 
 				// First bid shows the label.
 				if (index === 0) {
@@ -445,8 +326,8 @@
 					}), '+=0.03');
 				}
 
-				this.showMainContent(tl, elements);
-				this.hideMainContent(tl, elements);
+				this.showContent(tl, listElement);
+				this.hideContent(tl, listElement);
 			});
 
 			return tl;
@@ -471,13 +352,14 @@
 				return true;
 			}).concat(specialPrizesToDisplayLast);
 
-			const elements = prizesToDisplay.map(prize => {
+			const listElement = document.createElement('gdq-omnibar-list');
+			prizesToDisplay.forEach(prize => {
 				const element = document.createElement('gdq-omnibar-prize');
 				element.prize = prize;
-				return element;
+				listElement.appendChild(element);
 			});
 
-			this.setMainContent(tl, elements);
+			this.setContent(tl, listElement);
 
 			tl.add(this.showLabel('Prizes', {
 				avatarIconName: 'prizes',
@@ -485,8 +367,8 @@
 				ringColor: '#EC0793'
 			}), '+=0.03');
 
-			this.showMainContent(tl, elements);
-			this.hideMainContent(tl, elements);
+			this.showContent(tl, listElement);
+			this.hideContent(tl, listElement);
 
 			return tl;
 		}

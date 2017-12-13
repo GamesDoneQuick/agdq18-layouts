@@ -5,6 +5,7 @@
 <link rel="import" href="gdq-omnibar-cta.html">
 <link rel="import" href="gdq-omnibar-label.html">
 <link rel="import" href="gdq-omnibar-left-divider.html">
+<link rel="import" href="gdq-omnibar-list.html">
 <link rel="import" href="gdq-omnibar-prize.html">
 <link rel="import" href="gdq-omnibar-run.html">
 <link rel="import" href="gdq-omnibar-total.html">
@@ -34,29 +35,14 @@
 				position: relative;
 			}
 
-			#main {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: flex-start;
+			#content {
+				height: 100%;
 				line-height: 1;
 				white-space: nowrap;
 				z-index: 1;
-				min-width: 1px; /* needed for fitMainText method */
+				min-width: 1px;
 				@apply --layout-flex;
-			}
-
-			#main-content {
-				height: 100%;
-				min-width: 100%;
-				will-change: transform;
-				flex-grow: 1;
-				flex-shrink: 0;
 				@apply --layout-horizontal;
-			}
-
-			#main-content > :not(:last-child) {
-				margin-right: 6px;
 			}
 
 			#cta {
@@ -82,9 +68,7 @@
 		<gdq-omnibar-left-divider id="leftDivider"></gdq-omnibar-left-divider>
 		<div id="body">
 			<gdq-omnibar-label id="label"></gdq-omnibar-label>
-			<div id="main">
-				<div id="main-content"></div>
-			</div>
+			<div id="content"></div>
 			<gdq-omnibar-cta id="cta"></gdq-omnibar-cta>
 		</div>
 		<gdq-omnibar-total id="total"></gdq-omnibar-total>
