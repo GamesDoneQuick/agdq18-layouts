@@ -13,10 +13,6 @@
 	// The opacity to set on list items which are partially occluded by the total.
 	const OCCLUDED_OPACITY = 0.25;
 
-	// Used by the record tracker functionality.
-	const AGDQ17_TOTAL = 2222790.52;
-	window.AGDQ17_TOTAL = AGDQ17_TOTAL;
-
 	// Configuration consts.
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
 	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
@@ -27,7 +23,6 @@
 	const currentPrizes = nodecg.Replicant('currentPrizes');
 	const currentRun = nodecg.Replicant('currentRun');
 	const nextRun = nodecg.Replicant('nextRun');
-	const recordTrackerEnabled = nodecg.Replicant('recordTrackerEnabled');
 	const schedule = nodecg.Replicant('schedule');
 	const total = nodecg.Replicant('total');
 
@@ -49,7 +44,6 @@
 				currentPrizes,
 				currentRun,
 				nextRun,
-				recordTrackerEnabled,
 				schedule,
 				total
 			];
@@ -62,11 +56,6 @@
 					// Start the loop once all replicants are declared;
 					if (numDeclared >= replicants.length) {
 						Polymer.RenderStatus.beforeNextRender(this, this.run);
-						total.on('change', (newVal, oldVal) => {
-							if (oldVal && newVal.raw >= AGDQ17_TOTAL && oldVal.raw < AGDQ17_TOTAL) {
-								this.alertNewRecord();
-							}
-						});
 					}
 				});
 			});
@@ -103,38 +92,6 @@
 			}
 
 			processNextPart();
-		}
-
-		alertNewRecord() {
-			const tl = new TimelineLite();
-
-			/* Disabled for now.
-			// Enter
-			tl.set(this.$['newRecord-text'], {y: '-100%'});
-			tl.set(this.$.newRecord, {visibility: 'visible'});
-			tl.to([this.$.main, this.$.label], 0.25, {
-				opacity: 0,
-				ease: Power1.easeIn
-			});
-			tl.add(this.$['newRecord-bg'].enter('above'), 0.1);
-			tl.to(this.$['newRecord-text'], 0.334, {
-				y: '0%',
-				ease: Power1.easeInOut
-			}, 0.2);
-
-			// Exit
-			tl.addLabel('exit', '+=20');
-			tl.add(this.$['newRecord-bg'].exit('below'), 'exit');
-			tl.to(this.$['newRecord-text'], 0.334, {
-				y: '100%',
-				ease: Power1.easeInOut
-			}, 'exit+=0.2');
-			tl.to([this.$.main, this.$.label], 0.25, {
-				opacity: 1,
-				ease: Power1.easeOut
-			}, 'exit+=0.2'); */
-
-			return tl;
 		}
 
 		/**
@@ -303,35 +260,6 @@
 			}, null, null, contentExitLabel);
 			tl.add(afterContentExitLabel, '+=0.03');
 			tl.set(this.$['main-content'], {x: 0}, afterContentExitLabel);
-		}
-
-		showRecordTracker() {
-			const tl = new TimelineLite();
-
-			// If we have manually disabled this feature, return.
-			if (!recordTrackerEnabled.value) {
-				return tl;
-			}
-
-			// If we have passed the previous event's donation total, return.
-			if (total.value.raw > AGDQ17_TOTAL) {
-				return tl;
-			}
-
-			/* Disabled for now.
-			const elements = [document.createElement('gdq-omnibar-record')];
-
-			this.setMainContent(tl, elements);
-
-			tl.add(this.showLabel('RECORD TRACKER', '20px', {
-				startColor: '#76ca7c',
-				endColor: '#26952d'
-			}), '+=0.03');
-
-			this.showMainContent(tl, elements);
-			this.hideMainContent(tl, elements); */
-
-			return tl;
 		}
 
 		showCTA() {

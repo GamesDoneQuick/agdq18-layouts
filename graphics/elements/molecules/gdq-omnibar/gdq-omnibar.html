@@ -6,7 +6,6 @@
 <link rel="import" href="gdq-omnibar-label.html">
 <link rel="import" href="gdq-omnibar-left-divider.html">
 <link rel="import" href="gdq-omnibar-prize.html">
-<link rel="import" href="gdq-omnibar-record.html">
 <link rel="import" href="gdq-omnibar-run.html">
 <link rel="import" href="gdq-omnibar-total.html">
 
@@ -69,40 +68,6 @@
 				font-size: 31px;
 			}
 
-			#newRecord {
-				display: none;
-			}
-
-			#newRecord-bg,
-			#newRecord-text {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-			}
-
-			#newRecord-bg {
-				animation: hueRotate 2s linear infinite;
-			}
-
-			@keyframes hueRotate {
-				from { filter: hue-rotate(0deg); }
-				to { filter: hue-rotate(360deg); }
-			}
-
-			#newRecord-text {
-				color: #ffffff;
-				font-family: Montserrat, sans-serif;
-				font-size: 30px;
-				font-weight: 700;
-				text-transform: uppercase;
-				z-index: 4;
-				text-align: center;
-				@apply --layout-horizontal;
-				@apply --layout-center-center;
-			}
-
 			#charityLogo {
 				z-index: 1;
 				@apply --layout-flex-none;
@@ -121,9 +86,6 @@
 				<div id="main-content"></div>
 			</div>
 			<gdq-omnibar-cta id="cta"></gdq-omnibar-cta>
-			<div id="newRecord" class="shadow">
-				<div id="newRecord-text">NEW RECORD DONATION TOTAL FOR GDQ!</div>
-			</div>
 		</div>
 		<gdq-omnibar-total id="total"></gdq-omnibar-total>
 		<img id="charityLogo" src="[[importPath]]img/logo-charity.png">
