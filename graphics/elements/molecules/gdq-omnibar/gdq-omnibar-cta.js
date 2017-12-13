@@ -22,29 +22,30 @@
 		ready() {
 			super.ready();
 
-			const chevrons = this.shadowRoot.querySelectorAll('.chevron');
-			const bgChevrons = this.shadowRoot.querySelectorAll('.chevron--bg');
+			Polymer.RenderStatus.beforeNextRender(this, () => {
+				const chevrons = this.shadowRoot.querySelectorAll('.chevron');
+				const bgChevrons = this.shadowRoot.querySelectorAll('.chevron--bg');
 
-			// The chevrons get confused by our `width: 0px` trick on their parents, so
-			// we have to manually re-render them at the correct size here.
-			chevrons.forEach(chevron => {
-				chevron.render(CHEVRON_WIDTH, CHEVRON_HEIGHT);
-			});
-
-			bgChevrons.forEach(bgChevron => {
-				const gradient = new SVG.Gradient('linear');
-				gradient.from(0, 0).to(0, 1);
-				gradient.update(stop => {
-					stop.at(0, '#052B33');
-					stop.at(1, '#040F10');
+				// The chevrons get confused by our `width: 0px` trick on their parents, so
+				// we have to manually re-render them at the correct size here.
+				chevrons.forEach(chevron => {
+					chevron.render(CHEVRON_WIDTH, CHEVRON_HEIGHT);
 				});
-				bgChevron.svgDoc.add(gradient);
-				bgChevron.chevron.fill(gradient.fill());
-			});
 
-			this._$chevrons = chevrons;
-			this._$bgChevrons = bgChevrons;
-			this.reset();
+				bgChevrons.forEach(bgChevron => {
+					const gradient = new SVG.Gradient('linear');
+					gradient.from(0, 0).to(0, 1);
+					gradient.update(stop => {
+						stop.at(0, '#052B33');
+						stop.at(1, '#040F10');
+					});
+					bgChevron.svgDoc.add(gradient);
+					bgChevron.chevron.fill(gradient.fill());
+				});
+
+				this._$chevrons = chevrons;
+				this._$bgChevrons = bgChevrons;
+			});
 		}
 
 		reset() {
