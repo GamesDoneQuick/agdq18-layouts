@@ -11,10 +11,6 @@
 	// The opacity to set on list items which are partially occluded by the total.
 	const OCCLUDED_OPACITY = 0.25;
 
-	// Configuration consts.
-	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
-	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
-
 	/**
 	 * @customElement
 	 * @polymer
@@ -37,7 +33,7 @@
 			};
 		}
 
-		enter() {
+		enter(displayDuration, scrollHoldDuration) {
 			const listWidth = this.clientWidth;
 			const contentWidth = this.$.content.clientWidth;
 			const contentOverflowWidth = contentWidth - listWidth;
@@ -49,7 +45,7 @@
 			});
 
 			if (contentOverflowWidth < MIN_CONTENT_SCROLL_DISTANCE) {
-				tl.to({}, DISPLAY_DURATION, {});
+				tl.to({}, displayDuration, {});
 			} else {
 				// Display the content cards long enough for people to read.
 				// Scroll the list of cards if necessary to show them all.
@@ -95,7 +91,7 @@
 
 				leadingElementsToExit.forEach(leadingElement => {
 					const trailingElements = elements.slice(elements.indexOf(leadingElement) + 1);
-					tl.add(leadingElement.exit(), `+=${SCROLL_HOLD_DURATION}`);
+					tl.add(leadingElement.exit(), `+=${scrollHoldDuration}`);
 					tl.to(trailingElements, leadingElement.clientWidth * CONTENT_SCROLL_TIME_PER_PIXEL, {
 						x: -leadingElement.getBoundingClientRect().width - this.marginSize,
 						ease: Power2.easeInOut
@@ -110,7 +106,7 @@
 
 				tl.call(() => {
 					observers.forEach(observer => observer.disconnect());
-				});
+				}, null, null, `+=${scrollHoldDuration}`);
 			}
 
 			return tl;

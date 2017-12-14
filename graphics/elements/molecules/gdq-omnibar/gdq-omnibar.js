@@ -3,6 +3,7 @@
 
 	// Configuration consts.
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
+	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
 
 	// Replicants.
 	const currentBids = nodecg.Replicant('currentBids');
@@ -122,7 +123,7 @@
 			tl.to({}, 0.03, {}); // Safety buffer to avoid issues where GSAP might skip our `call`.
 			tl.call(() => {
 				tl.pause();
-				const elementEntranceAnim = element.enter();
+				const elementEntranceAnim = element.enter(DISPLAY_DURATION, SCROLL_HOLD_DURATION);
 				elementEntranceAnim.call(tl.resume, null, tl);
 			});
 		}
@@ -283,52 +284,24 @@
 				}
 			});
 
-			// If there's no challenges to display, bail out.
+			// If there's no choices to display, bail out.
 			if (bidsToDisplay.length <= 0) {
 				return tl;
 			}
 
-			// Loop over each bid and queue it up on the timeline
-			bidsToDisplay.forEach((bid, index) => {
-				// Show at most 4 options.
-				const elements = bid.options.slice(0, 4).map((option, index) => {
-					const element = document.createElement('gdq-omnibar-bid');
-					element.bid = option;
-					element.index = index;
+			const containerElement = document.createElement('gdq-omnibar-bidwars');
+			containerElement.bidWars = bidsToDisplay;
 
-					// Options that aren't the first option show their delta to the leader options.
-					if (index > 0 && bid.options[0].rawTotal > option.rawTotal) {
-						element.delta = '-$' + (bid.options[0].rawTotal - option.rawTotal).toLocaleString('en-US');
-					}
+			this.setContent(tl, containerElement);
 
-					return element;
-				});
+			tl.add(this.showLabel('Bid Wars', {
+				avatarIconName: 'bidwars',
+				flagColor: '#FF4D4A',
+				ringColor: '#FF4D4D'
+			}), '+=0.03');
 
-				if (elements.length <= 0) {
-					const placeholder = document.createElement('gdq-omnibar-bid');
-					placeholder.bid = {};
-					elements.push(placeholder);
-				}
-
-				const listElement = document.createElement('gdq-omnibar-list');
-				elements.forEach(element => {
-					listElement.appendChild(element);
-				});
-
-				this.setContent(tl, listElement);
-
-				// First bid shows the label.
-				if (index === 0) {
-					tl.add(this.showLabel('Bid Wars', {
-						avatarIconName: 'bidwars',
-						flagColor: '#FF4D4A',
-						ringColor: '#FF4D4D'
-					}), '+=0.03');
-				}
-
-				this.showContent(tl, listElement);
-				this.hideContent(tl, listElement);
-			});
+			this.showContent(tl, containerElement);
+			this.hideContent(tl, containerElement);
 
 			return tl;
 		}
