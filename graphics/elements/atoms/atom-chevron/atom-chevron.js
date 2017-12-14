@@ -137,7 +137,7 @@ class AtomChevron extends Polymer.Element {
 		if (!this.noFillTriangle) {
 			const fillTriangle = AtomChevron.createFillTriangle({
 				width: width - thickness,
-				height: height - 2,
+				height: height - (strokeSize * 2),
 				fillColor: this.readCSSCustomProperty('--atom-chevron-background-color')
 			});
 
