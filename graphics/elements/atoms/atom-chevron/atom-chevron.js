@@ -142,11 +142,11 @@ class AtomChevron extends Polymer.Element {
 			});
 
 			fillTriangle.move(0, strokeSize);
-			chevron.move(strokeSize / 2, strokeSize / 2);
 			this.fillTriangle = fillTriangle;
 			this.svgDoc.add(fillTriangle);
 		}
 
+		chevron.move(strokeSize / 2, strokeSize / 2);
 		this.chevron = chevron;
 		this.svgDoc.add(chevron);
 
