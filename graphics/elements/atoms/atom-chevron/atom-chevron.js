@@ -1,8 +1,9 @@
+/* global CSSReflectionMixin */
 /**
  * @customElement
  * @polymer
  */
-class AtomChevron extends Polymer.Element {
+class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 	static get is() {
 		return 'atom-chevron';
 	}
@@ -109,20 +110,14 @@ class AtomChevron extends Polymer.Element {
 
 		width = typeof width === 'number' ? width : this.scrollWidth;
 		height = typeof height === 'number' ? height : this.clientHeight;
-		const strokeSize = parseInt(
-			this.readCSSCustomProperty(
-				'--atom-chevron-stroke-size',
-				AtomChevron.DEFAULT_STROKE_SIZE
-			),
-			10
-		);
-		const thickness = parseInt(
-			this.readCSSCustomProperty(
-				'--atom-chevron-thickness',
-				AtomChevron.DEFAULT_THICKNESS
-			),
-			10
-		);
+		const strokeSize = parseInt(this.readCSSCustomProperty(
+			'--atom-chevron-stroke-size',
+			AtomChevron.DEFAULT_STROKE_SIZE
+		), 10);
+		const thickness = parseInt(this.readCSSCustomProperty(
+			'--atom-chevron-thickness',
+			AtomChevron.DEFAULT_THICKNESS
+		), 10);
 		this.svgDoc.size(width, height);
 
 		const chevron = AtomChevron.createChevron({
@@ -154,23 +149,6 @@ class AtomChevron extends Polymer.Element {
 			this.svgDoc.transform({scaleX: -1});
 			this._lastDirection = 'left';
 		}
-	}
-
-	/**
-	 * Gets the value of a Custom CSS Property.
-	 * @param {String} prop - The property name to get the value of.
-	 * @param {*} [fallback] - An optional fallback value to use if the property is not defined.
-	 * @returns {String} - The value of the Custom CSS Property, which is always a string.
-	 */
-	readCSSCustomProperty(prop, fallback) {
-		let value;
-		if ('ShadyCSS' in window) {
-			value = window.ShadyCSS.getComputedStyleValue(this, prop);
-		} else {
-			value = getComputedStyle(this, prop);
-		}
-
-		return value || fallback;
 	}
 }
 

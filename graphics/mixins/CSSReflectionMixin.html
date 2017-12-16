@@ -1,0 +1,22 @@
+<script>
+	window.CSSReflectionMixin = Polymer.dedupingMixin(base => {
+		return class extends base {
+			/**
+			 * Gets the value of a Custom CSS Property.
+			 * @param {String} prop - The property name to get the value of.
+			 * @param {*} [fallback] - An optional fallback value to use if the property is not defined.
+			 * @returns {String} - The value of the Custom CSS Property, which is always a string.
+			 */
+			readCSSCustomProperty(prop, fallback) {
+				let value;
+				if ('ShadyCSS' in window) {
+					value = window.ShadyCSS.getComputedStyleValue(this, prop);
+				} else {
+					value = getComputedStyle(this, prop);
+				}
+
+				return value || fallback;
+			}
+		};
+	});
+</script>
