@@ -5,9 +5,26 @@
 	<template>
 		<style>
 			:host {
+				position: relative;
 				display: block;
 			}
+
+			#fillTriangle {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: calc(100% - var(--atom-chevron-thickness, 6px));
+				clip-path: polygon(0 0, 100% 50%, 0 100%);
+				background: var(--atom-chevron-background, transparent);
+			}
+
+			svg {
+				@apply --atom-chevron-chevron;
+			}
 		</style>
+
+		<div id="fillTriangle"></div>
 	</template>
 
 	<script src="atom-chevron.js"></script>

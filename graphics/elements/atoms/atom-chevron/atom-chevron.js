@@ -18,10 +18,6 @@ class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 				type: String,
 				value: 'right'
 			},
-			noFillTriangle: {
-				type: Boolean,
-				value: false
-			},
 			noAutoRender: {
 				type: Boolean,
 				value: false
@@ -72,27 +68,6 @@ class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 		]);
 	}
 
-	/**
-	 * Creates a new solidly filled triangle as an SVG.js Polygon.
-	 * The triangle always points right.
-	 * If you need it to point another way, apply a transform to it.
-	 * @param {Number} width - How wide, in pixels, to draw the triangle.
-	 * @param {Number} height - How tall, in pixels, to draw the triangle.
-	 * @param {String} fillColor - The color to apply to the interior of the chevron.
-	 * @returns {svgjs.Polygon} - The constructed SVG.js Polygon instance.
-	 */
-	static createFillTriangle({width, height, fillColor}) {
-		const triangle = new SVG.Polygon();
-		triangle.plot([
-			[0, 0],
-			[width, height / 2],
-			[0, height]
-		]);
-
-		triangle.fill(fillColor);
-		return triangle;
-	}
-
 	ready() {
 		super.ready();
 		this.svgDoc = SVG(this.shadowRoot);
@@ -128,18 +103,6 @@ class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 			strokeSize,
 			strokeColor: this.readCSSCustomProperty('--atom-chevron-stroke-color')
 		});
-
-		if (!this.noFillTriangle) {
-			const fillTriangle = AtomChevron.createFillTriangle({
-				width: width - thickness,
-				height: height - (strokeSize * 2),
-				fillColor: this.readCSSCustomProperty('--atom-chevron-background-color')
-			});
-
-			fillTriangle.move(0, strokeSize);
-			this.fillTriangle = fillTriangle;
-			this.svgDoc.add(fillTriangle);
-		}
 
 		chevron.move(strokeSize / 2, strokeSize / 2);
 		this.chevron = chevron;
