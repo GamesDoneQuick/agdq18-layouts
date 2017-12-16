@@ -7,7 +7,7 @@
 				"Polymer.GestureEventListeners",
 				"Polymer.MutableData",
 				"nodecg.Replicant",
-				"SteppedGradientMixin",
+				"CSSReflectionMixin",
 				"SVG"
 			]
 		}],
