@@ -1,5 +1,5 @@
 <link rel="import" href="../../../../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="gdq-omnibar-bid.html">
+<link rel="import" href="gdq-omnibar-bidwar-option.html">
 <link rel="import" href="gdq-omnibar-content-label.html">
 <link rel="import" href="gdq-omnibar-list.html">
 
@@ -14,6 +14,7 @@
 			}
 
 			#label {
+				z-index: 1;
 				--gdq-omnibar-content-label-fg-color: #FF4D4D;
 				--gdq-omnibar-content-label-glow-color: rgba(255, 0, 0, 0.74);
 				--gdq-omnibar-content-label-bg-color: rgba(255, 140, 140, 0.2);
@@ -36,7 +37,8 @@
 			}
 
 			.list:not(.iron-selected) {
-				visibility: hidden;
+				opacity: 0;
+				z-index: -10;
 			}
 		</style>
 

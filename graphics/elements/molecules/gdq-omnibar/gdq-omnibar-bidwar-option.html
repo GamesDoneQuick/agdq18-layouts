@@ -1,0 +1,166 @@
+<link rel="import" href="../../../../shared/imports/gsap-CustomEase.html">
+<link rel="import" href="../../../../shared/imports/gsap-DrawSVG.html">
+<link rel="import" href="../../../../shared/imports/MaybeRandom.html">
+<link rel="import" href="../../atoms/atom-arrow-block/atom-arrow-block.html">
+<link rel="import" href="../../atoms/atom-chevron/atom-chevron.html">
+<link rel="import" href="../../atoms/atom-gradient-text/atom-gradient-text.html">
+
+<dom-module id="gdq-omnibar-bidwar-option">
+	<template>
+		<style>
+			:host {
+				height: 100%;
+				box-sizing: border-box;
+				will-change: opacity;
+				@apply --layout-horizontal;
+			}
+
+			#filterHolder {
+				position: absolute;
+				top: 0;
+				left: 0;
+				visibility: hidden;
+				z-index: -10;
+			}
+
+			#innerGlowEffectFlood {
+				flood-color: #C5BD03
+			}
+
+			#tailChevron {
+				position: relative;
+				top: 5px;
+				width: 24px;
+				height: calc(100% - 10px);
+				z-index: 2;
+				margin-right: -18px;
+				will-change: transform;
+				--atom-chevron-fill-color: #F3FF6E;
+				--atom-chevron-stroke-color: #F3FF6E;
+				--atom-chevron-background: linear-gradient(to bottom, #052B33 0%, #040F10 100%);
+				--atom-chevron-chevron: {
+					filter: drop-shadow(0 0 12px #C5BD03);
+				}
+			}
+
+			#body {
+				padding: 5px 0;
+				box-sizing: border-box;
+				height: 100%;
+				will-change: clip-path;
+				@apply --layout-horizontal;
+			}
+
+			#totalBlock {
+				margin-left: -18px;
+				--atom-arrow-block-fill-color: rgba(243, 255, 110, 0.4);
+				--atom-arrow-block-glow-color: #C5BD03;
+			}
+
+			#label,
+			#total {
+				font-style: normal;
+				line-height: normal;
+				font-size: 24px;
+			}
+
+			#label {
+				font-weight: 500;
+				--atom-gradient-text-shadow: 0 0 4px #C5BD03;
+				--atom-gradient-text-gradient: linear-gradient(to bottom, #FFFFFF 0%, #CDCDCD 100%);
+			}
+
+			#total {
+				font-weight: 700;
+				color: #05262E;
+				filter: url('#inset-shadow');
+				will-change: opacity;
+			}
+
+			atom-arrow-block {
+				height: 100%;
+				--atom-arrow-block-stroke-color: #F3FF6E;
+				--atom-arrow-block-fill-color: transparent;
+			}
+
+			/* Winning styles. */
+			:host([winning]) #innerGlowEffectFlood {
+				flood-color: #2AC503;
+			}
+
+			:host([winning]) #tailChevron {
+				--atom-chevron-fill-color: #8BFF6E;
+				--atom-chevron-stroke-color: #8BFF6E;
+				--atom-chevron-chevron: {
+					filter: drop-shadow(0 0 12px #2AC503);
+				}
+			}
+
+			:host([winning]) #totalBlock {
+				--atom-arrow-block-fill-color: rgba(139, 255, 110, 0.4);
+				--atom-arrow-block-glow-color: #2AC503;
+			}
+
+			:host([winning]) #label {
+				--atom-gradient-text-shadow: 0 0 4px #2AC503;
+			}
+
+			:host([winning]) atom-arrow-block {
+				--atom-arrow-block-stroke-color: #87FD6A;
+			}
+
+			/* Placeholder styles. ("Be the first to bid!") */
+			:host([placeholder]) #tailChevron {
+				--atom-chevron-fill-color: #82EFFF;
+				--atom-chevron-stroke-color: #82EFFF;
+				--atom-chevron-chevron: {
+					filter: drop-shadow(0 0 12px #82EFFF);
+				}
+			}
+
+			:host([placeholder]) #label {
+				--atom-gradient-text-shadow: 0 0 4px #82EFFF;
+				--atom-gradient-text-gradient: linear-gradient(to bottom, #FFFFFF 0%, #82EFFF 100%);
+			}
+
+			:host([placeholder]) atom-arrow-block {
+				--atom-arrow-block-stroke-color: #82EFFF;
+			}
+
+			:host([placeholder]) #totalBlock {
+				display: none;
+			}
+		</style>
+
+		<svg id="filterHolder">
+			<!-- Adapted from https://www.xanthir.com/b4Yv0 -->
+			<filter id="inset-shadow" x="-50%" y="-50%" width="200%" height="200%">
+				<feComponentTransfer in=SourceAlpha>
+					<feFuncA type="table" tableValues="1 0" />
+				</feComponentTransfer>
+				<feGaussianBlur stdDeviation="0.5"/>
+				<feOffset dx="0" dy="0" result="offsetblur"/>
+				<feFlood id="innerGlowEffectFlood" result="color"/>
+				<feComposite in2="offsetblur" operator="in"/>
+				<feComposite in2="SourceAlpha" operator="in" />
+				<feMerge>
+					<feMergeNode in="SourceGraphic" />
+					<feMergeNode />
+				</feMerge>
+			</filter>
+		</svg>
+
+		<atom-chevron id="tailChevron" no-auto-render></atom-chevron>
+
+		<div id="body">
+			<atom-arrow-block id="labelBlock">
+				<atom-gradient-text id="label" text="[[formatOptionDescription(bid)]]"></atom-gradient-text>
+			</atom-arrow-block>
+			<atom-arrow-block id="totalBlock" inner-glow>
+				<div id="total">[[bid.total]]</div>
+			</atom-arrow-block>
+		</div>
+	</template>
+
+	<script src="gdq-omnibar-bidwar-option.js"></script>
+</dom-module>
