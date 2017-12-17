@@ -18,8 +18,10 @@
 		"Back": true,
 		"Sine": true,
 		"SlowMo": true,
+		"CustomEase": true,
 		"textFit": true,
 		"createjs": true,
-		"SVG": true
+		"SVG": true,
+		"MaybeRandom": true
 	}
 }
