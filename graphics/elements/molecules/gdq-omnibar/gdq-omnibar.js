@@ -171,7 +171,7 @@
 				}
 
 				upcomingRuns.push(item);
-				return upcomingRuns.length >= 3;
+				return upcomingRuns.length >= 4;
 			});
 
 			const listElement = document.createElement('gdq-omnibar-list');
