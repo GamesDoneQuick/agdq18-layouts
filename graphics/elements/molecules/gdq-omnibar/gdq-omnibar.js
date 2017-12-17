@@ -140,6 +140,9 @@
 		showCTA() {
 			const tl = new TimelineLite();
 			tl.add(this.hideLabel());
+			tl.call(() => {
+				this.$.content.innerHTML = '';
+			});
 			tl.add(this.$.cta.show(DISPLAY_DURATION));
 			return tl;
 		}
