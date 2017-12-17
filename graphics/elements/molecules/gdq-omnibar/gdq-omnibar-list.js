@@ -84,16 +84,17 @@
 				let recoveredWidth = 0;
 				const leadingElementsToExit = [];
 				while (recoveredWidth < (contentOverflowWidth - MIN_CONTENT_SCROLL_DISTANCE)) {
-					const leadingItem = elements[leadingElementsToExit.length];
-					leadingElementsToExit.push(leadingItem);
-					recoveredWidth += leadingItem.clientWidth;
+					const leadingElement = elements[leadingElementsToExit.length];
+					leadingElementsToExit.push(leadingElement);
+					recoveredWidth += this.getPreciseElementWidth(leadingElement);
 				}
 
 				leadingElementsToExit.forEach(leadingElement => {
+					const leadingElementWidth = this.getPreciseElementWidth(leadingElement);
 					const trailingElements = elements.slice(elements.indexOf(leadingElement) + 1);
 					tl.add(leadingElement.exit(), `+=${scrollHoldDuration}`);
-					tl.to(trailingElements, leadingElement.clientWidth * CONTENT_SCROLL_TIME_PER_PIXEL, {
-						x: -leadingElement.getBoundingClientRect().width - this.marginSize,
+					tl.to(trailingElements, leadingElementWidth * CONTENT_SCROLL_TIME_PER_PIXEL, {
+						x: -leadingElementWidth - this.marginSize,
 						ease: Power2.easeInOut
 					});
 					tl.call(() => {
@@ -124,6 +125,10 @@
 
 		getListItems() {
 			return Array.from(this.$.contentSlot.assignedNodes());
+		}
+
+		getPreciseElementWidth(element) {
+			return element.getBoundingClientRect().width;
 		}
 
 		_marginSizeChanged(newVal) {
