@@ -16,6 +16,8 @@
 		}
 
 		enter(labelHtml) {
+			labelHtml = this.processLabelHtml(labelHtml);
+
 			const tl = new TimelineLite();
 
 			tl.fromTo(this.$.anchor, ANCHOR_TWEEN_DURATION, {
@@ -40,6 +42,8 @@
 		}
 
 		change(labelHtml) {
+			labelHtml = this.processLabelHtml(labelHtml);
+
 			const tl = new TimelineLite();
 
 			tl.to(this.$.body, this.calcBodyTweenDuration(labelHtml), {
@@ -74,6 +78,10 @@
 			});
 
 			return tl;
+		}
+
+		processLabelHtml(labelHtml) {
+			return labelHtml.replace(/\\n/g, '<br/>');
 		}
 
 		calcBodyTweenDuration(labelHtml) {
