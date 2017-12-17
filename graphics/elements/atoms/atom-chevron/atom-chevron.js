@@ -16,7 +16,8 @@ class AtomChevron extends CSSReflectionMixin(Polymer.Element) {
 			 */
 			direction: {
 				type: String,
-				value: 'right'
+				value: 'right',
+				reflectToAttribute: true
 			},
 			noAutoRender: {
 				type: Boolean,

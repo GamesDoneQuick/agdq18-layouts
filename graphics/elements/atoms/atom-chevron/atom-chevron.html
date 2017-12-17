@@ -20,7 +20,12 @@
 			}
 
 			svg {
+				position: relative;
 				@apply --atom-chevron-chevron;
+			}
+
+			:host([direction="left"]) #fillTriangle {
+				clip-path: polygon(100% 0, 0 50%, 100% 100%);
 			}
 		</style>
 
