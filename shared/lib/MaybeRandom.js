@@ -59,13 +59,14 @@
 	/**
 	 * Creates a tween which uses getMaybeRandomNumber.
 	 *
-	 * @param {Object} target - The object to tween.
+	 * @param {Object|Array} target - The object to tween, or an array of objects.
 	 * @param {String} propName - The name of the property to tween on the target object.
 	 * @param {Number} duration - The duration of the tween.
 	 * @param {Function} [ease=Linear.easeNone] - An easing function which accepts a single "progress" argument,
 	 * which is a float in the range 0 - 1. All GSAP eases are supported, as they follow this signature.
 	 * @param {MaybeRandomNumberParams} start - The starting getMaybeRandomNumber arguments.
 	 * @param {MaybeRandomNumberParams} end - The ending getMaybeRandomNumber arguments.
+	 * @param {Function} [onUpdate] - An optional callback which will be invoked on every tick with the new MaybeRandom value.
 	 * @returns {TweenLite} - A GSAP TweenLite tween.
 	 *
 	 * @example
@@ -78,15 +79,33 @@
 	 *	end: {probability: 0, normalValue: 1}
 	 * });
 	 */
-	function createMaybeRandomTween({target, propName, duration, ease = Linear.easeNone, start, end}) {
+	function createMaybeRandomTween({target, propName, duration, ease = Linear.easeNone, start, end, onUpdate}) {
 		// Can't use spread operator in this method because of https://github.com/Polymer/polymer-cli/issues/888
 		const proxy = Object.assign({}, start);
 		const tweenProps = Object.assign({
-			ease,
-			onUpdate() {
-				target[propName] = getMaybeRandomNumber(proxy);
-			}
+			ease
 		}, end);
+
+		if (Array.isArray(target)) {
+			tweenProps.onUpdate = () => {
+				const randomValue = getMaybeRandomNumber(proxy);
+				target.forEach(childTarget => {
+					childTarget[propName] = randomValue;
+				});
+
+				if (onUpdate) {
+					onUpdate(randomValue);
+				}
+			};
+		} else {
+			tweenProps.onUpdate = () => {
+				const randomValue = getMaybeRandomNumber(proxy);
+				target[propName] = randomValue;
+				if (onUpdate) {
+					onUpdate(randomValue);
+				}
+			};
+		}
 
 		return TweenLite.to(proxy, duration, tweenProps);
 	}
