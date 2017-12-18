@@ -45,6 +45,8 @@
 
 				this._$chevrons = chevrons;
 				this._$bgChevrons = bgChevrons;
+
+				TweenLite.set(this._$chevrons, {scaleY: 0});
 			});
 		}
 
