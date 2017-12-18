@@ -72,6 +72,7 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 
 	render() {
 		this.svgDoc.clear();
+		this.svgDoc.size(0, 0);
 
 		const bodyWidth = this.$.content.scrollWidth;
 		const height = this.clientHeight;
