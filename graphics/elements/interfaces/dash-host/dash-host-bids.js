@@ -39,14 +39,7 @@
 			});
 
 			nodecg.listenFor('bids:updated', () => {
-				this.$.cooldown.indeterminate = false;
-				this.$.cooldown.classList.remove('transiting');
-				this.$.cooldown.value = 100;
-
-				Polymer.RenderStatus.afterNextRender(this, () => {
-					this.$.cooldown.classList.add('transiting');
-					this.$.cooldown.value = 0;
-				});
+				this.$.cooldown.startCountdown(60);
 			});
 		}
 
