@@ -130,14 +130,13 @@
 		}
 
 		formatOptionDescription(bid) {
+			const fallback = `Be the first to bid!`;
 			if (bid && !(bid.description || bid.name)) {
 				nodecg.log.error('Got weird bid war option:', JSON.stringify(bid, null, 2));
-				return 'Be the first to bid!';
+				return fallback;
 			}
 
-			return bid ?
-				(bid.description || bid.name).replace('||', ' -- ') :
-				'Be the first to bid!';
+			return bid ? (bid.description || bid.name) : fallback;
 		}
 	}
 
