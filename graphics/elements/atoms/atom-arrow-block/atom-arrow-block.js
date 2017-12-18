@@ -70,12 +70,10 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 		this.svgDoc = SVG(this.shadowRoot);
 	}
 
-	render() {
+	render({useContentWidth = true} = {}) {
 		this.svgDoc.clear();
 		this.svgDoc.size(0, 0);
 
-		const bodyWidth = this.$.content.scrollWidth;
-		const height = this.clientHeight;
 		const strokeSize = parseInt(this.readCSSCustomProperty(
 			'--atom-arrow-block-stroke-size',
 			AtomArrowBlock.DEFAULT_STROKE_SIZE
@@ -93,6 +91,10 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 			1
 		));
 
+		const bodyWidth = useContentWidth ?
+			this.$.content.clientWidth :
+			this.getBoundingClientRect().width - (chevronWidth * 2) - strokeSize;
+		const height = this.clientHeight;
 		const width = bodyWidth + (chevronWidth * 2) + strokeSize;
 
 		const arrowBlock = AtomArrowBlock.createArrowBlock({
