@@ -54,9 +54,9 @@
 				});
 
 				if (index === 0) {
-					tl.add(this.$.label.enter(bidWar.description.replace('||', ': ')));
+					tl.add(this.$.label.enter(bidWar.description));
 				} else {
-					tl.add(this.$.label.change(bidWar.description.replace('||', ': ')));
+					tl.add(this.$.label.change(bidWar.description));
 				}
 
 				tl.call(() => {
