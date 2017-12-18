@@ -4,6 +4,7 @@
 <link rel="import" href="../../atoms/atom-arrow-block/atom-arrow-block.html">
 <link rel="import" href="../../atoms/atom-chevron/atom-chevron.html">
 <link rel="import" href="../../atoms/atom-gradient-text/atom-gradient-text.html">
+<link rel="import" href="../../atoms/atom-inner-glow-text/atom-inner-glow-text.html">
 
 <dom-module id="gdq-omnibar-bidwar-option">
 	<template>
@@ -13,18 +14,6 @@
 				box-sizing: border-box;
 				will-change: opacity;
 				@apply --layout-horizontal;
-			}
-
-			#filterHolder {
-				position: absolute;
-				top: 0;
-				left: 0;
-				visibility: hidden;
-				z-index: -10;
-			}
-
-			#innerGlowEffectFlood {
-				flood-color: #C5BD03
 			}
 
 			#tailChevron {
@@ -40,7 +29,7 @@
 				--atom-chevron-background: linear-gradient(to bottom, #052B33 0%, #040F10 100%);
 				--atom-chevron-chevron: {
 					filter: drop-shadow(0 0 12px #C5BD03);
-				}
+				};
 			}
 
 			#body {
@@ -73,8 +62,8 @@
 			#total {
 				font-weight: 700;
 				color: #05262E;
-				filter: url('#inset-shadow');
 				will-change: opacity;
+				--atom-inner-glow-text-glow-color: #C5BD03;
 			}
 
 			atom-arrow-block {
@@ -84,8 +73,8 @@
 			}
 
 			/* Winning styles. */
-			:host([winning]) #innerGlowEffectFlood {
-				flood-color: #2AC503;
+			:host([winning]) #total {
+				--atom-inner-glow-text-glow-color: #2AC503;
 			}
 
 			:host([winning]) #tailChevron {
@@ -93,7 +82,7 @@
 				--atom-chevron-stroke-color: #8BFF6E;
 				--atom-chevron-chevron: {
 					filter: drop-shadow(0 0 12px #2AC503);
-				}
+				};
 			}
 
 			:host([winning]) #totalBlock {
@@ -115,7 +104,7 @@
 				--atom-chevron-stroke-color: #82EFFF;
 				--atom-chevron-chevron: {
 					filter: drop-shadow(0 0 12px #82EFFF);
-				}
+				};
 			}
 
 			:host([placeholder]) #label {
@@ -132,24 +121,6 @@
 			}
 		</style>
 
-		<svg id="filterHolder">
-			<!-- Adapted from https://www.xanthir.com/b4Yv0 -->
-			<filter id="inset-shadow" x="-50%" y="-50%" width="200%" height="200%">
-				<feComponentTransfer in=SourceAlpha>
-					<feFuncA type="table" tableValues="1 0" />
-				</feComponentTransfer>
-				<feGaussianBlur stdDeviation="0.5"/>
-				<feOffset dx="0" dy="0" result="offsetblur"/>
-				<feFlood id="innerGlowEffectFlood" result="color"/>
-				<feComposite in2="offsetblur" operator="in"/>
-				<feComposite in2="SourceAlpha" operator="in" />
-				<feMerge>
-					<feMergeNode in="SourceGraphic" />
-					<feMergeNode />
-				</feMerge>
-			</filter>
-		</svg>
-
 		<atom-chevron id="tailChevron" no-auto-render></atom-chevron>
 
 		<div id="body">
@@ -157,7 +128,7 @@
 				<atom-gradient-text id="label" text="[[formatOptionDescription(bid)]]"></atom-gradient-text>
 			</atom-arrow-block>
 			<atom-arrow-block id="totalBlock" inner-glow>
-				<div id="total">[[bid.total]]</div>
+				<atom-inner-glow-text id="total" text="[[bid.total]]"></atom-inner-glow-text>
 			</atom-arrow-block>
 		</div>
 	</template>
