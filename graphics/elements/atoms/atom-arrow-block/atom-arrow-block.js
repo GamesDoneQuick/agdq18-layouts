@@ -37,15 +37,16 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 	 * @param {Number} bodyWidth - How wide, in pixels, to draw the straight body part of the arrow block.
 	 * @param {Number} chevronWidth - How wide, in pixels, to draw the chevron ends of the arrow block;
 	 * @param {String} fillColor - The color to apply to the interior of the arrow block.
+	 * @param {Number} fillOpacity - The opacity to apply to the fillColor.
 	 * @param {Number} strokeSize - The thickness of the arrow block border.
 	 * @param {String} strokeColor - The color to apply to the border of the arrow block.
 	 * @returns {svgjs.Polygon} - The constructed SVG.js Polygon instance.
 	 */
-	static createArrowBlock({height, bodyWidth, chevronWidth, fillColor, strokeSize, strokeColor}) {
+	static createArrowBlock({height, bodyWidth, chevronWidth, fillColor, fillOpacity, strokeSize, strokeColor}) {
 		const chevron = new SVG.Polygon();
 		const pointArray = AtomArrowBlock.createArrowBlockPointArray({height, bodyWidth, chevronWidth});
 		chevron.plot(pointArray);
-		chevron.fill(fillColor);
+		chevron.fill({color: fillColor, opacity: fillOpacity});
 		if (strokeSize > 0) {
 			chevron.stroke({width: strokeSize, color: strokeColor});
 		}
@@ -86,6 +87,11 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 			'--atom-arrow-block-shadow-size',
 			AtomArrowBlock.DEFAULT_SHADOW_SIZE
 		));
+		const fillOpacity = parseFloat(this.readCSSCustomProperty(
+			'--atom-arrow-block-fill-opacity',
+			1
+		));
+
 		const width = bodyWidth + (chevronWidth * 2) + strokeSize;
 
 		const arrowBlock = AtomArrowBlock.createArrowBlock({
@@ -93,6 +99,7 @@ class AtomArrowBlock extends CSSReflectionMixin(Polymer.Element) {
 			bodyWidth,
 			chevronWidth,
 			fillColor: this.readCSSCustomProperty('--atom-arrow-block-fill-color'),
+			fillOpacity,
 			strokeSize,
 			strokeColor: this.readCSSCustomProperty('--atom-arrow-block-stroke-color')
 		});
