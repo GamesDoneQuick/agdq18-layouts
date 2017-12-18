@@ -64,6 +64,7 @@
 	 * @param {Number} duration - The duration of the tween.
 	 * @param {Function} [ease=Linear.easeNone] - An easing function which accepts a single "progress" argument,
 	 * which is a float in the range 0 - 1. All GSAP eases are supported, as they follow this signature.
+	 * @param {Number} [delay=0] - How long, in seconds, to delay the start of the tween.
 	 * @param {MaybeRandomNumberParams} start - The starting getMaybeRandomNumber arguments.
 	 * @param {MaybeRandomNumberParams} end - The ending getMaybeRandomNumber arguments.
 	 * @param {Function} [onUpdate] - An optional callback which will be invoked on every tick with the new MaybeRandom value.
@@ -79,11 +80,14 @@
 	 *	end: {probability: 0, normalValue: 1}
 	 * });
 	 */
-	function createMaybeRandomTween({target, propName, duration, ease = Linear.easeNone, start, end, onUpdate}) {
+	function createMaybeRandomTween({
+		target, propName, duration, ease = Linear.easeNone, delay = 0, start, end, onUpdate
+	}) {
 		// Can't use spread operator in this method because of https://github.com/Polymer/polymer-cli/issues/888
 		const proxy = Object.assign({}, start);
 		const tweenProps = Object.assign({
-			ease
+			ease,
+			delay
 		}, end);
 
 		if (Array.isArray(target)) {
