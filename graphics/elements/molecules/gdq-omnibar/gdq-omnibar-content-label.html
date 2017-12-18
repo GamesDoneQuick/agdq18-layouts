@@ -7,6 +7,7 @@
 				height: 100%;
 				padding: 3px 0;
 				box-sizing: border-box;
+				margin-right: -7px;
 				@apply --layout-horizontal;
 			}
 
@@ -23,6 +24,10 @@
 
 			#bodyClip {
 				overflow: hidden;
+
+				/* give the glow some room to breathe */
+				padding-right: 12px;
+				margin-right: -12px;
 			}
 
 			#body {
@@ -66,8 +71,11 @@
 			#innerChevron {
 				width: 24px;
 				--atom-chevron-thickness: 4.5px;
-				--atom-chevron-fill-color: #FF4D4D;
+				--atom-chevron-fill-color: var(--gdq-omnibar-content-label-fg-color);
 				--atom-chevron-background: var(--gdq-omnibar-content-label-bg-color);
+				--atom-chevron-chevron: {
+					filter: drop-shadow(0 0 12px var(--gdq-omnibar-content-label-glow-color));
+				}
 			}
 
 			#outerChevron {
