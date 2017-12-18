@@ -234,14 +234,10 @@
 				return tl;
 			}
 
-			const listElement = document.createElement('gdq-omnibar-list');
-			bidsToDisplay.forEach(bid => {
-				const element = document.createElement('gdq-omnibar-bid');
-				element.bid = bid;
-				listElement.appendChild(element);
-			});
+			const containerElement = document.createElement('gdq-omnibar-challenges');
+			containerElement.challenges = bidsToDisplay;
 
-			this.setContent(tl, listElement);
+			this.setContent(tl, containerElement);
 
 			tl.add(this.showLabel('Challenges', {
 				avatarIconName: 'challenges',
@@ -249,8 +245,8 @@
 				ringColor: '#FFFFFF'
 			}), '+=0.03');
 
-			this.showContent(tl, listElement);
-			this.hideContent(tl, listElement);
+			this.showContent(tl, containerElement);
+			this.hideContent(tl, containerElement);
 
 			return tl;
 		}
