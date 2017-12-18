@@ -87,6 +87,10 @@
 		}
 
 		_handleBidTap(e) {
+			if (e.target.bid.type !== 'choice-many') {
+				return;
+			}
+
 			this.dialogBid = e.target.bid;
 			this.$.dialog.open();
 		}
