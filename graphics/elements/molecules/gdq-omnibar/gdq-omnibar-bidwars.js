@@ -12,7 +12,7 @@
 
 		static get properties() {
 			return {
-				bidWars: Object
+				bidWars: Array
 			};
 		}
 
