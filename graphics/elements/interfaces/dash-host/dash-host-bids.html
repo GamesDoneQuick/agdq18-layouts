@@ -1,7 +1,11 @@
+<link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../../atoms/atom-refresh-indicator/atom-refresh-indicator.html">
 <link rel="import" href="dash-host-bid.html">
+<link rel="import" href="dash-host-bid-option.html">
 <link rel="import" href="dash-host-styles.html">
 
 <dom-module id="dash-host-bids">
@@ -56,6 +60,35 @@
 				overflow-x: hidden;
 				@apply --layout-flex;
 			}
+
+			#dialog {
+				width: 506px;
+				@apply --layout-vertical;
+			}
+
+			#dialog-title {
+				font-size: 20px;
+				font-weight: 600;
+			}
+
+			#dialog-body {
+				@apply --layout-vertical;
+			}
+
+			#dialog-close {
+				height: 34px;
+				font-size: 16px;
+				--paper-button: {
+					color: white;
+					background-color: #5BA664;
+				};
+				@apply --layout-self-center;
+				@apply --layout-flex-none;
+			}
+
+			dash-host-bid[type="choice-many"] {
+				cursor: pointer;
+			}
 		</style>
 
 		<atom-refresh-indicator id="cooldown"></atom-refresh-indicator>
@@ -70,9 +103,19 @@
 
 		<div id="list">
 			<template is="dom-repeat" items="[[relevantBids]]" as="bid" filter="{{computeBidsFilter(bidFilterString)}}">
-				<dash-host-bid bid="[[bid]]"></dash-host-bid>
+				<dash-host-bid bid="[[bid]]" on-tap="_handleBidTap"></dash-host-bid>
 			</template>
 		</div>
+
+		<paper-dialog id="dialog" with-backdrop>
+			<div id="dialog-title">[[calcBidName(dialogBid.description)]]</div>
+			<paper-dialog-scrollable id="dialog-body">
+				<template is="dom-repeat" items="[[dialogBid.options]]" as="option">
+					<dash-host-bid-option bid="[[dialogBid]]" option="[[option]]" index="[[index]]"></dash-host-bid-option>
+				</template>
+			</paper-dialog-scrollable>
+			<paper-button id="dialog-close" on-tap="closeDialog" raised>OK</paper-button>
+		</paper-dialog>
 	</template>
 
 	<script src="dash-host-bids.js"></script>

@@ -31,6 +31,11 @@
 				margin-top: 8px;
 				margin-bottom: -4px;
 				text-align: right;
+				color: #2c92ff;
+			}
+
+			:host(:hover) .additionalOptions {
+				text-decoration: underline;
 			}
 
 			:host([closed]) #material {
@@ -62,7 +67,7 @@
 
 				<template is="dom-if" if="[[bidHasMoreThanThreeOptions(bid)]]">
 					<div class="additionalOptions">
-						[[calcNumAdditionalOptions(bid)]] additional option(s) not shown
+						Click to show [[calcNumAdditionalOptions(bid)]] additional option(s)
 					</div>
 				</template>
 			</template>
