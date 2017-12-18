@@ -5,6 +5,11 @@ class DashHostBid extends Polymer.MutableData(Polymer.Element) {
 
 	static get properties() {
 		return {
+			type: {
+				type: String,
+				reflectToAttribute: true,
+				computed: '_computeType(bid)'
+			},
 			bid: {
 				type: Object
 			},
@@ -59,6 +64,10 @@ class DashHostBid extends Polymer.MutableData(Polymer.Element) {
 
 	calcBidName(description) {
 		return description.replace('||', ' -- ');
+	}
+
+	_computeType(bid) {
+		return bid ? bid.type : '';
 	}
 }
 

@@ -32,7 +32,8 @@
     "textfit": "^2.3.1",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#v2.0.0",
     "svg.js": "^2.6.3",
-    "html-echo": "Collaborne/html-echo#^1.0.1"
+    "html-echo": "Collaborne/html-echo#^1.0.1",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^2.1.0"
   },
   "resolutions": {
     "vaadin-combo-box": "v2.0.0",

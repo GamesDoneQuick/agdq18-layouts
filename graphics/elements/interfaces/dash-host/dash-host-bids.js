@@ -16,7 +16,8 @@
 				bidFilterString: {
 					type: String,
 					notify: true
-				}
+				},
+				dialogBid: Object
 			};
 		}
 
@@ -41,6 +42,10 @@
 			nodecg.listenFor('bids:updated', () => {
 				this.$.cooldown.startCountdown(60);
 			});
+		}
+
+		closeDialog() {
+			this.$.dialog.close();
 		}
 
 		computeBidsFilter(string) {
@@ -75,6 +80,15 @@
 			}).sort((a, b) => {
 				return runOrderMap.value[a.speedrun] - runOrderMap.value[b.speedrun];
 			});
+		}
+
+		calcBidName(description) {
+			return description.replace('||', ' -- ');
+		}
+
+		_handleBidTap(e) {
+			this.dialogBid = e.target.bid;
+			this.$.dialog.open();
 		}
 	}
 
