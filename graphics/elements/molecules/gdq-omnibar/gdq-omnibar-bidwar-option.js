@@ -34,7 +34,6 @@
 			TweenLite.set(this.$.tailChevron, {opacity: 0});
 			TweenLite.set(this.$.body, {opacity: 0});
 			TweenLite.set(this.$.total, {opacity: 0});
-			TweenLite.set(this.$.total, {opacity: 0});
 		}
 
 		enter() {
