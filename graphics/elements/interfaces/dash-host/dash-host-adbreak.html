@@ -30,7 +30,7 @@
 
 			paper-button {
 				height: 64px;
-				width: 369px;
+				width: 480px;
 				margin-left: 0;
 				margin-right: 0;
 				@apply --layout-flex-none;
@@ -57,7 +57,9 @@
 			hidden="[[!adBreak.state.started]]"
 			disabled="[[any(adBreak.state.canComplete, adBreak.state.completed)]]"
 			on-tap="cancel"
-			raised>Cancel Break</paper-button>
+			raised>
+			Cancel Break
+		</paper-button>
 
 		<template is="dom-repeat" items="[[adBreak.ads]]" as="ad" mutable-data>
 			<dash-host-adbreak-ad ad-break="[[adBreak]]" ad="[[ad]]"></dash-host-adbreak-ad>
@@ -68,7 +70,9 @@
 			disabled="[[!adBreak.state.canComplete]]"
 			hidden="[[_calcCompleteButtonHidden(adBreak)]]"
 			on-tap="complete"
-			raised>Finish Break</paper-button>
+			raised>
+			Finish Break
+		</paper-button>
 	</template>
 
 	<script src="dash-host-adbreak.js"></script>

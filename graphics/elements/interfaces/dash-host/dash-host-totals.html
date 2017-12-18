@@ -6,32 +6,19 @@
 			:host {
 				font-size: 48px;
 				font-weight: 700;
+				background-color: #4F4F4F !important;
 				@apply --layout-vertical;
-			}
-
-			.material {
-				@apply --layout-horizontal;
 				@apply --layout-center-center;
-				@apply --layout-flex;
 			}
 
 			#cashTotal {
-				margin-bottom: 4px;
-			}
-
-			#bitsTotal {
-				margin-top: 4px;
+				color: white;
+				font-size: 62px;
+				font-weight: 700;
 			}
 		</style>
 
-		<div id="cashTotal" class="material">
-			[[cashTotal]]
-		</div>
-
-		<div id="bitsTotal" class="material">
-			<img id="bitsIcon" src="img/bitsicon.png" width="40">
-			[[bitsTotal]]
-		</div>
+		<div id="cashTotal">[[cashTotal]]</div>
 	</template>
 
 	<script src="dash-host-totals.js"></script>

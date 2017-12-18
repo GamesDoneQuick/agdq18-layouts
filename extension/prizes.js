@@ -51,6 +51,8 @@ nodecg.listenFor('updatePrizes', (data, cb) => {
  * @returns {Promise} - A Q.all promise.
  */
 function update() {
+	nodecg.sendMessage('prizes:updating');
+
 	const currentPromise = Q.defer();
 	request(CURRENT_PRIZES_URL, (err, res, body) => {
 		handleResponse(err, res, body, currentPromise, {
@@ -70,7 +72,9 @@ function update() {
 	return Q.all([
 		currentPromise.promise,
 		allPromise.promise
-	]);
+	]).finally(() => {
+		nodecg.sendMessage('prizes:updated');
+	});
 }
 
 /**

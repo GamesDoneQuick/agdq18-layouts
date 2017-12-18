@@ -35,7 +35,6 @@
 			super.ready();
 
 			canPlayTwitchAd.on('change', newVal => {
-				console.log('canPlayTwitchAd:', newVal);
 				this.canPlay = newVal.canPlay;
 				this.cantPlayReason = newVal.reason;
 			});
