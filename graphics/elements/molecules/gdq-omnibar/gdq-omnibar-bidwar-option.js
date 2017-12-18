@@ -89,7 +89,7 @@
 					this.$.total.style.opacity = randomValue;
 					this.$.totalBlock.arrowBlock.attr({'fill-opacity': randomValue});
 				}
-			}));
+			}), 'flickerTotal');
 
 			return tl;
 		}
