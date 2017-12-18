@@ -47,6 +47,8 @@
 
 		run() {
 			const self = this;
+
+			// For development, comment out whichever parts you don't want to see right now.
 			const parts = [
 				this.showCTA,
 				this.showUpNext,
