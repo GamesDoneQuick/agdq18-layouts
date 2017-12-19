@@ -1,0 +1,51 @@
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="gdq-break-schedule-header">
+	<template>
+		<style>
+			:host {
+				margin-bottom: 20px;
+				@apply --layout-vertical;
+			}
+
+			:host(:not(:first-of-type)) {
+				margin-top: 20px;
+			}
+
+			#text {
+				font-style: normal;
+				font-weight: 900;
+				line-height: normal;
+				font-size: 18px;
+				color: #FFFFFF;
+			}
+
+			#line {
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#line-thick {
+				width: 254px;
+				height: 3px;
+				background: white;
+				@apply --layout-flex-none;
+			}
+
+			#line-thin {
+				height: 1px;
+				background: white;
+				@apply --layout-flex;
+			}
+		</style>
+
+		<div id="text">[[text]]</div>
+		<div id="line">
+			<div id="line-thick"></div>
+			<div id="line-thin"></div>
+		</div>
+	</template>
+
+	<script src="gdq-break-schedule-header.js"></script>
+</dom-module>
