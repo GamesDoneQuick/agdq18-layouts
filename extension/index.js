@@ -28,9 +28,6 @@ module.exports = function (nodecg) {
 	// Some of them depend on Replicants initialized in others.
 	require('./timekeeping');
 	require('./obs');
-	require('./prizes');
-	require('./bids');
-	require('./total');
 	require('./nowplaying');
 	require('./countdown');
 
@@ -44,6 +41,10 @@ module.exports = function (nodecg) {
 		schedule.on('permissionDenied', () => {
 			loginToTracker().then(schedule.update);
 		});
+
+		require('./bids');
+		require('./prizes');
+		require('./total');
 	});
 
 	// Tracker logins expire every 2 hours. Re-login every 90 minutes.
