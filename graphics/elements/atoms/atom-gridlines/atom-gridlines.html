@@ -6,12 +6,12 @@
 			:host {
 				position: relative;
 				display: block;
-				font-family: Roboto, sans-serif;
+				height: 100%;
+				width: 100%;
+				background-size: 10px 10px;
 				background-color: #051113;
-			}
-
-			#content{
-				background-image:       linear-gradient(0deg,
+				background-image: linear-gradient(
+					0deg,
 					transparent 24%,
 					rgba(0, 255, 255, .05) 25%,
 					rgba(0, 255, 255, .05) 26%,
@@ -20,8 +20,9 @@
 					rgba(0, 255, 255, .05) 75%,
 					rgba(0, 255, 255, .05) 76%,
 					transparent 77%,
-					transparent),
-					linear-gradient(90deg,
+					transparent
+				),
+				linear-gradient(90deg,
 					transparent 24%,
 					rgba(0, 255, 255, .05) 25%,
 					rgba(0, 255, 255, .05) 26%,
@@ -30,15 +31,10 @@
 					rgba(0, 255, 255, .05) 75%,
 					rgba(0, 255, 255, .05) 76%,
 					transparent 77%,
-					transparent);
-				height:100%;
-				width:100%;
-				background-size:10px 10px;
+					transparent
+				);
 			}
 		</style>
-
-		<canvas id="content"></canvas>
-
 	</template>
 
 	<script src="atom-gridlines.js"></script>
