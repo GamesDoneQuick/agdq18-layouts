@@ -3,6 +3,7 @@
 
 	const RIGHT_TIME_PER_PIXEL = 0.00207;
 	const LEFT_TIME_PER_PIXEL = 0.00262;
+	const TAIL_CHEVRON_WIDTH = 6;
 
 	CustomEase.create('BidwarOptionReveal', 'M0,0 C0.166,0.166 0.234,1 1,1');
 
@@ -38,6 +39,8 @@
 
 		enter() {
 			const tl = new TimelineLite();
+			const revealTweenWidth = this.$.body.clientWidth - this.$.tailChevron.clientWidth + TAIL_CHEVRON_WIDTH;
+			this._revealTweenWidth = revealTweenWidth;
 
 			tl.set(this.$.tailChevron, {opacity: 1});
 			tl.call(() => {
@@ -56,23 +59,22 @@
 			});
 
 			tl.addLabel('slideRight', `-=${1 / 60}`);
-			const tweenWidth = this.$.body.scrollWidth - this.$.tailChevron.clientWidth;
-			tl.to(this.$.tailChevron, tweenWidth * RIGHT_TIME_PER_PIXEL, {
-				x: tweenWidth,
+			tl.to(this.$.tailChevron, revealTweenWidth * RIGHT_TIME_PER_PIXEL, {
+				x: revealTweenWidth,
 				ease: Sine.easeIn
 			}, 'slideRight');
 
 			tl.set(this.$.body, {
-				clipPath: `inset(0 -13px 0 ${tweenWidth}px)`,
+				clipPath: `inset(0 -13px 0 ${revealTweenWidth}px)`,
 				opacity: 1
 			});
 
 			tl.addLabel('reveal', '+=0.1167');
-			tl.to(this.$.tailChevron, tweenWidth * LEFT_TIME_PER_PIXEL, {
+			tl.to(this.$.tailChevron, revealTweenWidth * LEFT_TIME_PER_PIXEL, {
 				x: 0,
 				ease: 'BidwarOptionReveal'
 			}, 'reveal');
-			tl.to(this.$.body, tweenWidth * LEFT_TIME_PER_PIXEL, {
+			tl.to(this.$.body, revealTweenWidth * LEFT_TIME_PER_PIXEL, {
 				clipPath: 'inset(0 -13px 0 0px)',
 				ease: 'BidwarOptionReveal'
 			}, 'reveal');
@@ -101,13 +103,12 @@
 			tl.set(this.$.total, {willChange: 'unset'});
 
 			tl.addLabel('conceal', '+=0.1');
-			const tweenWidth = this.$.body.scrollWidth - this.$.tailChevron.clientWidth;
-			tl.to(this.$.tailChevron, tweenWidth * RIGHT_TIME_PER_PIXEL, {
-				x: tweenWidth,
+			tl.to(this.$.tailChevron, this._revealTweenWidth * RIGHT_TIME_PER_PIXEL, {
+				x: this._revealTweenWidth,
 				ease: Sine.easeInOut
 			}, 'conceal');
-			tl.to(this.$.body, tweenWidth * RIGHT_TIME_PER_PIXEL, {
-				clipPath: `inset(0 -13px 0 ${tweenWidth}px)`,
+			tl.to(this.$.body, this._revealTweenWidth * RIGHT_TIME_PER_PIXEL, {
+				clipPath: `inset(0 -13px 0 ${this._revealTweenWidth}px)`,
 				ease: Sine.easeInOut
 			}, 'conceal');
 
