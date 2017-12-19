@@ -1,0 +1,44 @@
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../shared/fonts/source-code-pro/import.html">
+<link rel="import" href="gdq-break-schedule.html">
+<link rel="import" href="gdq-break-top-frame.html">
+<link rel="import" href="gdq-break-bottom-frame.html">
+
+<dom-module id="gdq-break">
+	<template>
+		<style>
+			:host {
+				display: block;
+				width: 1600px;
+				height: 900px;
+				background: url("img/lines_bg.png") no-repeat;
+				font-family: "Source Code Pro";
+			}
+
+			#topFrame {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			#bottomFrame {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+			}
+
+			#schedule {
+				position: absolute;
+				top: 123px;
+				right: 0;
+			}
+		</style>
+
+		<gdq-break-top-frame id="topFrame"></gdq-break-top-frame>
+		<gdq-break-schedule id="schedule"></gdq-break-schedule>
+		<gdq-break-bottom-frame id="bottomFrame"></gdq-break-bottom-frame>
+	</template>
+
+	<script src="gdq-break.js"></script>
+</dom-module>
