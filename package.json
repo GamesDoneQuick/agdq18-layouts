@@ -100,8 +100,8 @@
       },
       {
         "file": "standard_1.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "standard_1_ff6.html",
@@ -110,73 +110,78 @@
       },
       {
         "file": "standard_2.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "standard_3.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "standard_4.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "widescreen_1.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "widescreen_2.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
+      },
+      {
+        "file": "widescreen_4.html",
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gba_1.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gba_2.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gameboy_1.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gameboy_2.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gameboy_3.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "gameboy_4.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "3ds.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "ds.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "ds_vertical.html",
-        "width": 1280,
-        "height": 665
+        "width": 1600,
+        "height": 845
       },
       {
         "file": "omnibar.html",

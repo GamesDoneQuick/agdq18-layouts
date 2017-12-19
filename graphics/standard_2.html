@@ -10,35 +10,36 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
 
 	<custom-style>
 		<style>
 			gdq-nameplate {
-				top: 493px;
-				--gdq-nameplate-width: 349px;
+				top: 600px;
+				--gdq-nameplate-width: 450px;
 			}
 
 			gdq-nameplate:nth-of-type(1) {
-				right: 855px;
+				right: 1028px;
 			}
 
 			gdq-nameplate:nth-of-type(2) {
-				left: 855px;
+				left: 1028px;
 			}
 
 			gdq-runinfo {
 				bottom: 38px;
-				width: 425px;
-				height: 100px;
+				width: 550px;
+				height: 175px;
 				--gdq-runinfo-misc-height: 29px;
 			}
 
 			gdq-timer {
-				left: 0;
-				bottom: 0;
-				height: 38px;
-				width: 425px;
-				font-size: 33px;
+				left: 572px;
+				bottom: 191px;
+				height: 65px;
+				width: 456px;
+				font-size: 56px;
 				--gdq-timer-voffset: -2px;
 			}
 
@@ -67,19 +68,48 @@
 				width: 426px;
 				height: 135px;
 			}
+
+			atom-tronlines {
+				position: absolute;
+				bottom: 0;
+				border-top: 1px solid #00ffff;
+			}
+
+			.tronleft {
+				left: 0;
+				border-right: 1px solid #00ffff;
+			}
+
+			.tronright {
+				right: 0;
+				border-left: 1px solid #00ffff;
+			}
+
+			#lineone {
+				position: absolute;
+				width: 3px;
+				height: 599px;
+				left: 798px;
+				top: 0;
+				background-color: #00ffff;
+				border-left: 1px solid #051113;
+				border-right: 1px solid #051113;
+			}
 		</style>
 	</custom-style>
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/standard_2_bg.png">
-		<gdq-runinfo max-name-size="28" force-single-line-name></gdq-runinfo>
+		<div id="lineone"></div>
+		<atom-tronlines height="244" width="550" class="tronleft"></atom-tronlines>
+		<atom-tronlines height="244" width="550" class="tronright"></atom-tronlines>
+		<gdq-runinfo max-name-size="45" force-single-line-name></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-twitter></gdq-twitter>
 		<gdq-nameplate index="0" attach-right></gdq-nameplate>
 		<gdq-nameplate index="1" attach-left></gdq-nameplate>
-		<img id="foreground" src="img/backgrounds/standard_2_fg.png">
+
 	</div>
 
 	<script>

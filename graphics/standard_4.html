@@ -10,64 +10,117 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
-			body {
-				background: black;
-			}
 
 			gdq-nameplate {
 				--gdq-nameplate-width: 330px;
 			}
 
 			gdq-nameplate:nth-of-type(1) {
-				top: 10px;
-				left: 442px;
+				top: 245px;
+				left: 563px;
 			}
 
 			gdq-nameplate:nth-of-type(2) {
-				top: 60px;
-				right: 442px;
+				top: 316px;
+				right: 563px;
 			}
 
 			gdq-nameplate:nth-of-type(3) {
-				top: 348px;
-				left: 442px;
+				top: 492px;
+				left: 563px;
 			}
 
 			gdq-nameplate:nth-of-type(4) {
-				top: 398px;
-				right: 442px;
+				top: 563px;
+				right: 563px;
 			}
 
 			gdq-runinfo {
-				left: 444px;
-				top: 109px;
-				width: 394px;
-				height: 170px;
-				--gdq-runinfo-misc-height: 58px;
+				left: 563px;
+				top: 0;
+				width: 474px;
+				height: 210px;
+				--gdq-runinfo-misc-height: 32px;
 			}
 
 			gdq-timer {
-				left: 444px;
-				top: 277px;
-				height: 53px;
-				width: 394px;
-				--gdq-timer-voffset: -2px;
+				left: 563px;
+				top: 390px;
+				height: 64px;
+				width: 474px;
+				font-size: 56px;
+			}
+
+			.line {
+				position: absolute;
+				box-sizing: border-box;
+			}
+
+			#lineone {
+				width: 474px;
+				height: 845px;
+				left: 563px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			#linetwo, #linethree {
+				width: 563px;
+				height: 423px;
+				border-bottom: 1px solid #00ffff;
+				top: 0;
+			}
+
+			#linetwo {
+				left: 0;
+			}
+
+			#linethree {
+				right: 0;
+			}
+
+			atom-tronlines {
+				position: absolute;
+				left: 563px;
+			}
+
+			atom-tronlines:nth-of-type(1) {
+				top: 159px;
+			}
+
+			atom-tronlines:nth-of-type(2) {
+				top: 454px;
+				border-bottom: 1px solid #00ffff;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				top: 0;
+				left: 563px;
+				width: 474px;
+				height: 159px;
 			}
 		</style>
 	</custom-style>
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/standard_4_bg.png">
+		<atom-gridlines></atom-gridlines>
+		<atom-tronlines direction="down" width="474" height="238"></atom-tronlines>
+		<atom-tronlines width="474" height="184"></atom-tronlines>
+		<div id="lineone" class="line"></div>
+		<div id="linetwo" class="line"></div>
+		<div id="linethree" class="line"></div>
 		<gdq-runinfo></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-nameplate>
 		<gdq-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-nameplate>
 		<gdq-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-nameplate>
 		<gdq-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-nameplate>
-		<img id="foreground" src="img/backgrounds/standard_4_fg.png">
 	</div>
 
 	<script>

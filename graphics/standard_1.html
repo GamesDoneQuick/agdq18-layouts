@@ -10,12 +10,14 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/standard_1_bg.png">
+
 		<layout-app></layout-app>
-		<img id="foreground" src="img/backgrounds/standard_1_fg.png">
+
 	</div>
 
 	<dom-module id="layout-app">
@@ -24,18 +26,18 @@
 				gdq-runinfo {
 					left: 0;
 					top: 0;
-					width: 397px;
-					height: 168px;
-					--gdq-runinfo-misc-height: 35px;
+					width: 474px;
+					height: 197px;
+					--gdq-runinfo-misc-height: 39px;
 				}
 
 				#bottomLeft {
 					display: flex;
 					flex-direction: column;
 					position: absolute;
-					top: 385px;
-					width: 393px;
-					height: 280px;
+					top: 486px;
+					width: 474px;
+					height: 359px;
 				}
 
 				#runners {
@@ -43,7 +45,7 @@
 					flex-direction: column;
 					align-items: flex-start;
 					position: relative;
-					padding-left: 8px;
+					padding-left: 11px;
 					margin-bottom: -18px;
 				}
 
@@ -51,21 +53,26 @@
 					position: relative;
 					margin-bottom: 9px;
 					font-size: 24px;
-					--gdq-nameplate-width: 377px;
+					--gdq-nameplate-width: 451px;
 				}
 
 				gdq-timer {
 					position: relative;
-					height: 57px;
-					width: 100%;
-					font-size: 42px;
+					height: 65px;
+					width: 451px;
+					font-size: 56px;
 					--gdq-timer-voffset: -1px;
+					margin-left: 11px;
 				}
 
 				#sponsorsAndTwitter {
 					position: relative;
-					width: 100%;
+					width: 451px;
 					flex-grow: 1;
+					border: 1px solid #00FFFF;
+					box-sizing: border-box;
+					box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.66);
+					margin:10px;
 				}
 
 				gdq-twitter {
@@ -92,7 +99,8 @@
 
 				/* One runner */
 				:host([num-runners="1"]) #runners {
-					margin-top: 9px;
+					margin-top: 0;
+					margin-bottom: 0;
 				}
 
 				:host([num-runners="1"]) gdq-nameplate:not([index="0"]) {
@@ -122,11 +130,48 @@
 				:host([num-runners="4"]) gdq-timer {
 					padding-top: 0;
 				}
+
+				atom-tronlines {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					border-top: 1px solid #00ffff;
+				}
+
+				#lineone {
+					width: 474px;
+					height: 845px;
+					position: absolute;
+					top: 0;
+					left: 0;
+					border-right: 1px solid #00ffff;
+				}
+
+				#linetwo {
+					width: 474px;
+					height: 91px;
+					position: absolute;
+					left: 0;
+					top: 140px;
+					background-color: #051113;
+					border-bottom: 1px solid #00ffff;
+				}
+
+				atom-gridlines {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 474px;
+					height: 140px;
+				}
 			</style>
-
-
-			<gdq-runinfo max-name-size="38"></gdq-runinfo>
+			<atom-gridlines></atom-gridlines>
+			<atom-tronlines width="474" height="345"></atom-tronlines>
+			<div id="lineone"></div>
+			<div id="linetwo"></div>
+			<gdq-runinfo max-name-size="42"></gdq-runinfo>
 			<div id="bottomLeft">
+
 				<div id="runners">
 					<gdq-nameplate index="0"></gdq-nameplate>
 					<gdq-nameplate index="1"></gdq-nameplate>
