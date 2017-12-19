@@ -10,41 +10,44 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
 			gdq-nameplate {
-				--gdq-nameplate-width: 330px;
+				--gdq-nameplate-width: 360px;
 			}
 
 			gdq-nameplate:nth-of-type(1) {
-				top: 232px;
-				left: 442px;
+				top: 290px;
+				left: 563px;
 			}
 
 			gdq-nameplate:nth-of-type(2) {
-				top: 286px;
-				right: 442px;
+				top: 365px;
+				right: 563px;
 			}
 
 			gdq-nameplate:nth-of-type(3) {
-				top: 340px;
-				left: 442px;
+				top: 440px;
+				left: 563px;
 			}
 
 			gdq-runinfo {
-				left: 443px;
-				top: 10px;
-				width: 395px;
-				height: 153px;
+				left: 563px;
+				top: 0;
+				width: 474px;
+				height: 180px;
 				--gdq-runinfo-misc-height: 40px;
 			}
 
 			gdq-timer {
-				left: 444px;
-				top: 163px;
-				height: 53px;
-				width: 393px;
+				left: 563px;
+				top: 202px;
+				height: 60px;
+				width: 474px;
 				--gdq-timer-voffset: -2px;
+				font-size: 56px;
 			}
 
 			gdq-twitter {
@@ -69,20 +72,75 @@
 				width: 395px;
 				height: 270px;
 			}
+
+			.line {
+				position: absolute;
+				box-sizing: border-box;
+			}
+
+			#lineone {
+				width: 474px;
+				height: 845px;
+				left: 563px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			#linetwo, #linethree {
+				width: 563px;
+				height: 423px;
+				border-bottom: 1px solid #00ffff;
+				top: 0;
+			}
+
+			#linetwo {
+				left: 0;
+			}
+
+			#linethree {
+				right: 0;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				width: 474px;
+				height: 121px;
+				top: 0;
+				left: 563px;
+			}
+
+			atom-tronlines {
+				position: absolute;
+				bottom: 0;
+				left: 563px;
+			}
+
+			#cover {
+				position: absolute;
+				width: 474px;
+				height: 81px;
+				top: 121px;
+				left: 563px;
+				background-color: #051113;
+			}
 		</style>
 	</custom-style>
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/standard_3_bg.png">
+		<atom-gridlines></atom-gridlines>
+		<atom-tronlines width="474" height="583"></atom-tronlines>
+		<div id="cover"></div>
+		<div id="lineone" class="line"></div>
+		<div id="linetwo" class="line"></div>
+		<div id="linethree" class="line"></div>
 		<gdq-runinfo></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-twitter></gdq-twitter>
-		<gdq-nameplate index="0" attach-left></gdq-nameplate>
-		<gdq-nameplate index="1" attach-right></gdq-nameplate>
-		<gdq-nameplate index="2" attach-left></gdq-nameplate>
-		<img id="foreground" src="img/backgrounds/standard_3_fg.png">
+		<gdq-nameplate index="0" no-left-cap attach-left></gdq-nameplate>
+		<gdq-nameplate index="1" no-right-cap attach-right></gdq-nameplate>
+		<gdq-nameplate index="2" no-left-cap attach-left></gdq-nameplate>
 	</div>
 
 	<script>

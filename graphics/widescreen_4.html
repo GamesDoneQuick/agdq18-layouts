@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Widescreen, 4 Player</title>
+	<link rel="stylesheet" href="style/layout.css">
+	<link rel="import" href="../shared/imports/gsap.html">
+	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
+	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
+	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
+	<custom-style>
+		<style>
+
+			gdq-nameplate {
+				--gdq-nameplate-width: 450px;
+			}
+
+			gdq-nameplate:nth-of-type(1) {
+				top: 354px;
+				left: 971px;
+			}
+
+			gdq-nameplate:nth-of-type(2) {
+				top: 354px;
+				right: 971px;
+			}
+
+			gdq-nameplate:nth-of-type(3) {
+				top: 448px;
+				left: 971px;
+			}
+
+			gdq-nameplate:nth-of-type(4) {
+				top: 448px;
+				right: 971px;
+			}
+
+			gdq-runinfo {
+				left: 628px;
+				top: 240px;
+				width: 344px;
+				height: 196px;
+				--gdq-runinfo-misc-height: 32px;
+			}
+
+			gdq-timer {
+				left: 628px;
+				top: 475px;
+				height: 81px;
+				width: 344px;
+				font-size: 56px;
+			}
+
+			#lineone {
+				position: absolute;
+				box-sizing: border-box;
+				width: 344px;
+				height: 845px;
+				left: 628px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			atom-tronlines {
+				position: absolute;
+				left: 628px;
+			}
+
+			atom-tronlines:nth-of-type(1) {
+				top: 384px;
+			}
+
+			atom-tronlines:nth-of-type(2) {
+				top: 556px;
+				border-bottom: 1px solid #00ffff;
+			}
+
+			.plate {
+				background-color: #051113;
+				border-top: 1px solid #00ffff;
+				border-bottom: 1px solid #00ffff;
+				position: absolute;
+				height: 137px;
+				width: 628px;
+				top: 354px;
+			}
+
+			#plateleft {
+				left: 0;
+			}
+
+			#plateright {
+				right: 0;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				top: 240px;
+				left: 629px;
+				height: 145px;
+				width: 344px;
+				border-top: 1px solid #00ffff;
+			}
+		</style>
+	</custom-style>
+</head>
+<body>
+<div id="container">
+	<div id="plateleft" class="plate"></div>
+	<div id="plateright" class="plate"></div>
+	<atom-gridlines></atom-gridlines>
+	<atom-tronlines direction="down" width="345" height="102"></atom-tronlines>
+	<atom-tronlines width="345" height="49"></atom-tronlines>
+	<div id="lineone"></div>
+	<gdq-runinfo></gdq-runinfo>
+	<gdq-timer></gdq-timer>
+	<gdq-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
+	<gdq-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
+	<gdq-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
+	<gdq-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
+</div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', () => {
+		TweenLite.to(document.body, 0.333, {
+			opacity: 1,
+			ease: Power1.easeOut
+		});
+	});
+</script>
+</body>
+</html>
