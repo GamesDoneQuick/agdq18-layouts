@@ -35,27 +35,9 @@
 				right: 0;
 			}
 
-			#bottomTextGreeble1,
-			#bottomTextGreeble2,
-			#bottomTextGreeble3 {
-				bottom: 70px;
-			}
-
-			#bottomTextGreeble1 {
-				left: 348px;
-			}
-
-			#bottomTextGreeble2 {
-				left: 532px;
-			}
-
-			#bottomTextGreeble3 {
-				left: 719px;
-				color: #00FFFF;
-			}
-
 			atom-text-greeble {
 				position: absolute;
+				bottom: 70px;
 			}
 		</style>
 
@@ -63,9 +45,9 @@
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
 		<gdq-break-bottom-frame id="bottomFrame"></gdq-break-bottom-frame>
 
-		<atom-text-greeble id="bottomTextGreeble1" length="15"></atom-text-greeble>
-		<atom-text-greeble id="bottomTextGreeble2" length="11"></atom-text-greeble>
-		<atom-text-greeble id="bottomTextGreeble3" length="15"></atom-text-greeble>
+		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>
+		<atom-text-greeble style="left: 532px;" length="11"></atom-text-greeble>
+		<atom-text-greeble style="left: 719px; color: #00FFFF;" length="15"></atom-text-greeble>
 	</template>
 
 	<script src="gdq-break.js"></script>
