@@ -81,7 +81,7 @@
 			tl.to(this._$runs, 0.5, {
 				opacity: 1,
 				ease: Sine.easeInOut
-			});
+			}, '+=0.1');
 
 			tl.set(this._$runs, {clearProps: 'will-change'});
 
