@@ -1,17 +1,18 @@
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../atoms/atom-chevron/atom-chevron.html">
 <link rel="import" href="../../atoms/atom-gradient-text/atom-gradient-text.html">
 <link rel="import" href="../../atoms/atom-greeble/atom-greeble.html">
 
 <dom-module id="gdq-runinfo-misc">
 	<template>
-		<style>
+		<style include="iron-flex iron-flex-alignment">
 			:host {
-				display: block;
 				font-size: 22px;
-				@apply --layout-horizontal;
+				@apply --layout-vertical;
 			}
 
-			:host > * {
+			.row > * {
 				min-width: 0;
 				@apply --layout-flex;
 			}
@@ -91,6 +92,25 @@
 				z-index: 1;
 			}
 
+			.row {
+				@apply --layout-horizontal;
+			}
+
+			.label {
+				font-style: normal;
+				font-weight: 600;
+				line-height: normal;
+				font-size: 10px;
+				text-align: center;
+				color: transparent;
+				background-image: linear-gradient(
+					to bottom,
+					#E6E6E6 0%,
+					#CF70D3 100%
+				);
+				-webkit-background-clip: text;
+			}
+
 			.wing atom-greeble {
 				position: absolute;
 				top: 0;
@@ -118,44 +138,52 @@
 			}
 		</style>
 
-		<div id="leftWing" class="wing">
-			<div class="wingContent">
-				<atom-chevron id="leftChevron" direction="left"></atom-chevron>
-				<div class="wingBody">
+		<div class="row flex">
+			<div id="leftWing" class="wing">
+				<div class="wingContent">
+					<atom-chevron id="leftChevron" direction="left"></atom-chevron>
+					<div class="wingBody">
+						<atom-gradient-text
+							align="center"
+							text="[[console]]"
+							max-width="[[maxTextWidth]]">
+						</atom-gradient-text>
+					</div>
+				</div>
+				<atom-greeble align="right"></atom-greeble>
+			</div>
+
+			<div id="center">
+				<atom-greeble align="left"></atom-greeble>
+				<div id="center-content">
 					<atom-gradient-text
 						align="center"
-						text="[[console]]"
+						text="[[releaseYear]]"
 						max-width="[[maxTextWidth]]">
 					</atom-gradient-text>
 				</div>
+				<atom-greeble align="right"></atom-greeble>
 			</div>
-			<atom-greeble align="right"></atom-greeble>
-		</div>
 
-		<div id="center">
-			<atom-greeble align="left"></atom-greeble>
-			<div id="center-content">
-				<atom-gradient-text
-					align="center"
-					text="[[releaseYear]]"
-					max-width="[[maxTextWidth]]">
-				</atom-gradient-text>
-			</div>
-			<atom-greeble align="right"></atom-greeble>
-		</div>
-
-		<div id="rightWing" class="wing">
-			<atom-greeble align="left"></atom-greeble>
-			<div class="wingContent">
-				<div class="wingBody">
-					<atom-gradient-text
-						align="center"
-						text="[[estimate]]"
-						max-width="[[maxTextWidth]]">
-					</atom-gradient-text>
+			<div id="rightWing" class="wing">
+				<atom-greeble align="left"></atom-greeble>
+				<div class="wingContent">
+					<div class="wingBody">
+						<atom-gradient-text
+							align="center"
+							text="[[estimate]]"
+							max-width="[[maxTextWidth]]">
+						</atom-gradient-text>
+					</div>
+					<atom-chevron id="rightChevron" direction="right"></atom-chevron>
 				</div>
-				<atom-chevron id="rightChevron" direction="right"></atom-chevron>
 			</div>
+		</div>
+
+		<div class="row flex-none">
+			<div class="label">Platform</div>
+			<div class="label">Release Year</div>
+			<div class="label">Estimate</div>
 		</div>
 	</template>
 
