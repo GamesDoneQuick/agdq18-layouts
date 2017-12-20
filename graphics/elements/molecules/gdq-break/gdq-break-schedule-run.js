@@ -1,47 +1,100 @@
-/**
- * @customElement
- * @polymer
- */
-class GdqBreakScheduleRun extends Polymer.MutableData(Polymer.Element) {
-	static get is() {
-		return 'gdq-break-schedule-run';
-	}
+(function () {
+	'use strict';
 
-	static get properties() {
-		return {
-			importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
-			run: {
-				type: Object,
-				observer: '_runChanged'
-			},
-			upNext: {
-				type: Boolean,
-				reflectToAttribute: true,
-				value: false
-			}
-		};
-	}
+	const DISPALY_DURATION = nodecg.bundleConfig.displayDuration;
 
-	_runChanged(newVal) {
-		Polymer.RenderStatus.afterNextRender(this, () => {
-			const WIDTH_ADDED_BY_BORDERS = 2;
-			const PADDING_OF_INFO_RUNNER = 48;
-			this.$['info-runner'].text = newVal.runners[0].name;
-			this.$['info-runner'].maxWidth =
-				this.$.info.clientWidth -
-				WIDTH_ADDED_BY_BORDERS -
-				PADDING_OF_INFO_RUNNER -
-				this.$['info-category'].clientWidth;
-		});
-	}
-
-	_formatRunName(runName) {
-		if (!runName || typeof runName !== 'string') {
-			return '?';
+	/**
+	 * @customElement
+	 * @polymer
+	 */
+	class GdqBreakScheduleRun extends Polymer.MutableData(Polymer.Element) {
+		static get is() {
+			return 'gdq-break-schedule-run';
 		}
 
-		return runName.replace('/\\n/g', '<br/>');
-	}
-}
+		static get properties() {
+			return {
+				importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
+				run: {
+					type: Object,
+					observer: '_runChanged'
+				},
+				upNext: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
+				},
+				_currentRunnerIndex: {
+					type: Number,
+					value: 0
+				}
+			};
+		}
 
-customElements.define(GdqBreakScheduleRun.is, GdqBreakScheduleRun);
+		_runChanged(newVal) {
+			const WIDTH_ADDED_BY_BORDERS = 2;
+			const PADDING_OF_INFO_RUNNER = 48;
+
+			this.$['info-runner'].maxWidth = 0;
+			this.$['info-runner'].text = this._getLongestName(newVal.runners);
+			TweenLite.set(this.$['info-runner'], {opacity: 1});
+			Polymer.RenderStatus.afterNextRender(this, () => {
+				this.$['info-runner'].maxWidth =
+					this.$.info.clientWidth -
+					WIDTH_ADDED_BY_BORDERS -
+					PADDING_OF_INFO_RUNNER -
+					this.$['info-category'].clientWidth;
+
+				this.$['info-runner'].style.width = `${this.$['info-runner'].clientWidth - PADDING_OF_INFO_RUNNER}px`;
+				this.$['info-runner'].text = newVal.runners[0].name;
+
+				if (this._runnerTimeline) {
+					this._runnerTimeline.kill();
+					this._runnerTimeline = null;
+				}
+
+				if (newVal.runners.length > 1) {
+					this._runnerTimeline = this._createRunnerLoopTimeline(newVal.runners);
+				}
+			});
+		}
+
+		_createRunnerLoopTimeline(runners) {
+			const tl = new TimelineMax({repeat: -1});
+
+			runners.slice(1).concat([runners[0]]).forEach(runner => {
+				tl.to(this.$['info-runner'], 0.5, {
+					opacity: 0,
+					ease: Sine.easeInOut
+				}, `+=${DISPALY_DURATION}`);
+
+				tl.call(() => {
+					this.$['info-runner'].text = runner.name;
+				});
+
+				tl.to(this.$['info-runner'], 0.5, {
+					opacity: 1,
+					ease: Sine.easeInOut
+				}, '+=0.1');
+			});
+
+			return tl;
+		}
+
+		_formatRunName(runName) {
+			if (!runName || typeof runName !== 'string') {
+				return '?';
+			}
+
+			return runName.replace('/\\n/g', '<br/>');
+		}
+
+		_getLongestName(runners) {
+			return runners.reduce((accumulator, currentValue) => {
+				return currentValue.name.length > accumulator.length ? currentValue.name : accumulator;
+			}, '');
+		}
+	}
+
+	customElements.define(GdqBreakScheduleRun.is, GdqBreakScheduleRun);
+})();
