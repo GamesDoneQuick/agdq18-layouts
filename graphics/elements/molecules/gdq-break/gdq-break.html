@@ -2,9 +2,9 @@
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../shared/fonts/source-code-pro/import.html">
 <link rel="import" href="../../atoms/atom-text-greeble/atom-text-greeble.html">
+<link rel="import" href="gdq-break-bottom-frame.html">
 <link rel="import" href="gdq-break-schedule.html">
 <link rel="import" href="gdq-break-top-frame.html">
-<link rel="import" href="gdq-break-bottom-frame.html">
 
 <dom-module id="gdq-break">
 	<template>
@@ -15,6 +15,12 @@
 				height: 900px;
 				background: url("img/lines_bg.png") no-repeat;
 				font-family: "Source Code Pro";
+			}
+
+			#schedule {
+				position: absolute;
+				top: 123px;
+				right: 0;
 			}
 
 			#topFrame {
@@ -29,25 +35,20 @@
 				left: 0;
 			}
 
-			#schedule {
-				position: absolute;
-				top: 123px;
-				right: 0;
-			}
-
 			atom-text-greeble {
 				position: absolute;
 				bottom: 70px;
 			}
 		</style>
 
-		<gdq-break-top-frame id="topFrame"></gdq-break-top-frame>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
-		<gdq-break-bottom-frame id="bottomFrame"></gdq-break-bottom-frame>
 
 		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>
 		<atom-text-greeble style="left: 532px;" length="11"></atom-text-greeble>
 		<atom-text-greeble style="left: 719px; color: #00FFFF;" length="15"></atom-text-greeble>
+
+		<gdq-break-top-frame id="topFrame"></gdq-break-top-frame>
+		<gdq-break-bottom-frame id="bottomFrame"></gdq-break-bottom-frame>
 	</template>
 
 	<script src="gdq-break.js"></script>
