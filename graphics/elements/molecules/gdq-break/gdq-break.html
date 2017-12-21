@@ -3,6 +3,7 @@
 <link rel="import" href="../../../../shared/fonts/source-code-pro/import.html">
 <link rel="import" href="../../atoms/atom-text-greeble/atom-text-greeble.html">
 <link rel="import" href="gdq-break-bottom-frame.html">
+<link rel="import" href="gdq-break-prizes.html">
 <link rel="import" href="gdq-break-schedule.html">
 <link rel="import" href="gdq-break-top-frame.html">
 
@@ -14,7 +15,14 @@
 				width: 1600px;
 				height: 900px;
 				background: url("img/lines_bg.png") no-repeat;
+				background-color: black;
 				font-family: "Source Code Pro";
+			}
+
+			#prizes {
+				position: absolute;
+				top: 538px;
+				left: 0;
 			}
 
 			#schedule {
@@ -41,6 +49,7 @@
 			}
 		</style>
 
+		<gdq-break-prizes id="prizes"></gdq-break-prizes>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
 
 		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>
