@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
 	<title>Test Break</title>
 	<link rel="stylesheet" href="style/layout.css">
-	<link rel="stylesheet" href="style/font/SF Pixelate.css">
-	<link rel="import" href="../shared/imports/gsap.html">
 	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 	<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 	<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 	<link rel="import" href="../bower_components/polymer/lib/utils/debounce.html">
 	<link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+	<link rel="import" href="../shared/fonts/source-code-pro/import.html">
+	<link rel="import" href="../shared/imports/gsap.html">
 	<link rel="import" href="elements/molecules/gdq-break-bids/gdq-break-bids.html">
-	<link rel="import" href="elements/molecules/gdq-break-prizes/gdq-break-prizes.html">
+	<link rel="import" href="elements/molecules/gdq-break/gdq-break-prizes.html">
 	<style>
 		body {
 			opacity: 1;
@@ -49,11 +49,15 @@
 					@apply --layout-flex-none;
 				}
 
-				gdq-break-bids,
-				gdq-break-prizes {
+				gdq-break-bids {
 					background: url("img/break/screen_static.png");
 					width: 532px!important;
 					height: 305px;
+				}
+
+				gdq-break-prizes {
+					background: black;
+					padding: 14px;
 				}
 			</style>
 
@@ -79,7 +83,7 @@
 			</div>
 
 			<div class="section">
-				<gdq-break-prizes id="prizes"></gdq-break-prizes>
+				<gdq-break-prizes id="prizes" no-auto-loop></gdq-break-prizes>
 
 				<div class="section-controls">
 					<vaadin-combo-box
@@ -151,7 +155,7 @@
 					}
 
 					const prizesArr = [prize];
-					this.$.prizes.showPrize(prize, 0, prizesArr);
+					this.$.prizes._showPrize(prize, 0, prizesArr);
 				}
 
 				replaySelectedBid() {

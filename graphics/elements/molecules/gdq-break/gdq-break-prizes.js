@@ -1,8 +1,7 @@
-/* global SplitText Random */
+/* global Random */
 (function () {
 	'use strict';
 
-	const TYPE_INTERVAL = 0.03;
 	const EMPTY_OBJ = {};
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
 
@@ -21,18 +20,148 @@
 
 		static get properties() {
 			return {
-				currentPrize: Object
+				currentPrize: Object,
+				noAutoLoop: {
+					type: Boolean,
+					value: false
+				},
+				_photoExiting: {
+					type: Boolean,
+					value: false,
+					notify: true
+				},
+				_photoEntering: {
+					type: Boolean,
+					value: false,
+					notify: true
+				}
 			};
 		}
 
 		ready() {
 			super.ready();
 			this._fallbackImageUrl = `${this.importPath}img/prize-fallback.png`;
-			this.initPhotoSVG();
-			this.loop();
+			this._initPhotoSVG();
+			if (!this.noAutoLoop) {
+				this._loop();
+			}
 		}
 
-		initPhotoSVG() {
+		/**
+		 * Plays the entrance animation and kicks off the infinite loop of
+		 * showing all available prizes, one at a time.
+		 * @returns {TimelineLite} - A GSAP TimelineLite instance.
+		 */
+		show() {
+			const tl = new TimelineLite();
+
+			tl.call(() => {
+				// Clear all content.
+				this.$['info-description-text'].innerText = '';
+				this.$['info-minimumBid-text'].innerText = '';
+				this.$.provider.innerText = '';
+				this._image.load('');
+			}, null, null, '+=0.03');
+
+			tl.addLabel('start');
+
+			tl.to(this._photoBgRect.node, 1.5, {
+				drawSVG: '100%',
+				ease: Power2.easeOut
+			}, 'start');
+
+			tl.to(this.$.info, 1, {
+				x: '0%',
+				ease: Power2.easeOut
+			}, 'start+=0.5');
+
+			tl.to(this.$['photo-label'], 0.5, {
+				opacity: 1,
+				x: 0,
+				ease: Sine.easeOut
+			}, 'start+=1');
+
+			tl.to(this._photoBgRect.node, 0.5, {
+				'fill-opacity': 0.25,
+				ease: Sine.easeOut
+			}, 'start+=1');
+
+			tl.call(() => {
+				// Re-start the loop once we've finished entering.
+				this._loop();
+			});
+
+			return tl;
+		}
+
+		/**
+		 * Plays the exit animation and kills the current loop of prize displaying.
+		 * This animation has a variable length due to it needing to wait for the current
+		 * loop to be at a good stopping point before beginning the exit animation.
+		 * @returns {TimelineLite} - A GSAP TimelineLite instance.
+		 */
+		hide() {
+			const tl = new TimelineLite();
+
+			tl.call(() => {
+				tl.pause();
+				if (this._photoExiting) {
+					this.addEventListener('_photo-exiting-changed', function listener(e) {
+						if (e.detail.value === false) {
+							this.removeEventListener('_photo-exiting-changed', listener);
+							this._killLoop();
+							tl.resume();
+						}
+					});
+				} else if (this._photoEntering) {
+					this.addEventListener('_photo-entering-changed', function listener(e) {
+						if (e.detail.value === false) {
+							this.removeEventListener('_photo-entering-changed', listener);
+							this._killLoop();
+							this._exitPhoto({
+								onComplete() {
+									tl.resume();
+								}
+							});
+						}
+					});
+				} else {
+					this._killLoop();
+					this._exitPhoto({
+						onComplete() {
+							tl.resume();
+						}
+					});
+				}
+			}, null, null, '+=0.1');
+
+			tl.addLabel('start', '+=0.03');
+
+			tl.to(this._photoBgRect.node, 0.5, {
+				'fill-opacity': 0,
+				ease: Sine.easeIn
+			}, 'start');
+
+			tl.to(this.$['photo-label'], 0.5, {
+				opacity: 0,
+				x: -50,
+				ease: Sine.easeIn
+			}, 'start');
+
+			tl.to(this.$.info, 1, {
+				x: '-100%',
+				ease: Power2.easeIn
+			}, 'start');
+
+			tl.to(this._photoBgRect.node, 1.5, {
+				drawSVG: '0%',
+				ease: Power2.easeIn
+			}, 'start');
+
+			return tl;
+		}
+
+		_initPhotoSVG() {
 			const STROKE_SIZE = 1;
 			const ELEMENT_WIDTH = this.$.photo.clientWidth;
 			const ELEMENT_HEIGHT = this.$.photo.clientHeight;
@@ -45,6 +174,7 @@
 			const mask = svgDoc.mask();
 			const image = svgDoc.image(this._fallbackImageUrl);
 
+			this._photoBgRect = bgRect;
 			this._image = image;
 			this._imageMaskCells = [];
 
@@ -56,9 +186,16 @@
 			bgRect.size(ELEMENT_WIDTH, ELEMENT_HEIGHT);
 			bgRect.stroke({
 				color: 'white',
-				width: STROKE_SIZE * 2 // Makes it effectively STROKE_SIZE, because all SVG strokes are center strokes, and the outer half is cut off.
+
+				// Makes it effectively STROKE_SIZE, because all SVG strokes
+				// are center strokes, and the outer half is cut off.
+				width: STROKE_SIZE * 2
 			});
 			bgRect.fill({color: 'black', opacity: 0.25});
+
+			// Mirror such that drawSVG anims start from the top right
+			// and move clockwise to un-draw, counter-clockwise to draw.
+			bgRect.transform({scaleX: -1, x: ELEMENT_WIDTH});
 
 			image.size(ELEMENT_WIDTH - (STROKE_SIZE * 2), ELEMENT_HEIGHT - (STROKE_SIZE * 2));
 			image.move(STROKE_SIZE, STROKE_SIZE);
@@ -80,11 +217,12 @@
 			image.maskWith(mask);
 		}
 
-		loop() {
+		_loop() {
 			// If there's no prizes, do nothing and try again in one second.
 			if (!currentPrizes.value || currentPrizes.value.length <= 0) {
-				setTimeout(() => {
-					this.loop();
+				clearTimeout(this._loopRetryTimeout);
+				this._loopRetryTimeout = setTimeout(() => {
+					this._loop();
 				}, 1000);
 				return;
 			}
@@ -116,25 +254,43 @@
 
 			// If the next prize is the same as the current prize, do nothing and try again in one second.
 			if (this.currentPrize && nextPrize.id === this.currentPrize.id) {
-				setTimeout(() => {
-					this.loop();
+				clearTimeout(this._loopRetryTimeout);
+				this._loopRetryTimeout = setTimeout(() => {
+					this._loop();
 				}, 1000);
 				return;
 			}
 
+			// Kill any existing loop, if one was somehow running.
+			// This also resets our internal state, used to make things like the enter/exit anims more seamless.
+			this._killLoop();
+
 			// Show the next prize.
 			this.currentPrize = nextPrize;
-			const tl = this.showPrize(nextPrize);
+			const tl = this._showPrize(nextPrize);
 			tl.call(() => {
-				this.loop();
+				this._loop();
 			});
+
+			this._currentLoopIterationTimeline = tl;
 		}
 
-		showPrize(prize) {
+		_killLoop() {
+			if (this._currentLoopIterationTimeline) {
+				this._currentLoopIterationTimeline.clear();
+				this._currentLoopIterationTimeline.kill();
+				this._currentLoopIterationTimeline = null;
+			}
+
+			clearTimeout(this._loopRetryTimeout);
+
+			this._resetState();
+		}
+
+		_showPrize(prize) {
 			let useFallbackImage = false;
 			let changingProvider = true;
 			let changingMinimumBid = true;
-			const imageExitCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
 			const imageEntranceCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
 			const tl = new TimelineLite();
 			const minimumBidText = prize.sumdonations ?
@@ -153,6 +309,16 @@
 			}, null, null, '+=0.03');
 
 			tl.addLabel('exit');
+
+			tl.add(this._exitPhoto({
+				onComplete() {
+					const newSrc = useFallbackImage ? this._fallbackImageUrl : prize.image;
+					tl.pause();
+					this._image.load(newSrc).loaded(() => {
+						tl.resume();
+					});
+				}
+			}), 'exit');
 
 			tl.call(() => {
 				if (!this.$.provider.innerText && !this.$['info-description-text'].innerText) {
@@ -180,19 +346,6 @@
 				});
 			}, null, null, 'exit+=0.1');
 
-			tl.staggerTo(imageExitCells, 0.224, {
-				opacity: 0,
-				ease: Sine.easeInOut
-			}, 0.002, 'exit');
-
-			tl.call(() => {
-				const newSrc = useFallbackImage ? this._fallbackImageUrl : prize.image;
-				tl.pause();
-				this._image.load(newSrc).loaded(() => {
-					tl.resume();
-				});
-			});
-
 			tl.addLabel('enter');
 
 			tl.call(() => {
@@ -201,18 +354,31 @@
 				}
 
 				this.$.provider.innerText = prize.provided;
-				this._typeAnim(this.$.provider);
+				TypeAnims.type(this.$.provider);
 				TweenLite.set(this.$.provider, {opacity: 1});
 			}, null, null, 'enter');
 
+			let didImageEntranceOnStart;
 			tl.staggerTo(imageEntranceCells, 0.224, {
 				opacity: 1,
-				ease: Sine.easeInOut
-			}, 0.002, 'enter+=0.1');
+				ease: Sine.easeInOut,
+				callbackScope: this,
+				onStart() {
+					// We only want this onStart handler to run once.
+					// There is no "onStartAll" equivalent, only an "onCompleteAll".
+					if (didImageEntranceOnStart) {
+						return;
+					}
+					didImageEntranceOnStart = true;
+					this._photoEntering = true;
+				}
+			}, 0.002, 'enter+=0.1', () => {
+				this._photoEntering = false;
+			});
 
 			tl.call(() => {
 				this.$['info-description-text'].innerText = prize.description;
-				this._typeAnim(this.$['info-description-text']);
+				TypeAnims.type(this.$['info-description-text']);
 				TweenLite.set(this.$['info-description-text'], {opacity: 1});
 			}, null, null, 'enter+=0.2');
 
@@ -222,7 +388,7 @@
 				}
 
 				this.$['info-minimumBid-text'].innerText = minimumBidText;
-				this._typeAnim(this.$['info-minimumBid-text']);
+				TypeAnims.type(this.$['info-minimumBid-text']);
 				TweenLite.set(this.$['info-minimumBid-text'], {opacity: 1});
 			}, null, null, 'enter+=0.3');
 
@@ -232,35 +398,30 @@
 			return tl;
 		}
 
-		_typeAnim(element, {splitType = 'chars,words'} = {}) {
+		_exitPhoto({onComplete} = {}) {
 			const tl = new TimelineLite();
-			const split = new SplitText(element, {
-				type: splitType,
-				charsClass: 'character style-scope gdq-break-bids',
-				linesClass: 'line style-scope gdq-break-bids'
+			const imageExitCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
+			let didOnStart = false;
+
+			tl.staggerTo(imageExitCells, 0.224, {
+				opacity: 0,
+				ease: Sine.easeInOut,
+				callbackScope: this,
+				onStart() {
+					// We only want this onStart handler to run once.
+					// There is no "onStartAll" equivalent, only an "onCompleteAll".
+					if (didOnStart) {
+						return;
+					}
+					didOnStart = true;
+					this._photoExiting = true;
+				}
+			}, 0.002, 0, () => {
+				if (typeof onComplete === 'function') {
+					onComplete.call(this);
+				}
+				this._photoExiting = false;
 			});
-			element.split = split;
-
-			switch (splitType) {
-				case 'chars':
-					tl.staggerFrom(split.chars, 0.001, {
-						visibility: 'hidden'
-					}, TYPE_INTERVAL);
-
-					break;
-				case 'chars,words':
-				case 'chars,words,lines':
-					split.words.forEach(word => {
-						tl.staggerFrom(word.children, 0.001, {
-							visibility: 'hidden'
-						}, TYPE_INTERVAL);
-
-						tl.to(EMPTY_OBJ, TYPE_INTERVAL, EMPTY_OBJ);
-					});
-					break;
-				default:
-					throw new Error(`Unexpected splitType "${splitType}"`);
-			}
 
 			return tl;
 		}
@@ -314,6 +475,10 @@
 
 			preloaderPromises.set(src, preloadPromise);
 			return preloadPromise;
+		}
+
+		_resetState() {
+			this._photoExiting = false;
 		}
 	}
 

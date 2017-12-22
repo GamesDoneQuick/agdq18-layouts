@@ -6,6 +6,7 @@
 <link rel="import" href="gdq-break-prizes.html">
 <link rel="import" href="gdq-break-schedule.html">
 <link rel="import" href="gdq-break-top-frame.html">
+<link rel="import" href="gdq-break-tweet.html">
 
 <dom-module id="gdq-break">
 	<template>
@@ -15,8 +16,13 @@
 				width: 1600px;
 				height: 900px;
 				background: url("img/lines_bg.png") no-repeat;
-				background-color: black;
 				font-family: "Source Code Pro";
+			}
+
+			#tweet {
+				position: absolute;
+				top: 548px;
+				left: -1px;
 			}
 
 			#prizes {
@@ -50,6 +56,7 @@
 		</style>
 
 		<gdq-break-prizes id="prizes"></gdq-break-prizes>
+		<gdq-break-tweet id="tweet"></gdq-break-tweet>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
 
 		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>

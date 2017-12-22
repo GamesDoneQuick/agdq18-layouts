@@ -10,6 +10,11 @@ class GdqBreak extends Polymer.Element {
 	static get properties() {
 		return {};
 	}
+
+	ready() {
+		super.ready();
+		this.$.tweet.prizesElement = this.$.prizes;
+	}
 }
 
 customElements.define(GdqBreak.is, GdqBreak);
