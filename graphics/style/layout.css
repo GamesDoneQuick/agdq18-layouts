@@ -1,5 +1,9 @@
 @import 'base.css';
 
+body {
+	font-family: 'Source Code Pro';
+}
+
 #container {
 	width: 1600px;
 	height: 845px;
