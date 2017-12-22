@@ -36,10 +36,6 @@
 
 			const timerTL = new TimelineLite({autoRemoveChildren: true});
 
-			stopwatch.once('change', newVal => {
-				console.log(newVal);
-			});
-
 			stopwatch.on('change', (newVal, oldVal) => {
 				this.hours = newVal.time.hours;
 				this.minutes = newVal.time.minutes;
