@@ -1,4 +1,4 @@
-/* global Random */
+/* global Random GdqBreakLoop */
 (function () {
 	'use strict';
 
@@ -13,18 +13,13 @@
 	 * @customElement
 	 * @polymer
 	 */
-	class GdqBreakPrizes extends Polymer.Element {
+	class GdqBreakPrizes extends GdqBreakLoop {
 		static get is() {
 			return 'gdq-break-prizes';
 		}
 
 		static get properties() {
 			return {
-				currentPrize: Object,
-				noAutoLoop: {
-					type: Boolean,
-					value: false
-				},
 				_photoExiting: {
 					type: Boolean,
 					value: false,
@@ -40,11 +35,13 @@
 
 		ready() {
 			super.ready();
+
+			currentPrizes.on('change', newVal => {
+				this.availableItems = newVal;
+			});
+
 			this._fallbackImageUrl = `${this.importPath}img/prize-fallback.png`;
 			this._initPhotoSVG();
-			if (!this.noAutoLoop) {
-				this._loop();
-			}
 		}
 
 		/**
@@ -217,77 +214,7 @@
 			image.maskWith(mask);
 		}
 
-		_loop() {
-			// If there's no prizes, do nothing and try again in one second.
-			if (!currentPrizes.value || currentPrizes.value.length <= 0) {
-				clearTimeout(this._loopRetryTimeout);
-				this._loopRetryTimeout = setTimeout(() => {
-					this._loop();
-				}, 1000);
-				return;
-			}
-
-			const availablePrizes = currentPrizes.value;
-
-			let nextIdx = 0;
-			if (this.currentPrize && this.currentPrize.id) {
-				// Figure out the array index of the current sponsor
-				let currentIdx = -1;
-				availablePrizes.some((prize, index) => {
-					if (prize.id === this.currentPrize.id) {
-						currentIdx = index;
-						return true;
-					}
-
-					return false;
-				});
-
-				nextIdx = currentIdx + 1;
-			}
-
-			// If this index is greater than the max, loop back to the start
-			if (nextIdx >= availablePrizes.length) {
-				nextIdx = 0;
-			}
-
-			const nextPrize = availablePrizes[nextIdx];
-
-			// If the next prize is the same as the current prize, do nothing and try again in one second.
-			if (this.currentPrize && nextPrize.id === this.currentPrize.id) {
-				clearTimeout(this._loopRetryTimeout);
-				this._loopRetryTimeout = setTimeout(() => {
-					this._loop();
-				}, 1000);
-				return;
-			}
-
-			// Kill any existing loop, if one was somehow running.
-			// This also resets our internal state, used to make things like the enter/exit anims more seamless.
-			this._killLoop();
-
-			// Show the next prize.
-			this.currentPrize = nextPrize;
-			const tl = this._showPrize(nextPrize);
-			tl.call(() => {
-				this._loop();
-			});
-
-			this._currentLoopIterationTimeline = tl;
-		}
-
-		_killLoop() {
-			if (this._currentLoopIterationTimeline) {
-				this._currentLoopIterationTimeline.clear();
-				this._currentLoopIterationTimeline.kill();
-				this._currentLoopIterationTimeline = null;
-			}
-
-			clearTimeout(this._loopRetryTimeout);
-
-			this._resetState();
-		}
-
-		_showPrize(prize) {
+		_showItem(prize) {
 			let useFallbackImage = false;
 			let changingProvider = true;
 			let changingMinimumBid = true;
@@ -392,7 +319,7 @@
 				TweenLite.set(this.$['info-minimumBid-text'], {opacity: 1});
 			}, null, null, 'enter+=0.3');
 
-			// Give the prize some time to show
+			// Give the prize some time to show.
 			tl.to(EMPTY_OBJ, DISPLAY_DURATION, EMPTY_OBJ);
 
 			return tl;
