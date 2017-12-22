@@ -28,6 +28,7 @@
 
 		ready() {
 			super.ready();
+			this.maxNoMoreItemsRetries = 30;
 			currentBids.on('change', newVal => {
 				this.availableItems = newVal;
 			});
