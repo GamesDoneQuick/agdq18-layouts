@@ -14,6 +14,14 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 			noAutoLoop: {
 				type: Boolean,
 				value: false
+			},
+			maxNoMoreItemsRetries: {
+				type: Number,
+				value: Infinity
+			},
+			_noMoreItemsRetries: {
+				type: Number,
+				value: 0
 			}
 		};
 	}
@@ -62,11 +70,14 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 
 		// If the next item is the same as the current item, do nothing and try again in one second.
 		if (this.currentItem && nextItem.id === this.currentItem.id) {
-			clearTimeout(this._loopRetryTimeout);
-			this._loopRetryTimeout = setTimeout(() => {
-				this._loop();
-			}, 1000);
-			return;
+			if (this._noMoreItemsRetries < this.maxNoMoreItemsRetries) {
+				this._noMoreItemsRetries++;
+				clearTimeout(this._loopRetryTimeout);
+				this._loopRetryTimeout = setTimeout(() => {
+					this._loop();
+				}, 1000);
+				return;
+			}
 		}
 
 		// Kill any existing loop, if one was somehow running.
@@ -91,6 +102,8 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 		}
 
 		clearTimeout(this._loopRetryTimeout);
+
+		this._noMoreItemsRetries = 0;
 
 		if (this._resetState) {
 			this._resetState();
