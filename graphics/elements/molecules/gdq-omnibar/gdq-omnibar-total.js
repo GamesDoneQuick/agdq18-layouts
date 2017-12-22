@@ -1,7 +1,6 @@
 (function () {
 	'use strict';
 
-	const TIME_PER_DOLLAR = 0.03;
 	const total = nodecg.Replicant('total');
 
 	class GdqOmnibarTotal extends Polymer.Element {
@@ -9,54 +8,26 @@
 			return 'gdq-omnibar-total';
 		}
 
-		static get properties() {
-			return {};
-		}
-
 		ready() {
 			super.ready();
+			this.$.totalTextAmount.displayValueTransform = this._totalDisplayValueTransform.bind(this);
 			Polymer.RenderStatus.beforeNextRender(this, () => {
 				this.$.totalTextAmount.rawValue = 0;
 				total.on('change', newVal => {
-					this._handleTotalChanged(this.$.totalTextAmount, newVal.raw);
+					this.$.totalTextAmount.value = newVal.raw;
 				});
 			});
 		}
 
-		_handleTotalChanged($element, newTotal) {
-			if (!this._totalInitialized) {
-				this._totalInitialized = true;
-				$element.rawValue = newTotal;
-
-				const formattedRawValue = this.formatRawValue(newTotal);
-				$element.textContent = formattedRawValue;
-
-				// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
-				this.$.totalTextAmountPlaceholder.textContent = formattedRawValue;
-				return;
-			}
-
-			const delta = newTotal - $element.rawValue;
-			const duration = Math.min(delta * TIME_PER_DOLLAR, 3);
-			TweenMax.to($element, duration, {
-				rawValue: newTotal,
-				ease: Power2.easeOut,
-
-				callbackScope: this,
-				onUpdate() {
-					const formattedRawValue = this.formatRawValue($element.rawValue);
-					$element.textContent = formattedRawValue;
-
-					// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
-					this.$.totalTextAmountPlaceholder.textContent = formattedRawValue;
-				}
-			});
-		}
-
-		formatRawValue(rawValue) {
-			return rawValue.toLocaleString('en-US', {
+		_totalDisplayValueTransform(displayValue) {
+			const formatted = displayValue.toLocaleString('en-US', {
 				maximumFractionDigits: 0
 			}).replace(/1/ig, '\u00C0');
+
+			// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
+			this.$.totalTextAmountPlaceholder.textContent = formatted;
+
+			return formatted;
 		}
 	}
 
