@@ -22,6 +22,7 @@
 		"textFit": true,
 		"createjs": true,
 		"SVG": true,
-		"MaybeRandom": true
+		"MaybeRandom": true,
+		"TypeAnims": true
 	}
 }
