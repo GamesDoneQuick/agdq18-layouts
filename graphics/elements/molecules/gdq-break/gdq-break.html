@@ -2,6 +2,7 @@
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../shared/fonts/source-code-pro/import.html">
 <link rel="import" href="../../atoms/atom-text-greeble/atom-text-greeble.html">
+<link rel="import" href="gdq-break-bids.html">
 <link rel="import" href="gdq-break-bottom-frame.html">
 <link rel="import" href="gdq-break-prizes.html">
 <link rel="import" href="gdq-break-schedule.html">
@@ -17,6 +18,12 @@
 				height: 900px;
 				background: url("img/lines_bg.png") no-repeat;
 				font-family: "Source Code Pro";
+			}
+
+			#bids {
+				position: absolute;
+				top: 55px;
+				left: 0;
 			}
 
 			#tweet {
@@ -55,6 +62,7 @@
 			}
 		</style>
 
+		<gdq-break-bids id="bids"></gdq-break-bids>
 		<gdq-break-prizes id="prizes"></gdq-break-prizes>
 		<gdq-break-tweet id="tweet"></gdq-break-tweet>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>

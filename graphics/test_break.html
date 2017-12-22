@@ -12,7 +12,7 @@
 	<link rel="import" href="../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 	<link rel="import" href="../shared/fonts/source-code-pro/import.html">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-break-bids/gdq-break-bids.html">
+	<link rel="import" href="elements/molecules/gdq-break/gdq-break-bids.html">
 	<link rel="import" href="elements/molecules/gdq-break/gdq-break-prizes.html">
 	<style>
 		body {
@@ -49,12 +49,7 @@
 					@apply --layout-flex-none;
 				}
 
-				gdq-break-bids {
-					background: url("img/break/screen_static.png");
-					width: 532px!important;
-					height: 305px;
-				}
-
+				gdq-break-bids,
 				gdq-break-prizes {
 					background: black;
 					padding: 14px;
@@ -62,7 +57,7 @@
 			</style>
 
 			<div class="section">
-				<gdq-break-bids id="bids"></gdq-break-bids>
+				<gdq-break-bids id="bids" no-auto-loop></gdq-break-bids>
 
 				<div class="section-controls">
 					<vaadin-combo-box
@@ -146,7 +141,7 @@
 					}
 
 					const bidsArr = [bid];
-					this.$.bids.showBid(bid, 0, bidsArr);
+					this.$.bids._showItem(bid, 0, bidsArr);
 				}
 
 				showPrize(prize) {
@@ -155,7 +150,7 @@
 					}
 
 					const prizesArr = [prize];
-					this.$.prizes._showPrize(prize, 0, prizesArr);
+					this.$.prizes._showItem(prize, 0, prizesArr);
 				}
 
 				replaySelectedBid() {
