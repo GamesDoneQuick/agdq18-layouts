@@ -33,7 +33,6 @@
 		}
 
 		chocoboCheck() {
-			console.log('checking');
 			allBids.value.forEach(bid => {
 				if (bid.id === 4640) {
 					if (bid.options[0].id === 4641) {
