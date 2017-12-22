@@ -1,6 +1,6 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="gdq-break-schedule-header.html">
+<link rel="import" href="gdq-break-header.html">
 <link rel="import" href="gdq-break-schedule-run.html">
 
 <dom-module id="gdq-break-schedule">
@@ -21,10 +21,10 @@
 			}
 		</style>
 
-		<gdq-break-schedule-header text="UP_NEXT"></gdq-break-schedule-header>
+		<gdq-break-header text="UP_NEXT"></gdq-break-header>
 		<gdq-break-schedule-run id="upNext" up-next run="[[upNext]]"></gdq-break-schedule-run>
 
-		<gdq-break-schedule-header text="ON_DECK"></gdq-break-schedule-header>
+		<gdq-break-header text="ON_DECK"></gdq-break-header>
 		<gdq-break-schedule-run run="[[_getArrayItem(onDeck, 0)]]"></gdq-break-schedule-run>
 		<gdq-break-schedule-run run="[[_getArrayItem(onDeck, 1)]]"></gdq-break-schedule-run>
 		<gdq-break-schedule-run run="[[_getArrayItem(onDeck, 2)]]"></gdq-break-schedule-run>
