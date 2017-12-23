@@ -22,8 +22,11 @@
 				companionElement: {
 					type: Object,
 					value() {
-						return document.querySelector('gdq-sponsors') ||
-							document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
+						if (document.querySelector('layout-app')) {
+							return document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
+						}
+
+						return document.querySelector('gdq-sponsors');
 					}
 				},
 				timeline: {
@@ -39,7 +42,9 @@
 			super.ready();
 			this._initBackgroundSVG();
 			nodecg.listenFor('showTweet', this.playTweet.bind(this));
-			this._addReset();
+			Polymer.RenderStatus.beforeNextRender(this, () => {
+				this._addReset();
+			});
 		}
 
 		/**
