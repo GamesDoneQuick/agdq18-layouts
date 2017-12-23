@@ -1,3 +1,5 @@
+<link rel="import" href="../../../../bower_components/sc-fitted-text/sc-fitted-text.html">
+
 <dom-module id="gdq-break-bottom-frame">
 	<template>
 		<style>
@@ -7,7 +9,52 @@
 				height: 119px;
 				background: url("img/bottom_bg.png") no-repeat;
 			}
+
+			#logo {
+				position: absolute;
+				bottom: 0;
+				left: 5px;
+			}
+
+			#host,
+			#music {
+				position: absolute;
+				bottom: -14px;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#host-text,
+			#music-text {
+				position: relative;
+				top: 1px;
+				font-family: "Letter Gothic Std";
+				font-size: 20px;
+				font-weight: bold;
+				color: white;
+				margin-left: 2px;
+			}
+
+			#host {
+				left: 401px;
+			}
+
+			#music {
+				left: 684px;
+			}
 		</style>
+
+		<img id="logo" src="[[importPath]]img/bottom-bar-gdq-logo.png">
+
+		<div id="host">
+			<img id="host-icon" src="[[importPath]]img/host-icon.svg">
+			<sc-fitted-text id="host-text" max-width="190"></sc-fitted-text>
+		</div>
+
+		<div id="music">
+			<img id="music-icon" src="[[importPath]]img/music-icon.svg">
+			<sc-fitted-text id="music-text" max-width="810"></sc-fitted-text>
+		</div>
 	</template>
 
 	<script src="gdq-break-bottom-frame.js"></script>
