@@ -78,13 +78,18 @@ nodecg.listenFor('editTime', editTime);
 
 if (nodecg.bundleConfig.footpedal.enabled) {
 	const gamepad = require('gamepad');
+	const usbDetect = require('usb-detection');
 	gamepad.init();
+	usbDetect.startMonitoring();
 
 	// Poll for events
 	setInterval(gamepad.processEvents, 16);
-	// Scan for new gamepads at a slower rate
-	// TODO: this breaks USB audio devices lmao
-	setInterval(gamepad.detectDevices, 1000);
+
+	// Update the list of gamepads when usb-detection sees a change.
+	usbDetect.on('change', () => {
+		nodecg.log.info('USB devices changed, checking for new gamepads.');
+		gamepad.detectDevices();
+	});
 
 	// Listen for buttonId down event from our target gamepad.
 	gamepad.on('down', (id, num) => {

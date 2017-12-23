@@ -33,7 +33,8 @@
     "socket.io-client": "^2.0.1",
     "twemoji": "^2.0.5",
     "twitchps": "^0.5.5",
-    "twitter-stream-api": "^0.5.0"
+    "twitter-stream-api": "^0.5.0",
+    "usb-detection": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
