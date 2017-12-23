@@ -16,6 +16,7 @@
 <link rel="import" href="dash-host-ads.html">
 <link rel="import" href="dash-host-bids.html">
 <link rel="import" href="dash-host-currentrun.html">
+<link rel="import" href="dash-host-name.html">
 <link rel="import" href="dash-host-prizes.html">
 <link rel="import" href="dash-host-styles.html">
 <link rel="import" href="dash-host-totals.html">
@@ -73,15 +74,20 @@
 			}
 
 			#ads,
-			#bidsAndPrizes {
+			#leftColumn {
 				/* Makes these colums a bit shorter, which helps to emphasize the total in the center column. */
 				padding-top: 11px;
 			}
 
-			#bidsAndPrizes {
+			#leftColumn {
 				grid-column: 1;
 				grid-row: 1;
 				@apply --layout-vertical;
+			}
+
+			#bidsAndPrizes {
+				@apply --layout-vertical;
+				@apply --layout-flex;
 			}
 
 			#bidsAndPrizes paper-tabs {
@@ -143,7 +149,8 @@
 				grid-row: 1;
 			}
 
-			#twitchAds {
+			#twitchAds,
+			#name {
 				margin-bottom: 17px;
 				height: 147px;
 			}
@@ -156,16 +163,20 @@
 		</div>
 
 		<div id="gridWrapper">
-			<div id="bidsAndPrizes">
-				<paper-tabs selected="{{selectedBidsAndPrizesTab}}">
-					<paper-tab>INCENTIVES/BIDS</paper-tab>
-					<paper-tab>PRIZES AVAILABLE</paper-tab>
-				</paper-tabs>
+			<div id="leftColumn">
+				<dash-host-name id="name" class="material"></dash-host-name>
 
-				<iron-pages selected="[[selectedBidsAndPrizesTab]]">
-					<dash-host-bids id="bids" class="material"></dash-host-bids>
-					<dash-host-prizes id="prizes" class="material"></dash-host-prizes>
-				</iron-pages>
+				<div id="bidsAndPrizes" class="material">
+					<paper-tabs selected="{{selectedBidsAndPrizesTab}}">
+						<paper-tab>INCENTIVES/BIDS</paper-tab>
+						<paper-tab>PRIZES AVAILABLE</paper-tab>
+					</paper-tabs>
+
+					<iron-pages selected="[[selectedBidsAndPrizesTab]]">
+						<dash-host-bids id="bids" class="material"></dash-host-bids>
+						<dash-host-prizes id="prizes" class="material"></dash-host-prizes>
+					</iron-pages>
+				</div>
 			</div>
 
 			<div id="scheduleAndStats">
