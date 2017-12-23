@@ -7,10 +7,11 @@
  * @returns {string} - The formatted string.
  */
 module.exports = function formatDollars(amount, {cents = true} = {}) {
+	const fractionDigits = cents ? 2 : 0;
 	return parseFloat(amount).toLocaleString('en-US', {
 		style: 'currency',
 		currency: 'USD',
-		maximumFractionDigits: cents ? 2 : 0,
-		minimumFractionDigits: 0
+		maximumFractionDigits: fractionDigits,
+		minimumFractionDigits: fractionDigits
 	});
 };
