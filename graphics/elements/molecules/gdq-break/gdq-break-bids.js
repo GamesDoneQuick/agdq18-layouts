@@ -39,7 +39,7 @@
 			if (bid.type === 'choice-many') {
 				elementTagName = 'gdq-break-bid-many';
 			} else if (bid.type === 'choice-binary') {
-				// elementTagName = 'gdq-break-bid-binary';
+				elementTagName = 'gdq-break-bid-binary';
 			} else if (bid.type === 'challenge') {
 				// elementTagName = 'gdq-break-bid-challenge';
 			} else {
