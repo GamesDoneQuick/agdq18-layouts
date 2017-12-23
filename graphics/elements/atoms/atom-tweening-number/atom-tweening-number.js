@@ -115,7 +115,6 @@ class AtomTweeningNumber extends Polymer.Element {
 
 		const deltaValue = newValue - this._displayValue;
 		const duration = this.calcTweenDuration(deltaValue);
-		console.log('tweening from %f to %f over %f seconds', this._displayValue, newValue, duration);
 		this.tween(newValue, duration);
 	}
 
