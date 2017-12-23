@@ -41,7 +41,7 @@
 			} else if (bid.type === 'choice-binary') {
 				elementTagName = 'gdq-break-bid-binary';
 			} else if (bid.type === 'challenge') {
-				// elementTagName = 'gdq-break-bid-challenge';
+				elementTagName = 'gdq-break-bid-challenge';
 			} else {
 				nodecg.log.error('Got bid of unexpected type (%s):', bid.type, JSON.stringify(bid, null, 2));
 			}
