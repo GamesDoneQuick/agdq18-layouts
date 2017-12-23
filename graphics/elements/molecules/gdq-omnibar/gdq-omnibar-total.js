@@ -11,11 +11,8 @@
 		ready() {
 			super.ready();
 			this.$.totalTextAmount.displayValueTransform = this._totalDisplayValueTransform.bind(this);
-			Polymer.RenderStatus.beforeNextRender(this, () => {
-				this.$.totalTextAmount.rawValue = 0;
-				total.on('change', newVal => {
-					this.$.totalTextAmount.value = newVal.raw;
-				});
+			total.on('change', newVal => {
+				this.$.totalTextAmount.value = newVal.raw;
 			});
 		}
 
