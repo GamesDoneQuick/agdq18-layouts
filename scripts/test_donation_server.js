@@ -7,7 +7,7 @@ let totalInCents = 0;
 generateAndEmitDonation();
 
 function generateAndEmitDonation() {
-	const rawAmountInCents = randomInt(100, 2000);
+	const rawAmountInCents = randomInt(100, 60000);
 	totalInCents += rawAmountInCents;
 
 	const data = {
