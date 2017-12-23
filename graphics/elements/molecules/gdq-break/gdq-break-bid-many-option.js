@@ -19,7 +19,8 @@ class GdqBreakBidManyOption extends Polymer.Element {
 		this.$.amount.ease = Power2.easeOut;
 		this.$.amount.displayValueTransform = displayValue => {
 			return '$' + displayValue.toLocaleString('en-US', {
-				maximumFractionDigits: 0
+				maximumFractionDigits: 0,
+				useGrouping: false
 			});
 		};
 	}
