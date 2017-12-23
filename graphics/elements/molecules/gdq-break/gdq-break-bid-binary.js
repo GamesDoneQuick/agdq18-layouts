@@ -25,8 +25,14 @@ class GdqBreakBidBinary extends Polymer.Element {
 		const proxy = {percent: 0};
 
 		tl.call(() => {
-			this.$.winningOptionAmount.innerText = this.bid.options[0].total.split('.')[0];
-			this.$.losingOptionAmount.innerText = this.bid.options[1].total.split('.')[0];
+			this.$.winningOptionAmount.innerText = '$' + this.bid.options[0].rawTotal.toLocaleString('en-US', {
+				maximumFractionDigits: 0,
+				useGrouping: false
+			});
+			this.$.losingOptionAmount.innerText = '$' + this.bid.options[1].rawTotal.toLocaleString('en-US', {
+				maximumFractionDigits: 0,
+				useGrouping: false
+			});
 		}, null, null, '+=0.03');
 
 		tl.to([this.$.winningOptionAmount, this.$.losingOptionAmount], 0.384, {
