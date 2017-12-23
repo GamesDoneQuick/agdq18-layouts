@@ -302,7 +302,9 @@ class AtomTronlines extends Polymer.Element {
 	 * @returns {createjs.Shape} - The created node instance.
 	 */
 	_createNode() {
-		return new createjs.Shape();
+		const shape = new createjs.Shape();
+		shape.cache(0, 0, this.nodeSize, this.tailLength + this.tailLengthRandomness);
+		return shape;
 	}
 
 	/**
@@ -321,7 +323,7 @@ class AtomTronlines extends Polymer.Element {
 			.drawRect(0, 0, this.nodeSize, tailLength)
 			.beginFill(this.nodeColor)
 			.drawRect(0, 0, this.nodeSize, this.nodeSize);
-		node.cache(0, 0, this.nodeSize, tailLength);
+		node.updateCache();
 		node.tailLength = tailLength;
 		node.speed = this._getRandomSpeed();
 		node.alpha = this.opacityStart;
