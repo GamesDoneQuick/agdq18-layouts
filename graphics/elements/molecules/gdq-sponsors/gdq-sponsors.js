@@ -77,6 +77,28 @@
 			setInterval(this.nextSponsor.bind(this), HOLD_DURATION * 1000);
 		}
 
+		show() {
+			const tl = new TimelineLite();
+
+			tl.to(this, 0.33, {
+				opacity: 0,
+				ease: Power1.easeIn
+			});
+
+			return tl;
+		}
+
+		hide() {
+			const tl = new TimelineLite();
+
+			tl.to(this, 0.33, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
+
+			return tl;
+		}
+
 		nextSponsor() {
 			// If there's no images, do nothing
 			if (!this.sponsors || this.sponsors.length <= 0) {

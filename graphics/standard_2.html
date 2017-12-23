@@ -8,7 +8,7 @@
 	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
-	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
 	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
 
@@ -43,22 +43,15 @@
 				--gdq-timer-voffset: -2px;
 			}
 
-			gdq-twitter {
-				bottom: 0;
-				right: 0;
-				width: 426px;
-				height: 180px;
+			gdq-tweet {
+				bottom: 14px;
+				right: 11px;
+				width: 528px;
+				height: 176px;
 
-				--gdq-twitter-body: {
-					font-size: 25px;
-					padding-top: 50px;
-				};
-				--gdq-twitter-namebar: {
-					width: 344px;
-					height: 50px;
-					margin-bottom: -12px;
-					padding-bottom: 12px;
-					font-size: 21px;
+				--gdq-tweet-name-font-size: 16px;
+				--gdq-tweet-body: {
+					font-size: 16px;
 				};
 			}
 
@@ -106,10 +99,9 @@
 		<gdq-runinfo max-name-size="45" force-single-line-name></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
-		<gdq-twitter></gdq-twitter>
+		<gdq-tweet></gdq-tweet>
 		<gdq-nameplate index="0" attach-right></gdq-nameplate>
 		<gdq-nameplate index="1" attach-left></gdq-nameplate>
-
 	</div>
 
 	<script>

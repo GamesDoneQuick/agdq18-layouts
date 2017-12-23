@@ -8,7 +8,7 @@
 	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
-	<link rel="import" href="elements/molecules/gdq-twitter/gdq-twitter.html">
+	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
 	<custom-style>
 		<style>
@@ -36,22 +36,14 @@
 				--gdq-timer-voffset: -2px;
 			}
 
-			gdq-twitter {
-				--gdq-twitter-body: {
+			gdq-tweet {
+				--gdq-tweet-body: {
 					font-size: 19px;
 					padding: 5px 25px 0 25px;
 				};
-				--gdq-twitter-namebar: {
-					width: 288px;
-					height: 45px;
-					margin-bottom: -12px;
-					padding-bottom: 12px;
-					padding-left: 12px;
-					font-size: 21px;
-				};
 			}
 
-			gdq-twitter,
+			gdq-tweet,
 			gdq-sponsors {
 				bottom: 0;
 				left: 0;
@@ -67,7 +59,7 @@
 		<gdq-runinfo max-name-size="35" force-single-line-name></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
-		<gdq-twitter></gdq-twitter>
+		<gdq-tweet></gdq-tweet>
 		<gdq-nameplate index="0"></gdq-nameplate>
 		<img id="foreground" src="img/backgrounds/3ds_fg.png">
 	</div>

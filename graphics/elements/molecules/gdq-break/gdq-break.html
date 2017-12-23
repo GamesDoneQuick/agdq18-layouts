@@ -2,12 +2,12 @@
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../shared/fonts/source-code-pro/import.html">
 <link rel="import" href="../../atoms/atom-text-greeble/atom-text-greeble.html">
+<link rel="import" href="../gdq-tweet/gdq-tweet.html">
 <link rel="import" href="gdq-break-bids.html">
 <link rel="import" href="gdq-break-bottom-frame.html">
 <link rel="import" href="gdq-break-prizes.html">
 <link rel="import" href="gdq-break-schedule.html">
 <link rel="import" href="gdq-break-top-frame.html">
-<link rel="import" href="gdq-break-tweet.html">
 
 <dom-module id="gdq-break">
 	<template>
@@ -18,6 +18,7 @@
 				height: 900px;
 				background: url("img/lines_bg.png") no-repeat;
 				font-family: "Source Code Pro";
+				background: #343434;
 			}
 
 			#bids {
@@ -30,6 +31,8 @@
 				position: absolute;
 				top: 548px;
 				left: -1px;
+				width: 816px;
+				height: 231px;
 			}
 
 			#prizes {
@@ -64,7 +67,7 @@
 
 		<gdq-break-bids id="bids"></gdq-break-bids>
 		<gdq-break-prizes id="prizes"></gdq-break-prizes>
-		<gdq-break-tweet id="tweet"></gdq-break-tweet>
+		<gdq-tweet id="tweet" label="SOCIAL_MEDIA_ENGAGEMENT"></gdq-tweet>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
 
 		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>

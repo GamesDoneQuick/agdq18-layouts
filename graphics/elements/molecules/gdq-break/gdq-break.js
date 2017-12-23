@@ -13,7 +13,7 @@ class GdqBreak extends Polymer.Element {
 
 	ready() {
 		super.ready();
-		this.$.tweet.prizesElement = this.$.prizes;
+		this.$.tweet.companionElement = this.$.prizes;
 	}
 }
 
