@@ -1,3 +1,6 @@
+<link rel="import" href="../../../../shared/imports/random.html">
+<link rel="import" href="../../atoms/atom-tweening-number/atom-tweening-number.html">
+
 <dom-module id="gdq-break-top-frame">
 	<template>
 		<style>
@@ -7,7 +10,47 @@
 				height: 112px;
 				background: url("img/top_bg.png") no-repeat;
 			}
+
+			#totalText {
+				position: absolute;
+				width: 740px;
+				right: 0;
+				top: 11px;
+				font-size: 40px;
+				font-family: gdqpixel, monospace;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			.gradientText {
+				color: transparent;
+				text-shadow: 0 0 12px rgba(121, 241, 234, 0.5);
+				background-image: var(--atom-gradient-text-gradient, linear-gradient(
+					180deg,
+					#93FFE5 0%,
+					#30C7F5 100%
+				));
+				-webkit-background-clip: text;
+			}
+
+			.donationText {
+				position: absolute;
+				color: black;
+				font-family: gdqpixel, monospace;
+				font-size: 12px;
+				height: 29px;
+				clip-path: inset(0 50%);
+				will-change: transform, clip-path;
+				padding: 0 12px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
 		</style>
+
+		<div id="totalText">
+			<div id="totalTextDollars" class="gradientText">$</div>
+			<atom-tweening-number id="totalTextAmount" class="gradientText"></atom-tweening-number>
+		</div>
 	</template>
 
 	<script src="gdq-break-top-frame.js"></script>
