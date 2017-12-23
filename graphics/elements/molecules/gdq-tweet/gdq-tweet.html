@@ -1,14 +1,14 @@
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../shared/imports/gsap-DrawSVG.html">
 <link rel="import" href="../../../../shared/imports/MaybeRandom.html">
 <link rel="import" href="../../../../shared/imports/TypeAnims.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
 
-<dom-module id="gdq-break-tweet">
+<dom-module id="gdq-tweet">
 	<template>
 		<style include="gdq-text-styles">
 			:host {
-				width: 816px;
-				height: 231px;
+				position: absolute;
 				font-weight: 400;
 				box-sizing: border-box;
 				@apply --layout-vertical;
@@ -36,9 +36,11 @@
 				height: 100%;
 				padding: 25px;
 				box-sizing: border-box;
+				font-size: 21px;
 				@apply --layout-horizontal;
 				@apply --layout-center-center;
 				@apply --layout-flex;
+				@apply --gdq-tweet-body;
 			}
 
 			#body-actual {
@@ -53,7 +55,7 @@
 				height: 34px;
 				right: 37px;
 				bottom: -6px;
-				font-size: 21px;
+				font-size: var(--gdq-tweet-name-font-size, 21px);
 				padding: 0 18px;
 				transform-origin: right;
 			}
@@ -72,11 +74,15 @@
 				@apply --layout-horizontal;
 				@apply --layout-center;
 			}
+
+			[hidden] {
+				display: none !important;
+			}
 		</style>
 
 		<div id="background"></div>
 
-		<div id="label" class="label">SOCIAL_MEDIA_ENGAGEMENT</div>
+		<div id="label" class="label" hidden="[[_falsey(label)]]">[[label]]</div>
 
 		<div id="body">
 			<div id="body-actual"></div>
@@ -85,5 +91,5 @@
 		<div id="name" class="label"></div>
 	</template>
 
-	<script src="gdq-break-tweet.js"></script>
+	<script src="gdq-tweet.js"></script>
 </dom-module>

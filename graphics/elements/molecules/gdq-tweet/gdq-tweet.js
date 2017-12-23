@@ -8,14 +8,24 @@
 	 * @customElement
 	 * @polymer
 	 */
-	class GdqBreakTweet extends Polymer.Element {
+	class GdqTweet extends Polymer.Element {
 		static get is() {
-			return 'gdq-break-tweet';
+			return 'gdq-tweet';
 		}
 
 		static get properties() {
 			return {
-				prizesElement: Object,
+				label: {
+					type: String,
+					value: ''
+				},
+				companionElement: {
+					type: Object,
+					value() {
+						return document.querySelector('gdq-sponsors') ||
+							document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
+					}
+				},
 				timeline: {
 					type: TimelineLite,
 					value() {
@@ -37,7 +47,7 @@
 		 * Then, holds it for TWEET_DISPLAY_DURATION seconds.
 		 * Then, plays the exit animation for this element.
 		 *
-		 * If this.prizesElement is defined, this method will run this.prizesElement.hide()
+		 * If this.companionElement is defined, this method will run this.companionElement.hide()
 		 * before playing the entrance animation for this element.
 		 *
 		 * @param {Object} tweet - The tweet to show.
@@ -50,10 +60,10 @@
 
 			// Wait for prizes to hide, if applicable.
 			tl.call(() => {
-				if (this.prizesElement) {
+				if (this.companionElement && typeof this.companionElement.hide === 'function') {
 					tl.pause();
 
-					const hidePrizeTl = this.prizesElement.hide();
+					const hidePrizeTl = this.companionElement.hide();
 					hidePrizeTl.call(() => {
 						tl.resume();
 					});
@@ -63,7 +73,9 @@
 			this._addEntranceAnim(tweet);
 			this._addExitAnim();
 
-			tl.add(this.prizesElement.show());
+			if (this.companionElement && typeof this.companionElement.show === 'function') {
+				tl.add(this.companionElement.show());
+			}
 
 			// Padding
 			tl.to(EMPTY_OBJ, 0.1, EMPTY_OBJ);
@@ -206,7 +218,11 @@
 			// and move clockwise to un-draw, counter-clockwise to un-draw.
 			bgRect.style({transform: `rotate(90deg) translateY(${-ELEMENT_WIDTH}px)`});
 		}
+
+		_falsey(value) {
+			return !value;
+		}
 	}
 
-	customElements.define(GdqBreakTweet.is, GdqBreakTweet);
+	customElements.define(GdqTweet.is, GdqTweet);
 })();
