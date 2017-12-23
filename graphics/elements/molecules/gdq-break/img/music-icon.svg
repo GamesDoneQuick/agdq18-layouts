@@ -1,0 +1,52 @@
+<svg width="66" height="81" viewBox="0 0 66 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g data-name="Canvas" transform="translate(-2272 -833)" fill="none">
+		<g data-name="Vector 2.1" filter="url(#filter0_d)">
+			<g transform="translate(2285 846)">
+				<use xlink:href="#path0" fill="url(#paint0_linear)" fill-opacity="0.5"/>
+			</g>
+			<g transform="translate(2285 846)">
+				<use xlink:href="#path1" stroke="#00FFFF"/>
+			</g>
+		</g>
+		<g data-name="image-music-note" filter="url(#filter1_i)">
+			<g data-name="music-note">
+				<g data-name="Vector">
+					<g transform="translate(2295 860)">
+						<use xlink:href="#path2" fill="#051113"/>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+	<defs>
+		<filter id="filter0_d" x="2272.5" y="833.5" width="65" height="80" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+			<feOffset/>
+			<feGaussianBlur stdDeviation="6"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"/>
+			<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+		</filter>
+		<filter id="filter1_i" x="2295" y="860" width="19" height="28" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+			<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+			<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+			<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0" result="hardAlpha"/>
+			<feOffset/>
+			<feGaussianBlur stdDeviation="3"/>
+			<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+			<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"/>
+			<feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
+		</filter>
+
+		<linearGradient id="paint0_linear" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 55 -40 0 40 0)">
+			<stop stop-color="#00FFFF"/>
+			<stop offset="1" stop-color="#00FFFF" stop-opacity="0"/>
+		</linearGradient>
+
+		<path id="path0" d="M 0 0L 0 55L 40 55L 40 0L 0 0Z"/>
+		<path id="path1" d="M 0 55L 0 0L 40 0L 40 55L 0 55Z"/>
+		<path id="path2" d="M 9.5 0L 9.5 16.4111C 8.56583 15.8822 7.48917 15.5556 6.33333 15.5556C 2.83417 15.5556 0 18.34 0 21.7778C 0 25.2156 2.83417 28 6.33333 28C 9.8325 28 12.6667 25.2156 12.6667 21.7778L 12.6667 6.22222L 19 6.22222L 19 0L 9.5 0Z"/>
+
+	</defs>
+</svg>
