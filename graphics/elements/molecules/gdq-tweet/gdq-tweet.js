@@ -68,7 +68,7 @@
 				if (this.companionElement && typeof this.companionElement.hide === 'function') {
 					tl.pause();
 
-					const hidePrizeTl = this.companionElement.hide();
+					const hidePrizeTl = this.companionElement.show();
 					hidePrizeTl.call(() => {
 						tl.resume();
 					});
@@ -79,7 +79,7 @@
 			this._addExitAnim();
 
 			if (this.companionElement && typeof this.companionElement.show === 'function') {
-				tl.add(this.companionElement.show());
+				tl.add(this.companionElement.hide());
 			}
 
 			// Padding
