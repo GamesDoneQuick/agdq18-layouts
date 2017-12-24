@@ -22,10 +22,6 @@
 				companionElement: {
 					type: Object,
 					value() {
-						if (document.querySelector('layout-app')) {
-							return document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
-						}
-
 						return document.querySelector('gdq-sponsors');
 					}
 				},
@@ -43,6 +39,13 @@
 			this._initBackgroundSVG();
 			nodecg.listenFor('showTweet', this.playTweet.bind(this));
 			Polymer.RenderStatus.beforeNextRender(this, () => {
+				if (!this.companionElement) {
+					if (document.querySelector('layout-app')) {
+						this.companionElement =
+							document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
+					}
+				}
+
 				this._addReset();
 			});
 		}
