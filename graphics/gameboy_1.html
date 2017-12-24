@@ -10,13 +10,15 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
 			gdq-nameplate {
 				top: 453px;
-				left: 85px;
+				left: 75px;
 				z-index: 11;
-				--gdq-nameplate-width: 377px;
+				--gdq-nameplate-width: 397px;
 			}
 
 			gdq-runinfo {
@@ -25,15 +27,14 @@
 				width: 542px;
 				height: 167px;
 				--gdq-runinfo-misc-height: 38px;
-
 			}
 
 			gdq-timer {
-				left: 0;
-				top: 480px;
+				left: 20px;
+				top: 515px;
 				height: 57px;
-				width: 541px;
-				font-size: 42px;
+				width: 500px;
+				font-size: 56px;
 				--gdq-timer-voffset: -2px;
 			}
 
@@ -61,12 +62,53 @@
 				width: 539px;
 				height: 124px;
 			}
+
+			.line {
+				position: absolute;
+			}
+
+			#lineone {
+				width: 541px;
+				height: 845px;
+				top: 0;
+				left: 0;
+				border-right: 1px solid #00ffff;
+			}
+
+			#linetwo {
+				width: 541px;
+				height: 70px;
+				top: 110px;
+				left: 0;
+				border-bottom: 1px solid #00ffff;
+				background-color: #051113;
+			}
+
+			atom-tronlines {
+				position: absolute;
+				width: 541px;
+				height: 370px;
+				bottom: 0;
+				left: 0;
+				border-top: 1px solid #00ffff;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				width: 541px;
+				height: 110px;
+				top: 0;
+				left: 0;
+			}
 		</style>
 	</custom-style>
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/gameboy_bg.png">
+		<atom-gridlines></atom-gridlines>
+		<atom-tronlines width="541" height="370"></atom-tronlines>
+		<div id="lineone" class="line"></div>
+		<div id="linetwo" class="line"></div>
 		<gdq-runinfo max-name-size="36"></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
