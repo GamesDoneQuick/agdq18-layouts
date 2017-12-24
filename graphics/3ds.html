@@ -10,28 +10,29 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
 			gdq-nameplate {
-				left: 412px;
-				bottom: 70px;
+				left: 504px;
+				bottom: 80px;
 				--gdq-nameplate-width: 377px;
 			}
 
 			gdq-runinfo {
-				right: 0;
-				bottom: 0;
-				width: 451px;
-				height: 121px;
+				right: 0px;
+				bottom: 10px;
+				width: 600px;
+				height: 152px;
 				--gdq-runinfo-misc-height: 35px;
-
 			}
 
 			gdq-timer {
-				left: 375px;
-				bottom: 18px;
+				left: 452px;
+				bottom: 28px;
 				height: 57px;
-				width: 449px;
+				width: 480px;
 				font-size: 45px;
 				--gdq-timer-voffset: -2px;
 			}
@@ -50,18 +51,58 @@
 				width: 370px;
 				height: 173px;
 			}
+
+			atom-tronlines {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				border-top: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			.line {
+				position: absolute;
+			}
+
+			#lineone {
+				width: 1214px;
+				height: 683px;
+				top: 0;
+				right: 0;
+				border-left: 1px solid #00ffff;
+				border-bottom: 1px solid #00ffff;
+			}
+
+			#linetwo {
+				width: 614px;
+				height: 162px;
+				right: 600px;
+				bottom: 0;
+				background-color: #051113;
+				border-right: 1px solid #00ffff;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				width: 600px;
+				bottom: 0;
+				right: 0;
+				height: 162px;
+			}
 		</style>
 	</custom-style>
 </head>
 <body>
 	<div id="container">
-		<img id="background" src="img/backgrounds/3ds_bg.png">
+		<atom-gridlines></atom-gridlines>
+		<div id="linetwo" class="line"></div>
+		<atom-tronlines width="385" height="479"></atom-tronlines>
+		<div id="lineone" class="line"></div>
 		<gdq-runinfo max-name-size="35" force-single-line-name></gdq-runinfo>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
 		<gdq-nameplate index="0"></gdq-nameplate>
-		<img id="foreground" src="img/backgrounds/3ds_fg.png">
 	</div>
 
 	<script>

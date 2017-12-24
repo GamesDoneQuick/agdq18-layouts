@@ -10,34 +10,37 @@
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
+	<link rel="import" href="elements/atoms/atom-tronlines/atom-tronlines.html">
+	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
+
 	<custom-style>
 		<style>
 			gdq-nameplate {
-				top: 405px;
-				--gdq-nameplate-width: 349px;
+				top: 540px;
+				--gdq-nameplate-width: 450px;
 			}
 
 			gdq-nameplate:nth-of-type(1) {
-				right: 853px;
+				right: 1028px;
 			}
 
 			gdq-nameplate:nth-of-type(2) {
-				left: 853px;
+				left: 1028px;
 			}
 
 			gdq-runinfo {
-				left: 0;
-				bottom: 58px;
-				width: 428px;
-				height: 167px;
-				--gdq-runinfo-misc-height: 35px;
+				bottom: 38px;
+				width: 550px;
+				height: 235px;
+				--gdq-runinfo-misc-height: 29px;
 			}
 
 			gdq-timer {
-				left: 0;
-				bottom: 0;
-				height: 58px;
-				width: 428px;
+				left: 572px;
+				bottom: 251px;
+				height: 65px;
+				width: 456px;
+				font-size: 56px;
 				--gdq-timer-voffset: -2px;
 			}
 
@@ -45,7 +48,7 @@
 				bottom: 0;
 				right: 0;
 				width: 426px;
-				height: 265px;
+				height: 240px;
 
 				--gdq-tweet-body: {
 					font-size: 22px;
@@ -53,7 +56,7 @@
 				};
 				--gdq-tweet-namebar: {
 					width: 344px;
-					height: 55px;
+					height: 50px;
 					margin-bottom: -12px;
 					padding-bottom: 12px;
 					font-size: 21px;
@@ -64,30 +67,71 @@
 				bottom: 0;
 				right: 0;
 				width: 426px;
-				height: 219px;
+				height: 135px;
+			}
+
+			atom-tronlines {
+				position: absolute;
+				bottom: 0;
+				border-top: 1px solid #00ffff;
+			}
+
+			.tronleft {
+				left: 0;
+				border-right: 1px solid #00ffff;
+			}
+
+			.tronright {
+				right: 0;
+				border-left: 1px solid #00ffff;
+			}
+
+			#lineone {
+				position: absolute;
+				width: 3px;
+				height: 559px;
+				left: 798px;
+				top: 0;
+				background-color: #00ffff;
+				border-left: 1px solid #051113;
+				border-right: 1px solid #051113;
+			}
+
+			atom-gridlines {
+				position: absolute;
+				width: 1600px;
+				height: 71px;
+				top: 0;
+				left: 0;
+				background-color: #051113;
+				border-bottom: 1px solid #00ffff;
+				box-sizing: border-box;
 			}
 		</style>
 	</custom-style>
 </head>
 <body>
-	<div id="container">
-		<img id="background" src="img/backgrounds/widescreen_2_bg.png">
-		<gdq-runinfo max-name-size="40"></gdq-runinfo>
-		<gdq-timer></gdq-timer>
-		<gdq-sponsors></gdq-sponsors>
-		<gdq-tweet></gdq-tweet>
-		<gdq-nameplate index="0" attach-right></gdq-nameplate>
-		<gdq-nameplate index="1" attach-left></gdq-nameplate>
-		<img id="foreground" src="img/backgrounds/widescreen_2_fg.png">
-	</div>
+<div id="container">
+	<div id="lineone"></div>
+	<atom-gridlines></atom-gridlines>
+	<atom-tronlines height="304" width="550" class="tronleft"></atom-tronlines>
+	<atom-tronlines height="304" width="550" class="tronright"></atom-tronlines>
+	<gdq-runinfo max-name-size="45" force-single-line-name></gdq-runinfo>
+	<gdq-timer></gdq-timer>
+	<gdq-sponsors></gdq-sponsors>
+	<gdq-twitter></gdq-twitter>
+	<gdq-nameplate index="0" attach-right></gdq-nameplate>
+	<gdq-nameplate index="1" attach-left></gdq-nameplate>
 
-	<script>
-		window.addEventListener('DOMContentLoaded', () => {
-			TweenLite.to(document.body, 0.333, {
-				opacity: 1,
-				ease: Power1.easeOut
-			});
+</div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', () => {
+		TweenLite.to(document.body, 0.333, {
+			opacity: 1,
+			ease: Power1.easeOut
 		});
-	</script>
+	});
+</script>
 </body>
 </html>
