@@ -303,7 +303,21 @@ class AtomTronlines extends Polymer.Element {
 	 */
 	_createNode() {
 		const shape = new createjs.Shape();
-		shape.cache(0, 0, this.nodeSize, this.tailLength + this.tailLengthRandomness);
+		const tailEndColor = createjs.Graphics.getRGB(parseInt(this.tailColor.slice(1), 16), 0);
+		const maxTailLength = this.tailLength + this.tailLengthRandomness;
+
+		shape.tailGradientCommand = shape.graphics
+			.beginLinearGradientFill([this.tailColor, tailEndColor], [0, 1], 0, 0, 0, maxTailLength).command;
+
+		shape.tailRectCommand = shape.graphics
+			.drawRect(0, 0, this.nodeSize, 0).command;
+
+		shape.graphics
+			.beginFill(this.nodeColor)
+			.drawRect(0, 0, this.nodeSize, this.nodeSize);
+
+		shape.cache(0, 0, this.nodeSize, maxTailLength);
+
 		return shape;
 	}
 
@@ -315,14 +329,11 @@ class AtomTronlines extends Polymer.Element {
 	 */
 	_allocateNode(node) {
 		const tailLength = this._getRandomTailLength();
-		const tailEndColor = createjs.Graphics.getRGB(parseInt(this.tailColor.slice(1), 16), 0);
-		const firstGradientStop = Math.min(this.nodeSize / this.tailLength, 1);
 
-		node.graphics
-			.beginLinearGradientFill([this.tailColor, tailEndColor], [firstGradientStop, 1], 0, 0, 0, tailLength)
-			.drawRect(0, 0, this.nodeSize, tailLength)
-			.beginFill(this.nodeColor)
-			.drawRect(0, 0, this.nodeSize, this.nodeSize);
+		node.tailGradientCommand.style.props.ratios[0] = Math.min(this.nodeSize / this.tailLength, 1);
+		node.tailGradientCommand.style.props.y1 = tailLength;
+		node.tailRectCommand.h = tailLength;
+
 		node.updateCache();
 		node.tailLength = tailLength;
 		node.speed = this._getRandomSpeed();
