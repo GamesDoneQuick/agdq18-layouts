@@ -1,4 +1,5 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../../../bower_components/polymer/lib/mixins/mutable-data.html">
 <link rel="import" href="../../../../bower_components/polymer/lib/utils/debounce.html">
 <link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
@@ -76,11 +77,13 @@
 
 		<div id="divider"></div>
 
-		<div id="remainderItems">
-			<template is="dom-repeat" items="[[remainderItems]]" mutable-data>
-				<ui-rundown-item item="[[item]]"></ui-rundown-item>
+		<iron-list id="remainderItems" items="[[remainderItems]]" mutable-data>
+			<template>
+				<div class="itemWrapper">
+					<ui-rundown-item item="[[item]]"></ui-rundown-item>
+				</div>
 			</template>
-		</div>
+		</iron-list>
 	</template>
 
 	<script src="ui-rundown.js"></script>
