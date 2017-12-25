@@ -51,15 +51,6 @@
 		<div id="material" class="material stroked">
 			<div>[[calcBidName(bid.description)]]</div>
 
-			<template is="dom-if" if="[[bidIsChallenge(bid)]]">
-				<div class="layout horizontal center">
-					<img src="img/bitsicon.png" width="22" hidden="[[!bid.isBitsChallenge]]">
-					[[bid.total]] /
-					<img src="img/bitsicon.png" width="22" hidden="[[!bid.isBitsChallenge]]">
-					[[bid.goal]]
-				</div>
-			</template>
-
 			<template is="dom-if" if="[[!bidIsChallenge(bid)]]">
 				<template is="dom-repeat" items="[[limitOptions(bid.options)]]" as="option">
 					<dash-host-bid-option bid="[[bid]]" option="[[option]]" index="[[index]]"></dash-host-bid-option>
