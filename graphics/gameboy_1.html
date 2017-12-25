@@ -16,9 +16,9 @@
 		<style>
 			gdq-nameplate {
 				top: 453px;
-				left: 75px;
+				left: 20px;
 				z-index: 11;
-				--gdq-nameplate-width: 397px;
+				--gdq-nameplate-width: 500px;
 			}
 
 			gdq-runinfo {
@@ -31,36 +31,30 @@
 
 			gdq-timer {
 				left: 20px;
-				top: 515px;
+				top: 505px;
 				height: 57px;
 				width: 500px;
 				font-size: 56px;
 				--gdq-timer-voffset: -2px;
 			}
 
-			gdq-tweet {
-				bottom: 0;
-				left: 0;
-				width: 539px;
-				height: 128px;
+			gdq-tweet, gdq-sponsors {
+				bottom: 10px;
+				left: 10px;
+				width: 521px;
+				height: 262px;
+			}
 
+			gdq-tweet {
 				--gdq-tweet-body: {
-					font-size: 22px;
-				};
-				--gdq-tweet-namebar: {
-					width: 316px;
-					height: 50px;
-					margin-bottom: -12px;
-					padding-bottom: 12px;
-					font-size: 21px;
+					font-size: 20px;
 				};
 			}
 
 			gdq-sponsors {
-				bottom: 0;
-				left: 0;
-				width: 539px;
-				height: 124px;
+				border: 1px solid #00FFFF;
+				box-sizing: border-box;
+				box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.66);
 			}
 
 			.line {
@@ -113,7 +107,6 @@
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
-		<img id="foreground" src="img/backgrounds/gameboy_fg.png">
 		<gdq-nameplate index="0"></gdq-nameplate>
 	</div>
 
