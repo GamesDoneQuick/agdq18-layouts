@@ -11,8 +11,7 @@
 		<style include="iron-flex iron-flex-alignment">
 			:host {
 				@apply --layout-horizontal;
-				@apply --layout-center;
-				@apply --layout-justified;
+				@apply --layout-center-center;
 			}
 
 			#toggleLabel {
@@ -27,19 +26,12 @@
 
 			#cashTotal {
 				margin-right: 13px;
-				@apply --layout-flex-1;
-			}
-
-			#bitsTotal {
-				margin-left: 13px;
-				@apply --layout-flex-1;
 			}
 
 			#toggle {
 				@apply --layout-vertical;
 				@apply --layout-center;
 				@apply --layout-flex-none;
-				margin-left: -14px;
 				margin-right: 24px;
 			}
 		</style>
@@ -56,11 +48,6 @@
 			value="[[cashTotal]]"
 			currency="cash"
 			on-edit="editCashTotal"></gdq-totals-total>
-		<gdq-totals-total
-			id="bitsTotal"
-			value="[[bitsTotal]]"
-			currency="bits"
-			on-edit="editBitsTotal"></gdq-totals-total>
 
 		<paper-dialog id="editDialog" with-backdrop>
 			<h2>Edit Donation Total</h2>
