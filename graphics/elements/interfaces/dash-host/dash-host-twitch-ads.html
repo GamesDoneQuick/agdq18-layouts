@@ -65,9 +65,13 @@
 				font-size: 36px;
 				margin-left: 0.3em;
 			}
+
+			[hidden] {
+				display: none !important;
+			}
 		</style>
 
-		<div id="left">
+		<div id="left" hidden="[[hideControls]]">
 			<paper-button
 				id="play"
 				on-tap="play"

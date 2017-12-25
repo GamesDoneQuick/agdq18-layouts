@@ -12,6 +12,10 @@
 						"type": "string",
 						"required": true
 					},
+					"shortName": {
+						"type": "string",
+						"required": false
+					},
 					"complete": {
 						"type": "boolean",
 						"required": true
@@ -39,7 +43,7 @@
 
 	"default": {
 		"extraContent": [
-			{"name": "Check for Advertisement", "complete": false},
+			{"name": "Check for Advertisement", "shortName": "Check for Ad", "complete": false},
 			{"name": "Check for Interview", "complete": false}
 		],
 		"techStationDuties": [
@@ -49,11 +53,11 @@
 			{"name": "Camera", "complete": false}
 		],
 		"stageTechDuties": [
-			{"name": "Wipe Down Headsets", "complete": false},
+			{"name": "Wipe Down Headsets", "shortName": "Wipe Headsets", "complete": false},
 			{"name": "TVs have Video", "complete": false},
-			{"name": "Steam Notifications Off", "complete": false},
-			{"name": "Restart Elgato Recording", "complete": false},
-			{"name": "Remove Excess Chairs", "complete": false}
+			{"name": "Steam Notifications Off", "shortName": "Steam Notifications", "complete": false},
+			{"name": "Restart Elgato Recording", "shortName": "Restart Elgato Rec.", "complete": false},
+			{"name": "Remove Excess Chairs", "shortName": "Remove Chairs", "complete": false}
 		],
 		"audioEngineerDuties": [
 			{"name": "Runner Game Audio", "complete": false},

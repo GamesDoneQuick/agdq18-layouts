@@ -27,6 +27,11 @@
 				timeSince: {
 					type: String,
 					value: '8:88:88'
+				},
+				hideControls: {
+					type: Boolean,
+					value: false,
+					reflectToAttribute: true
 				}
 			};
 		}
