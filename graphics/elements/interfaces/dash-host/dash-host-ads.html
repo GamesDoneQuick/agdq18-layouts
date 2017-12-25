@@ -17,7 +17,6 @@
 			}
 
 			#list {
-				height: 706px;
 				padding: 0 14px;
 				margin-top: 13px;
 				margin-right: 11px;
@@ -26,6 +25,10 @@
 				overflow-y: scroll;
 				overflow-x: hidden;
 				@apply --layout-vertical;
+			}
+
+			#list > * {
+				@apply --layout-flex-none;
 			}
 
 			.interview {
@@ -82,7 +85,8 @@
 						on-start="_confirmStartAdBreak"
 						on-cancel="_confirmCancelAdBreak"
 						on-complete="completeAdBreak"
-						ad-break="[[item]]"></dash-host-adbreak>
+						ad-break="[[item]]">
+					</dash-host-adbreak>
 				</template>
 
 				<template is="dom-if" if="[[equal(item.type, 'interview')]]">
