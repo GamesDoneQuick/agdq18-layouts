@@ -81,7 +81,7 @@
 			const tl = new TimelineLite();
 
 			tl.to(this, 0.33, {
-				opacity: 0,
+				opacity: 1,
 				ease: Power1.easeIn
 			});
 
@@ -92,7 +92,7 @@
 			const tl = new TimelineLite();
 
 			tl.to(this, 0.33, {
-				opacity: 1,
+				opacity: 0,
 				ease: Power1.easeOut
 			});
 
