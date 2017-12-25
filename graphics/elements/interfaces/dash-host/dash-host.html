@@ -26,13 +26,6 @@
 	<template>
 		<style include="dash-host-styles iron-flex iron-flex-alignment">
 			:host {
-				position: absolute;
-				top: 0;
-				left: 0;
-				overflow: hidden;
-				width: 1920px;
-				height: 1080px;
-				display: block;
 				font-family: Roboto, sans-serif;
 				color: #000000;
 				box-sizing: border-box;
@@ -69,7 +62,7 @@
 				grid-template-columns: 550px auto 550px;
 				grid-template-rows: auto;
 				grid-gap: 22px;
-				padding: 22px 32px 50px 32px;
+				padding: 22px 32px;
 				@apply --layout-flex;
 			}
 
@@ -147,12 +140,17 @@
 			#ads {
 				grid-column: 3;
 				grid-row: 1;
+				@apply --layout-vertical;
 			}
 
 			#twitchAds,
 			#name {
 				margin-bottom: 17px;
 				height: 147px;
+			}
+
+			#intermissions {
+				@apply --layout-flex;
 			}
 		</style>
 
