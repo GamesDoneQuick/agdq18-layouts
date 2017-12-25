@@ -16,7 +16,7 @@
 		<style>
 			gdq-nameplate {
 				top: 600px;
-				--gdq-nameplate-width: 450px;
+				--gdq-nameplate-width: 400px;
 			}
 
 			gdq-nameplate:nth-of-type(1) {
@@ -28,10 +28,10 @@
 			}
 
 			gdq-runinfo {
-				bottom: 38px;
+				bottom: 18px;
 				width: 550px;
 				height: 175px;
-				--gdq-runinfo-misc-height: 29px;
+				--gdq-runinfo-misc-height: 45px;
 			}
 
 			gdq-timer {
@@ -56,10 +56,14 @@
 			}
 
 			gdq-sponsors {
-				bottom: 0;
-				right: 0;
-				width: 426px;
-				height: 135px;
+				bottom: 14px;
+				right: 11px;
+				width: 528px;
+				height: 176px;
+
+				border: 1px solid #00FFFF;
+				box-sizing: border-box;
+				box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.66);
 			}
 
 			atom-tronlines {
@@ -100,8 +104,8 @@
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
-		<gdq-nameplate index="0" attach-right></gdq-nameplate>
-		<gdq-nameplate index="1" attach-left></gdq-nameplate>
+		<gdq-nameplate index="0" no-right-cap result-side="left"></gdq-nameplate>
+		<gdq-nameplate index="1" no-left-cap result-side="right"></gdq-nameplate>
 	</div>
 
 	<script>
