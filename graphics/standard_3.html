@@ -14,6 +14,43 @@
 	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
+			#lineone {
+				width: 474px;
+				height: 845px;
+				left: 563px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			#linetwo, #linethree {
+				width: 563px;
+				height: 423px;
+				border-bottom: 1px solid #00ffff;
+				top: 0;
+			}
+
+			#linetwo {
+				left: 0;
+			}
+
+			#linethree {
+				right: 0;
+			}
+
+			#cover {
+				position: absolute;
+				width: 474px;
+				height: 81px;
+				top: 121px;
+				left: 563px;
+				background-color: #051113;
+			}
+
+			.line {
+				position: absolute;
+				box-sizing: border-box;
+			}
+
 			gdq-nameplate {
 				--gdq-nameplate-width: 360px;
 			}
@@ -71,34 +108,6 @@
 				height: 325px;
 			}
 
-			.line {
-				position: absolute;
-				box-sizing: border-box;
-			}
-
-			#lineone {
-				width: 474px;
-				height: 845px;
-				left: 563px;
-				border-left: 1px solid #00ffff;
-				border-right: 1px solid #00ffff;
-			}
-
-			#linetwo, #linethree {
-				width: 563px;
-				height: 423px;
-				border-bottom: 1px solid #00ffff;
-				top: 0;
-			}
-
-			#linetwo {
-				left: 0;
-			}
-
-			#linethree {
-				right: 0;
-			}
-
 			atom-gridlines {
 				position: absolute;
 				width: 474px;
@@ -111,15 +120,6 @@
 				position: absolute;
 				bottom: 0;
 				left: 563px;
-			}
-
-			#cover {
-				position: absolute;
-				width: 474px;
-				height: 81px;
-				top: 121px;
-				left: 563px;
-				background-color: #051113;
 			}
 		</style>
 	</custom-style>
