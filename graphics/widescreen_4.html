@@ -14,6 +14,33 @@
 	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
+			#lineone {
+				position: absolute;
+				box-sizing: border-box;
+				width: 344px;
+				height: 845px;
+				left: 628px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			#plateleft {
+				left: 0;
+			}
+
+			#plateright {
+				right: 0;
+			}
+
+			.plate {
+				background-color: #051113;
+				border-top: 1px solid #00ffff;
+				border-bottom: 1px solid #00ffff;
+				position: absolute;
+				height: 137px;
+				width: 628px;
+				top: 354px;
+			}
 
 			gdq-nameplate {
 				--gdq-nameplate-width: 450px;
@@ -55,16 +82,6 @@
 				font-size: 56px;
 			}
 
-			#lineone {
-				position: absolute;
-				box-sizing: border-box;
-				width: 344px;
-				height: 845px;
-				left: 628px;
-				border-left: 1px solid #00ffff;
-				border-right: 1px solid #00ffff;
-			}
-
 			atom-tronlines {
 				position: absolute;
 				left: 628px;
@@ -79,24 +96,6 @@
 				border-bottom: 1px solid #00ffff;
 			}
 
-			.plate {
-				background-color: #051113;
-				border-top: 1px solid #00ffff;
-				border-bottom: 1px solid #00ffff;
-				position: absolute;
-				height: 137px;
-				width: 628px;
-				top: 354px;
-			}
-
-			#plateleft {
-				left: 0;
-			}
-
-			#plateright {
-				right: 0;
-			}
-
 			atom-gridlines {
 				position: absolute;
 				top: 240px;
@@ -109,28 +108,28 @@
 	</custom-style>
 </head>
 <body>
-<div id="container">
-	<div id="plateleft" class="plate"></div>
-	<div id="plateright" class="plate"></div>
-	<atom-gridlines></atom-gridlines>
-	<atom-tronlines direction="down" width="345" height="102"></atom-tronlines>
-	<atom-tronlines width="345" height="49"></atom-tronlines>
-	<div id="lineone"></div>
-	<gdq-runinfo></gdq-runinfo>
-	<gdq-timer></gdq-timer>
-	<gdq-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
-	<gdq-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
-	<gdq-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
-	<gdq-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
-</div>
+	<div id="container">
+		<div id="plateleft" class="plate"></div>
+		<div id="plateright" class="plate"></div>
+		<atom-gridlines></atom-gridlines>
+		<atom-tronlines direction="down" width="345" height="102"></atom-tronlines>
+		<atom-tronlines width="345" height="49"></atom-tronlines>
+		<div id="lineone"></div>
+		<gdq-runinfo></gdq-runinfo>
+		<gdq-timer></gdq-timer>
+		<gdq-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
+		<gdq-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
+		<gdq-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
+		<gdq-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
+	</div>
 
-<script>
-	window.addEventListener('DOMContentLoaded', () => {
-		TweenLite.to(document.body, 0.333, {
-			opacity: 1,
-			ease: Power1.easeOut
+	<script>
+		window.addEventListener('DOMContentLoaded', () => {
+			TweenLite.to(document.body, 0.333, {
+				opacity: 1,
+				ease: Power1.easeOut
+			});
 		});
-	});
-</script>
+	</script>
 </body>
 </html>

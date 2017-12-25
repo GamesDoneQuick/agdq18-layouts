@@ -21,14 +21,6 @@
 	<dom-module id="layout-app">
 		<template>
 			<style>
-				gdq-runinfo {
-					left: 0;
-					top: 0;
-					width: 474px;
-					height: 197px;
-					--gdq-runinfo-misc-height: 39px;
-				}
-
 				#bottomLeft {
 					display: flex;
 					flex-direction: column;
@@ -47,6 +39,40 @@
 					margin-bottom: -18px;
 				}
 
+				#sponsorsAndTwitter {
+					position: relative;
+					width: 451px;
+					flex-grow: 1;
+					margin:10px;
+				}
+
+				#lineone {
+					width: 474px;
+					height: 845px;
+					position: absolute;
+					top: 0;
+					left: 0;
+					border-right: 1px solid #00ffff;
+				}
+
+				#linetwo {
+					width: 474px;
+					height: 91px;
+					position: absolute;
+					left: 0;
+					top: 140px;
+					background-color: #051113;
+					border-bottom: 1px solid #00ffff;
+				}
+
+				gdq-runinfo {
+					left: 0;
+					top: 0;
+					width: 474px;
+					height: 197px;
+					--gdq-runinfo-misc-height: 39px;
+				}
+
 				gdq-nameplate {
 					position: relative;
 					margin-bottom: 9px;
@@ -63,13 +89,6 @@
 					margin-left: 11px;
 				}
 
-				#sponsorsAndTwitter {
-					position: relative;
-					width: 451px;
-					flex-grow: 1;
-					margin:10px;
-				}
-
 				gdq-tweet {
 					height: 220px;
 					width: 451px;
@@ -84,6 +103,21 @@
 				gdq-sponsors {
 					top: 0;
 					left: 0;
+				}
+
+				atom-tronlines {
+					position: absolute;
+					bottom: 0;
+					left: 0;
+					border-top: 1px solid #00ffff;
+				}
+
+				atom-gridlines {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 474px;
+					height: 140px;
 				}
 
 				/* One runner */
@@ -118,40 +152,6 @@
 
 				:host([num-runners="4"]) gdq-timer {
 					padding-top: 0;
-				}
-
-				atom-tronlines {
-					position: absolute;
-					bottom: 0;
-					left: 0;
-					border-top: 1px solid #00ffff;
-				}
-
-				#lineone {
-					width: 474px;
-					height: 845px;
-					position: absolute;
-					top: 0;
-					left: 0;
-					border-right: 1px solid #00ffff;
-				}
-
-				#linetwo {
-					width: 474px;
-					height: 91px;
-					position: absolute;
-					left: 0;
-					top: 140px;
-					background-color: #051113;
-					border-bottom: 1px solid #00ffff;
-				}
-
-				atom-gridlines {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 474px;
-					height: 140px;
 				}
 			</style>
 			<atom-gridlines></atom-gridlines>

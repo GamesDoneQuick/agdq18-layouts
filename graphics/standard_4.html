@@ -14,6 +14,34 @@
 	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
+			#lineone {
+				width: 474px;
+				height: 845px;
+				left: 563px;
+				border-left: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+			}
+
+			#linetwo,
+			#linethree {
+				width: 563px;
+				height: 423px;
+				border-bottom: 1px solid #00ffff;
+				top: 0;
+			}
+
+			#linetwo {
+				left: 0;
+			}
+
+			#linethree {
+				right: 0;
+			}
+
+			.line {
+				position: absolute;
+				box-sizing: border-box;
+			}
 
 			gdq-nameplate {
 				--gdq-nameplate-width: 330px;
@@ -53,34 +81,6 @@
 				height: 64px;
 				width: 474px;
 				font-size: 56px;
-			}
-
-			.line {
-				position: absolute;
-				box-sizing: border-box;
-			}
-
-			#lineone {
-				width: 474px;
-				height: 845px;
-				left: 563px;
-				border-left: 1px solid #00ffff;
-				border-right: 1px solid #00ffff;
-			}
-
-			#linetwo, #linethree {
-				width: 563px;
-				height: 423px;
-				border-bottom: 1px solid #00ffff;
-				top: 0;
-			}
-
-			#linetwo {
-				left: 0;
-			}
-
-			#linethree {
-				right: 0;
 			}
 
 			atom-tronlines {
