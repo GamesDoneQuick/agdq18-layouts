@@ -105,11 +105,6 @@
         "height": 845
       },
       {
-        "file": "standard_1_ff6.html",
-        "width": 1280,
-        "height": 665
-      },
-      {
         "file": "standard_2.html",
         "width": 1600,
         "height": 845
@@ -196,6 +191,11 @@
       },
       {
         "file": "audio_dashboard.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "producer_dashboard.html",
         "width": 1920,
         "height": 1080
       },

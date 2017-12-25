@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<title>Producer Dashboard</title>
+	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="elements/interfaces/dash-producer/dash-producer.html">
+	<custom-style>
+		<style include="iron-flex iron-positioning">
+			body {
+				background-color: #ebebeb;
+			}
+
+			dash-producer {
+				@apply --layout-flex;
+			}
+		</style>
+	</custom-style>
+</head>
+<body class="fullbleed vertical layout">
+	<dash-producer></dash-producer>
+</body>
+</html>
