@@ -1,23 +1,33 @@
+/* global GdqBreakLoop Random */
 (function () {
 	'use strict';
 
-	const FADE_DURATION = 0.66;
-	const FADE_OUT_EASE = Power1.easeIn;
-	const FADE_IN_EASE = Power1.easeOut;
-	const HOLD_DURATION = 45;
+	const DISPLAY_DURATION = 45;
+	const EMPTY_OBJ = {};
 
-	class GdqSponsors extends Polymer.Element {
+	class GdqSponsors extends GdqBreakLoop {
 		static get is() {
 			return 'gdq-sponsors';
 		}
 
 		static get properties() {
 			return {
-
+				_imageExiting: {
+					type: Boolean,
+					value: false,
+					notify: true
+				},
+				_imageEntering: {
+					type: Boolean,
+					value: false,
+					notify: true
+				}
 			};
 		}
 
 		ready() {
+			this.itemIdField = 'sum';
+			this.noAutoLoop = true;
 			super.ready();
 
 			let sponsors;
@@ -58,31 +68,39 @@
 					throw new Error(`Unexpected pathname! ${window.location.pathname}`);
 			}
 
-			sponsors.on('change', newVal => {
-				this.sponsors = newVal;
+			Polymer.RenderStatus.beforeNextRender(this, () => {
+				this._initSVG();
 
-				// If no sponsor is showing yet, show the first sponsor immediately
-				if (!this.currentSponsor && newVal.length > 0) {
-					this.currentSponsor = newVal[0];
-					this.$.image.src = newVal[0].url;
+				sponsors.on('change', newVal => {
+					this.availableItems = newVal;
 
-					TweenLite.to(this.$.image, FADE_DURATION, {
-						opacity: 1,
-						ease: FADE_IN_EASE
-					});
-				}
+					// If no sponsor is showing yet, show the first sponsor immediately
+					if (!this.currentItem && newVal.length > 0) {
+						this.currentItem = newVal[0];
+						this._image.load(newVal[0].url);
+					}
+				});
+
+				this._loop();
 			});
-
-			// Cycle through sponsor logos every this.duration seconds
-			setInterval(this.nextSponsor.bind(this), HOLD_DURATION * 1000);
 		}
 
 		show() {
 			const tl = new TimelineLite();
 
-			tl.to(this, 0.33, {
+			tl.call(() => {
+				// Clear all content.
+				this._image.load('');
+			}, null, null, '+=0.03');
+
+			tl.to(this, 0.334, {
 				opacity: 1,
 				ease: Power1.easeIn
+			});
+
+			tl.call(() => {
+				// Re-start the loop once we've finished entering.
+				this._loop();
 			});
 
 			return tl;
@@ -91,7 +109,39 @@
 		hide() {
 			const tl = new TimelineLite();
 
-			tl.to(this, 0.33, {
+			tl.call(() => {
+				tl.pause();
+				if (this._imageExiting) {
+					this.addEventListener('_image-exiting-changed', function listener(e) {
+						if (e.detail.value === false) {
+							this.removeEventListener('_image-exiting-changed', listener);
+							this._killLoop();
+							tl.resume();
+						}
+					});
+				} else if (this._imageEntering) {
+					this.addEventListener('_image-entering-changed', function listener(e) {
+						if (e.detail.value === false) {
+							this.removeEventListener('_image-entering-changed', listener);
+							this._killLoop();
+							this._exitPhoto({
+								onComplete() {
+									tl.resume();
+								}
+							});
+						}
+					});
+				} else {
+					this._killLoop();
+					this._exitPhoto({
+						onComplete() {
+							tl.resume();
+						}
+					});
+				}
+			}, null, null, '+=0.1');
+
+			tl.to(this, 0.334, {
 				opacity: 0,
 				ease: Power1.easeOut
 			});
@@ -99,49 +149,107 @@
 			return tl;
 		}
 
-		nextSponsor() {
-			// If there's no images, do nothing
-			if (!this.sponsors || this.sponsors.length <= 0) {
-				return;
-			}
-
-			// Figure out the array index of the current sponsor
-			let currentIdx = -1;
-			this.sponsors.some((sponsor, index) => {
-				if (sponsor.name === this.currentSponsor.name) {
-					currentIdx = index;
-					return true;
-				}
-
-				return false;
-			});
-
-			let nextIdx = currentIdx + 1;
-
-			// If this index is greater than the max, loop back to the start
-			if (nextIdx >= this.sponsors.length) {
-				nextIdx = 0;
-			}
-
-			// Set the new image
-			const nextSponsor = this.sponsors[nextIdx];
-
-			// Create one-time animation to fade from current to next.
+		_showItem(sponsorAsset) {
+			const imageEntranceCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
 			const tl = new TimelineLite();
 
-			tl.to(this.$.image, FADE_DURATION, {
-				opacity: 0,
-				ease: FADE_OUT_EASE,
-				onComplete: function () {
-					this.currentSponsor = nextSponsor;
-					this.$.image.src = nextSponsor.url;
-				}.bind(this)
+			tl.addLabel('exit');
+
+			tl.add(this._exitPhoto({
+				onComplete() {
+					const newSrc = sponsorAsset.url;
+					tl.pause();
+					this._image.load(newSrc).loaded(() => {
+						tl.resume();
+					});
+				}
+			}), 'exit');
+
+			tl.addLabel('enter');
+
+			let didImageEntranceOnStart;
+			tl.staggerTo(imageEntranceCells, 0.224, {
+				opacity: 1,
+				ease: Sine.easeInOut,
+				callbackScope: this,
+				onStart() {
+					// We only want this onStart handler to run once.
+					// There is no "onStartAll" equivalent, only an "onCompleteAll".
+					if (didImageEntranceOnStart) {
+						return;
+					}
+					didImageEntranceOnStart = true;
+					this._imageEntering = true;
+				}
+			}, 0.002, 'enter+=0.1', () => {
+				this._imageEntering = false;
 			});
 
-			tl.to(this.$.image, FADE_DURATION, {
-				opacity: 1,
-				ease: FADE_IN_EASE
-			}, 'start');
+			// Give the prize some time to show.
+			tl.to(EMPTY_OBJ, DISPLAY_DURATION, EMPTY_OBJ);
+
+			return tl;
+		}
+
+		_exitPhoto({onComplete} = {}) {
+			const tl = new TimelineLite();
+			const imageExitCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
+			let didOnStart = false;
+
+			tl.staggerTo(imageExitCells, 0.224, {
+				opacity: 0,
+				ease: Sine.easeInOut,
+				callbackScope: this,
+				onStart() {
+					// We only want this onStart handler to run once.
+					// There is no "onStartAll" equivalent, only an "onCompleteAll".
+					if (didOnStart) {
+						return;
+					}
+					didOnStart = true;
+					this._imageExiting = true;
+				}
+			}, 0.002, 0, () => {
+				if (typeof onComplete === 'function') {
+					onComplete.call(this);
+				}
+				this._imageExiting = false;
+			});
+
+			return tl;
+		}
+
+		_initSVG() {
+			const ELEMENT_WIDTH = this.clientWidth;
+			const ELEMENT_HEIGHT = this.clientHeight;
+			const IMAGE_MASK_CELL_SIZE = 21;
+			const IMAGE_MASK_ROWS = Math.ceil(ELEMENT_HEIGHT / IMAGE_MASK_CELL_SIZE);
+			const IMAGE_MASK_COLUMNS = Math.ceil(ELEMENT_WIDTH / IMAGE_MASK_CELL_SIZE);
+
+			const svgDoc = SVG(this.$.svgHost);
+			const mask = svgDoc.mask();
+			const image = svgDoc.image(`${this.importPath}img/blank-pixel.png`);
+
+			this._image = image;
+			this._imageMaskCells = [];
+
+			svgDoc.size(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+			image.size(ELEMENT_WIDTH, ELEMENT_HEIGHT);
+
+			// Generate the exitMask rects
+			for (let r = 0; r < IMAGE_MASK_ROWS; r++) {
+				const y = r * IMAGE_MASK_CELL_SIZE;
+				for (let c = 0; c < IMAGE_MASK_COLUMNS; c++) {
+					const x = c * IMAGE_MASK_CELL_SIZE;
+					const rect = svgDoc.rect(IMAGE_MASK_CELL_SIZE, IMAGE_MASK_CELL_SIZE);
+					rect.move(x, y);
+					rect.fill({color: '#FFFFFF'});
+					mask.add(rect);
+					this._imageMaskCells.push(rect);
+				}
+			}
+
+			image.maskWith(mask);
 		}
 	}
 

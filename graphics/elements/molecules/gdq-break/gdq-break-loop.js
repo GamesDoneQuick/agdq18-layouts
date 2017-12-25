@@ -19,6 +19,10 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 				type: Number,
 				value: Infinity
 			},
+			itemIdField: {
+				type: String,
+				value: 'id'
+			},
 			_noMoreItemsRetries: {
 				type: Number,
 				value: 0
@@ -46,11 +50,11 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 		const availableItems = this.availableItems;
 
 		let nextIdx = 0;
-		if (this.currentItem && this.currentItem.id) {
+		if (this.currentItem && this.currentItem[this.itemIdField]) {
 			// Figure out the array index of the current item.
 			let currentIdx = -1;
-			availableItems.some((prize, index) => {
-				if (prize.id === this.currentItem.id) {
+			availableItems.some((item, index) => {
+				if (item[this.itemIdField] === this.currentItem[this.itemIdField]) {
 					currentIdx = index;
 					return true;
 				}
@@ -69,7 +73,7 @@ class GdqBreakLoop extends Polymer.Element { // eslint-disable-line no-unused-va
 		const nextItem = availableItems[nextIdx];
 
 		// If the next item is the same as the current item, do nothing and try again in one second.
-		if (this.currentItem && nextItem.id === this.currentItem.id) {
+		if (this.currentItem && nextItem[this.itemIdField] === this.currentItem[this.itemIdField]) {
 			if (this._noMoreItemsRetries < this.maxNoMoreItemsRetries) {
 				this._noMoreItemsRetries++;
 				clearTimeout(this._loopRetryTimeout);
