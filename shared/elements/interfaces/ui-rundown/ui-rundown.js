@@ -1,7 +1,6 @@
 (function () {
 	'use strict';
 
-	const NUM_RUNS_TO_SHOW_IN_RUNDOWN = 4;
 	const currentIntermission = nodecg.Replicant('currentIntermission');
 	const currentRun = nodecg.Replicant('currentRun');
 	const schedule = nodecg.Replicant('schedule');
@@ -18,7 +17,12 @@
 					type: Object
 				},
 				remainderItems: Array,
-				currentItems: Array
+				currentItems: Array,
+				maxRunsToShow: {
+					type: Number,
+					value: 4,
+					observer: '_maxRunsToShowChanged'
+				}
 			};
 		}
 
@@ -67,14 +71,14 @@
 				return item.id === lastCurrentItem.id && item.type === lastCurrentItem.type;
 			}) + 1;
 			let numFoundRuns = 0;
-			let endIndex = startIndex;
+			let endIndex;
 			let lastRunOrder = currentRun.value.order;
 			schedule.value.slice(startIndex).some((item, index) => {
-				if (numFoundRuns < NUM_RUNS_TO_SHOW_IN_RUNDOWN) {
+				if (numFoundRuns < this.maxRunsToShow) {
 					if (item.type === 'run') {
 						lastRunOrder = item.order;
 						numFoundRuns++;
-						if (numFoundRuns >= NUM_RUNS_TO_SHOW_IN_RUNDOWN) {
+						if (numFoundRuns >= this.maxRunsToShow) {
 							endIndex = index;
 							return false;
 						}
@@ -95,6 +99,10 @@
 			this.remainderItems = typeof endIndex === 'number' ?
 				schedule.value.slice(startIndex, startIndex + endIndex + 1) :
 				schedule.value.slice(startIndex);
+		}
+
+		_maxRunsToShowChanged() {
+			this._debounceUpdateScheduleSlice();
 		}
 	}
 
