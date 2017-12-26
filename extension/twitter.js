@@ -136,10 +136,10 @@ function buildUserStream() {
 			token: nodecg.bundleConfig.twitter.accessTokenKey,
 			token_secret: nodecg.bundleConfig.twitter.accessTokenSecret
 		});
-		userStream.stream('user', {thisCantBeNull: true});
+		userStream.stream('user', {tweet_mode: 'extended'});
 	});
 
-	userStream.stream('user', {thisCantBeNull: true});
+	userStream.stream('user', {tweet_mode: 'extended'});
 }
 
 /**
@@ -160,7 +160,7 @@ function addTweet(tweet) {
 	}
 
 	// Parse emoji.
-	tweet.text = twemoji.parse(tweet.text);
+	tweet.text = twemoji.parse(tweet.full_text || tweet.text);
 
 	// Replace newlines with spaces
 	tweet.text = tweet.text.replace(/\n/ig, ' ');
