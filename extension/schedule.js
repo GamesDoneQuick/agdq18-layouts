@@ -90,6 +90,10 @@ nodecg.listenFor('modifyRun', (data, cb) => {
 	// We need those properties to still exist so our diffing code can work as expected.
 	// A property not existing is not the same thing as a property existing but having a value of undefined.
 	data.runners = data.runners.map(runner => {
+		if (!runner || typeof runner !== 'object') {
+			runner = {};
+		}
+
 		if (!{}.hasOwnProperty.call(runner, 'name')) {
 			runner.name = undefined;
 		}
