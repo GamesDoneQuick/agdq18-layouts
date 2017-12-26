@@ -40,8 +40,8 @@ class GdqRunEditor extends Polymer.Element {
 	applyChanges() {
 		// We have to build a new runners object.
 		const runners = [];
-		const runnerNameInputs = Polymer.dom(this.$.runners).querySelectorAll('paper-input[label^="Runner"]:not([disabled])');
-		const runnerStreamInputs = Polymer.dom(this.$.runners).querySelectorAll('paper-input[label="Twitch Channel"]:not([disabled])');
+		const runnerNameInputs = this.$.runners.querySelectorAll('paper-input[label^="Runner"]:not([disabled])');
+		const runnerStreamInputs = this.$.runners.querySelectorAll('paper-input[label="Twitch Channel"]:not([disabled])');
 		for (let i = 0; i < 4; i++) {
 			if (runnerNameInputs[i].value || runnerStreamInputs[i].value) {
 				runners[i] = {
