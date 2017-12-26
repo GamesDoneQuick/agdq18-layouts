@@ -1,4 +1,4 @@
-class GdqRunEditor extends Polymer.Element {
+class GdqRunEditor extends Polymer.MutableData(Polymer.Element) {
 	static get is() {
 		return 'gdq-run-editor';
 	}
@@ -86,6 +86,42 @@ class GdqRunEditor extends Polymer.Element {
 
 	hideOriginal() {
 		this.showingOriginal = false;
+	}
+
+	_moveRunnerDown(e) {
+		const index = parseInt(e.target.closest('[data-index]').getAttribute('data-index'), 10);
+		this.runners = this._moveRunner(this.runners, index, 'down');
+	}
+
+	_moveRunnerUp(e) {
+		const index = parseInt(e.target.closest('[data-index]').getAttribute('data-index'), 10);
+		this.runners = this._moveRunner(this.runners, index, 'up');
+	}
+
+	/**
+	 * Moves a runner up or down in the runners array.
+	 * @param {Array} runnersArray - The array of runners to base these changes on.
+	 * @param {Number} index - The index of the runner to move in the array.
+	 * @param {'up'|'down'} direction - Which direction to move the runner in.
+	 * @returns {Array} - An array of runners with the desired runner re-arrangement applied to it.
+	 */
+	_moveRunner(runnersArray, index, direction) {
+		if (isNaN(index)) {
+			throw new Error(`Index must be a number, got "${index}" which is a "${typeof index}"`);
+		}
+
+		if (index < 0 || index >= 4) {
+			throw new Error(`Index must be >= 0 and < 4, got "${index}"`);
+		}
+
+		const newRunnersArray = runnersArray.slice(0);
+		while (newRunnersArray.length < 4) {
+			newRunnersArray.push(undefined);
+		}
+
+		const runnerToMove = newRunnersArray.splice(index, 1)[0];
+		newRunnersArray.splice(index + (direction === 'up' ? -1 : 1), 0, runnerToMove);
+		return newRunnersArray.slice(0, 4);
 	}
 }
 

@@ -1,7 +1,8 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 
 <dom-module id="gdq-run-editor">
 	<template>
@@ -83,6 +84,7 @@
 
 			.row {
 				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 
 			.row > :not(:last-child) {
@@ -91,6 +93,21 @@
 
 			.row > :not(:first-child) {
 				margin-left: 12px;
+			}
+
+			.runner-buttons {
+				@apply --layout-horizontal;
+			}
+
+			.runner-buttons paper-button {
+				padding: 0;
+				min-width: 0;
+				width: 42px;
+				height: 42px;
+				--paper-button: {
+					color: white;
+					background-color: #645BA6;
+				}
 			}
 
 			paper-input {
@@ -201,7 +218,7 @@
 			</div>
 
 			<div id="runners">
-				<div class="row">
+				<div class="row" data-index="0">
 					<div>
 						<paper-input
 							label="Runner"
@@ -233,9 +250,25 @@
 							disabled>
 						</paper-input>
 					</div>
+
+					<div class="runner-buttons">
+						<paper-button
+							class="runner-up-button"
+							on-tap="_moveRunnerUp"
+							raised
+							disabled>
+							<iron-icon icon="arrow-upward"></iron-icon>
+						</paper-button>
+						<paper-button
+							class="runner-down-button"
+							on-tap="_moveRunnerDown"
+							raised>
+							<iron-icon icon="arrow-downward"></iron-icon>
+						</paper-button>
+					</div>
 				</div>
 
-				<div class="row">
+				<div class="row" data-index="1">
 					<div>
 						<paper-input
 							label="Runner 2"
@@ -264,11 +297,27 @@
 							value="[[originalValues.runners.1.stream]]"
 							hidden$="[[!calcHide('runners.1.stream', showingOriginal)]]"
 							always-float-label
-							disabled></paper-input>
+							disabled>
+						</paper-input>
+					</div>
+
+					<div class="runner-buttons">
+						<paper-button
+							class="runner-up-button"
+							on-tap="_moveRunnerUp"
+							raised>
+							<iron-icon icon="arrow-upward"></iron-icon>
+						</paper-button>
+						<paper-button
+							class="runner-down-button"
+							on-tap="_moveRunnerDown"
+							raised>
+							<iron-icon icon="arrow-downward"></iron-icon>
+						</paper-button>
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="row" data-index="2">
 					<div>
 						<paper-input
 							label="Runner 3"
@@ -300,9 +349,24 @@
 							disabled>
 						</paper-input>
 					</div>
+
+					<div class="runner-buttons">
+						<paper-button
+							class="runner-up-button"
+							on-tap="_moveRunnerUp"
+							raised>
+							<iron-icon icon="arrow-upward"></iron-icon>
+						</paper-button>
+						<paper-button
+							class="runner-down-button"
+							on-tap="_moveRunnerDown"
+							raised>
+							<iron-icon icon="arrow-downward"></iron-icon>
+						</paper-button>
+					</div>
 				</div>
 
-				<div class="row">
+				<div class="row" data-index="3">
 					<div>
 						<paper-input
 							label="Runner 4"
@@ -333,6 +397,22 @@
 							always-float-label
 							disabled>
 						</paper-input>
+					</div>
+
+					<div class="runner-buttons">
+						<paper-button
+							class="runner-up-button"
+							on-tap="_moveRunnerUp"
+							raised>
+							<iron-icon icon="arrow-upward"></iron-icon>
+						</paper-button>
+						<paper-button
+							class="runner-down-button"
+							on-tap="_moveRunnerDown"
+							raised
+							disabled>
+							<iron-icon icon="arrow-downward"></iron-icon>
+						</paper-button>
 					</div>
 				</div>
 			</div>
