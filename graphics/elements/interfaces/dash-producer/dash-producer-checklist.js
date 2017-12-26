@@ -17,7 +17,8 @@
 				stageTechDuties: Array,
 				extraContent: Array,
 				audioReady: Boolean,
-				techStationDuties: Array
+				techStationDuties: Array,
+				audioEngineerDuties: Array
 			};
 		}
 
