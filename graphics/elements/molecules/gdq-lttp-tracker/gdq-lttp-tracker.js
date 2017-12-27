@@ -153,8 +153,6 @@
 				});
 			});
 
-			console.log('_computeItemsAndPrizes');
-
 			this.itemsAndPrizes = finalArray;
 		}
 
