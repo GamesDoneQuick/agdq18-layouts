@@ -84,7 +84,8 @@ function processRawBids(bids) {
 		// If this bid is an option for a donation war, add it to childBids array.
 		// Else, add it to the parentBidsById object.
 		if (bid.fields.parent) {
-			if (bid.fields.state.toLowerCase() === 'denied') {
+			if (bid.fields.state.toLowerCase() === 'denied' ||
+				bid.fields.state.toLowerCase() === 'pending') {
 				return;
 			}
 			childBids.push(bid);
