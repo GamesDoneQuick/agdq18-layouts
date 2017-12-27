@@ -101,7 +101,7 @@
 
 		static get observers() {
 			return [
-				'_computeItemsAndPrizes(items.*, prizes.*)'
+				'_computeItemsAndPrizes(items.*, prizes.*, medallions.*)'
 			];
 		}
 
@@ -119,11 +119,17 @@
 			const finalArray = [];
 			const items = this.items;
 			const prizes = this.prizes;
+			const medallions = this.medallions;
 
-			if (!items || items.length <= 0 || !prizes || prizes.length <= 0) {
+			if (!items || items.length <= 0 ||
+				!prizes || prizes.length <= 0 ||
+				!medallions || medallions.length <= 0) {
 				this.itemsAndPrizes = finalArray;
 				return;
 			}
+
+			console.log('prizes:', this.prizes);
+			console.log('medallions:', this.medallions);
 
 			ITEM_ROWS.forEach((row, rowIndex) => {
 				row.forEach((item, itemIndex) => {
@@ -145,12 +151,19 @@
 				});
 
 				// Dungeon prize.
-				finalArray.push({
+				const dungeonInfo = {
 					name: 'dungeon',
 					hasLevels: true,
 					level: prizes[rowIndex],
 					dimmed: false
-				});
+				};
+
+				// Only these two bosses have medallion info.
+				if (rowIndex === 8 || rowIndex === 9) {
+					dungeonInfo.medallionLevel = medallions[rowIndex];
+				}
+
+				finalArray.push(dungeonInfo);
 			});
 
 			this.itemsAndPrizes = finalArray;
@@ -185,6 +198,18 @@
 			}
 
 			return src ? src : 'blank-pixel';
+		}
+
+		_hasMedallion(itemOrPrize) {
+			return 'medallionLevel' in itemOrPrize;
+		}
+
+		_calcCellMedallionSrc(itemOrPrize) {
+			if (itemOrPrize.name !== 'dungeon') {
+				return 'blank-pixel';
+			}
+
+			return `medallion${itemOrPrize.medallionLevel}`;
 		}
 	}
 
