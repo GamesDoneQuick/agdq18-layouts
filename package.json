@@ -14,7 +14,7 @@
     "clone": "^2.1.1",
     "deep-diff": "^0.3.4",
     "deep-equal": "^1.0.1",
-    "firebase-admin": "^5.0.0",
+    "firebase-admin": "^5.6.0",
     "gamepad": "^1.4.2",
     "json-schema-defaults": "^0.3.0",
     "livesplit-core": "^0.8.1",
@@ -34,7 +34,7 @@
     "twemoji": "^2.0.5",
     "twitchps": "^0.5.5",
     "twitter-stream-api": "^0.5.0",
-    "usb-detection": "^2.0.0"
+    "usb-detection": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
