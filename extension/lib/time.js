@@ -100,7 +100,7 @@ const TimeUtils = {
 		}
 
 		if (timeParts.length === 1) {
-			ms += parseFloat(timeParts[0]);
+			ms += convertUnitToMs.seconds(parseFloat(timeParts[0]));
 			return ms;
 		}
 
