@@ -86,6 +86,7 @@
 			.cell {
 				background-color: black;
 				padding: 7px;
+				@apply --layout-vertical;
 			}
 
 			:host([mirrored]) iron-image {
@@ -108,6 +109,10 @@
 			iron-image {
 				width: 100%;
 				height: 100%;
+			}
+
+			[hidden] {
+				display: none !important;
 			}
 		</style>
 
@@ -133,6 +138,11 @@
 			data="{{prizes}}">
 		</firebase-document>
 
+		<firebase-document
+			path="/games/[[gameId]]/medallions"
+			data="{{medallions}}">
+		</firebase-document>
+
 		<div id="tealBackground"></div>
 		<div id="whiteBackground"></div>
 		<div id="purpleBackground">
@@ -151,6 +161,13 @@
 		<div id="grid">
 			<template is="dom-repeat" items="[[itemsAndPrizes]]">
 				<div class$="[[_calcCellClass(item, index)]]">
+					<iron-image
+						hidden="[[!_hasMedallion(item)]]"
+						class="boss-medallion"
+						src="[[importPath]]img/[[_calcCellMedallionSrc(item)]].png"
+						sizing="contain">
+					</iron-image>
+
 					<iron-image
 						src="[[importPath]]img/[[_calcCellSrc(item)]].png"
 						sizing="contain">
