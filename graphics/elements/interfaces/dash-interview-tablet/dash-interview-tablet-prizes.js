@@ -61,18 +61,26 @@
 				this._dragListOrder = newVal.slice(0);
 			});
 
-			let start;
-			Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
-				if (this._dragging) {
-					return;
-				}
+			if (isMobileSafari()) {
+				let start;
+				Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
+					if (e.detail.state === 'start') {
+						start = this.$.list.scrollTop;
+						console.log('updated start:', start);
+						return;
+					}
 
-				if (e.detail.state === 'start') {
-					start = this.$.playlist.scrollTop;
-				}
+					if (this._dragging) {
+						return;
+					}
 
-				this.$.playlist.scrollTop = start - e.detail.dy;
-			});
+					this.$.list.scrollTop = Math.max(start - e.detail.dy, 0);
+				});
+			} else {
+				// Hack to get around https://github.com/bevacqua/crossvent/issues/8
+				// I dunno why but this prevents the "auto passive listener" thing.
+				Polymer.Gestures.addListener(this.$['list-container'], 'track', () => {});
+			}
 
 			// Fades new question nodes from purple to white when added.
 			this._listObserver = new MutationObserver(mutations => {
@@ -300,5 +308,13 @@
 	 */
 	function flushCss(element) {
 		element.offsetHeight; // eslint-disable-line no-unused-expressions
+	}
+
+	/**
+	 * Checks if the page is running in mobile Safari.
+	 * @returns {boolean} - True if running in mobile Safari.
+	 */
+	function isMobileSafari() {
+		return /iP(ad|hone|od).+Version\/[\d.]+.*Safari/i.test(navigator.userAgent);
 	}
 })();
