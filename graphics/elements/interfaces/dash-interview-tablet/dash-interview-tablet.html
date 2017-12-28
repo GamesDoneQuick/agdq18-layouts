@@ -1,0 +1,62 @@
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../../../bower_components/polymer/lib/mixins/mutable-data.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="dash-interview-tablet-lightning-round.html">
+<link rel="import" href="dash-interview-tablet-lowerthird.html">
+<link rel="import" href="dash-interview-tablet-mode-toggle.html">
+<link rel="import" href="dash-interview-tablet-prizes.html">
+
+<dom-module id="dash-interview-tablet">
+	<template>
+		<style>
+			:host {
+				background-color: #8F8F8F;
+				@apply --layout-vertical;
+			}
+
+			#pages {
+				background-color: #B8C0C2;
+				@apply --layout-flex;
+				@apply --layout-vertical;
+			}
+
+			dash-interview-tablet-lowerthird {
+				margin: 8px;
+				border: 1px solid black;
+			}
+
+			dash-interview-tablet-lightning-round {
+				padding-top: 28px;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<dash-interview-tablet-lowerthird
+			lowerthird-showing="{{lowerthirdShowing}}"
+			question-showing="[[questionShowing]]">
+		</dash-interview-tablet-lowerthird>
+
+		<dash-interview-tablet-mode-toggle
+			checked="{{prizeEditingMode}}">
+		</dash-interview-tablet-mode-toggle>
+
+		<iron-pages id="pages" selected="[[_calcSelectedPage(prizeEditingMode)]]">
+			<dash-interview-tablet-lightning-round
+				question-showing="{{questionShowing}}">
+			</dash-interview-tablet-lightning-round>
+
+			<dash-interview-tablet-prizes></dash-interview-tablet-prizes>
+		</iron-pages>
+	</template>
+
+	<script src="dash-interview-tablet.js"></script>
+</dom-module>

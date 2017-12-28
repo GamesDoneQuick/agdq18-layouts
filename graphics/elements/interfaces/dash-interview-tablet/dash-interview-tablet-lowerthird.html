@@ -1,0 +1,167 @@
+<link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+<link rel="import" href="../../../../shared/style/gdq-input-style.html">
+<link rel="import" href="../ui-dragula-element/ui-dragula-element.html">
+<link rel="import" href="dash-lowerthird-name-input.html">
+
+<dom-module id="dash-interview-tablet-lowerthird">
+	<template>
+		<style include="gdq-input-style iron-flex iron-flex-alignment">
+			:host {
+				box-sizing: border-box;
+				background-color: white;
+				@apply --layout-vertical;
+			}
+
+			#title {
+				background-color: #C4C4C4;
+				font-style: normal;
+				font-weight: bold;
+				font-size: 18px;
+				color: black;
+				height: 29px;
+				text-transform: uppercase;
+				@apply --layout-flex-none;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			#fifthPersonInput {
+				width: 327px;
+				margin-bottom: 0;
+			}
+
+			#fivePersonTooltip {
+				margin: 0 16px;
+				--paper-tooltip: {
+					font-size: 14px;
+				};
+			}
+
+			#toggle {
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#toggle-label {
+				border-bottom: 1px dashed #999;
+				cursor: help;
+				font-size: 18px;
+			}
+
+			#toggle-button {
+				margin-left: 22px;
+				margin-right: 6px;
+			}
+
+			#resetNameOrder {
+				margin-left: auto;
+				margin-right: 0;
+				--paper-button: {
+					height: 35px;
+					background-color: #A50074;
+				}
+			}
+
+			#nameInputs {
+				margin-top: 17px;
+				margin-bottom: 12px;
+				@apply --layout-horizontal;
+				@apply --layout-around-justified;
+			}
+
+			#hideLowerthird {
+				--paper-button: {
+					background-color: #C9513E;
+				};
+			}
+
+			#showLowerthird {
+				--paper-button: {
+					background-color: #5BA664;
+				};
+			}
+
+			#showLowerthird,
+			#hideLowerthird,
+			#autoLowerthird {
+				width: 160px;
+				height: 35px;
+				margin: 0 9px;
+			}
+
+			#autoLowerthird {
+				--paper-button: {
+					background-color: #645BA6;
+				}
+			}
+
+			paper-button {
+				color: white;
+				font-weight: bold;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<div id="title">Interview Graphic</div>
+
+		<div style="padding: 8px 14px 14px 14px;">
+			<div class="layout horizontal center">
+				<div id="toggle">
+					<span id="toggle-label">5 Person Mode</span>
+					<paper-toggle-button id="toggle-button" checked="{{fivePersonMode}}"></paper-toggle-button>
+
+					<paper-tooltip
+						id="fivePersonTooltip"
+						for="toggle-label"
+						offset="20"
+						animation-delay="0"
+						fit-to-visible-bounds>
+						Enables the "Host" input. The host's name will appear below the 4 other names on the graphic.
+					</paper-tooltip>
+				</div>
+
+				<vaadin-combo-box
+					id="fifthPersonInput"
+					class="gdq-input-style"
+					placeholder="INTERVIEWER NAME"
+					no-label-float
+					items="[[_typeaheadCandidates]]"
+					disabled="[[!fivePersonMode]]">
+				</vaadin-combo-box>
+
+				<paper-button raised id="resetNameOrder" on-tap="resetNameOrder">
+					Reset Order&ensp;<iron-icon icon="refresh"></iron-icon>
+				</paper-button>
+			</div>
+
+			<ui-dragula-element id="nameInputs" direction="horizontal">
+				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+			</ui-dragula-element>
+
+			<div class="layout horizontal center-center">
+				<paper-button id="showLowerthird" raised on-tap="showLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
+					Show
+				</paper-button>
+
+				<paper-button id="hideLowerthird" raised on-tap="hideLowerthird" disabled="[[!lowerthirdShowing]]">
+					Hide
+				</paper-button>
+
+				<paper-button id="autoLowerthird" raised on-tap="autoLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
+					Auto
+				</paper-button>
+			</div>
+		</div>
+	</template>
+
+	<script src="dash-interview-tablet-lowerthird.js"></script>
+</dom-module>

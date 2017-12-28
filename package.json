@@ -80,9 +80,9 @@
         "height": 1080
       },
       {
-        "file": "interview_tier2.html",
-        "width": 1280,
-        "height": 720
+        "file": "interview_tablet.html",
+        "width": 768,
+        "height": 1024
       },
       {
         "file": "countdown.html",

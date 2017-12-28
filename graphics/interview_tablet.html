@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Interview Tablet Controller</title>
+	<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<script src="../bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+	<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+	<link rel="import" href="elements/interfaces/dash-interview-tablet/dash-interview-tablet.html">
+	<custom-style>
+		<style include="iron-flex iron-positioning">
+			html,
+			body,
+			dash-interview-tablet {
+				overscroll-behavior: none;
+				font-family: Roboto, sans-serif;
+			}
+
+			dash-interview-tablet {
+				max-width: 800px;
+				box-sizing: border-box;
+				@apply --layout-flex;
+			}
+		</style>
+	</custom-style>
+</head>
+<body class="fullbleed vertical layout">
+	<dash-interview-tablet></dash-interview-tablet>
+</body>
+</html>
