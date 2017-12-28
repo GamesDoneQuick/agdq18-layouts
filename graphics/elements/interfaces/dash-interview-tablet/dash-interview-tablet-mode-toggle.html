@@ -1,0 +1,70 @@
+<link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<dom-module id="dash-interview-tablet-mode-toggle">
+	<template>
+		<style>
+			:host {
+				height: 55px;
+				user-select: none;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			:host(:not([checked])) {
+				background-color: #E9BBBB;
+			}
+
+			:host([checked]) {
+				background-color: #BBE0E9;
+			}
+
+			:host([showing]){
+				background-color: #A0A0A0;
+			}
+
+			#toggle {
+				transform: scale(1.5);
+				margin: 0 36px;
+				--paper-toggle-button-checked-bar-color: #000000;
+				--paper-toggle-button-unchecked-bar-color: #000000;
+				--paper-toggle-button-checked-button-color: #56A5E3;
+				--paper-toggle-button-unchecked-button-color: #E35656;
+				--paper-toggle-button-checked-ink-color: #56A5E3;
+				--paper-toggle-button-unchecked-ink-color: #E35656;
+			}
+
+			#off-label {
+				text-align: right;
+			}
+
+			#on-label {
+				text-align: left;
+			}
+
+			.label {
+				font-weight: 400;
+				font-size: 24px;
+				line-height: 1;
+				text-transform: uppercase;
+				@apply --layout-flex;
+			}
+
+			:host(:not([checked])) #off-label {
+				color: #F20000;
+				font-weight: bold;
+			}
+
+			:host([checked]) #on-label {
+				color: #0075D1;
+				font-weight: bold;
+			}
+		</style>
+
+		<div id="off-label" class="label">Lightning Round</div>
+		<paper-toggle-button id="toggle" checked="{{checked}}"></paper-toggle-button>
+		<div id="on-label" class="label">Prize Monitor</div>
+	</template>
+
+	<script src="dash-interview-tablet-mode-toggle.js"></script>
+</dom-module>
