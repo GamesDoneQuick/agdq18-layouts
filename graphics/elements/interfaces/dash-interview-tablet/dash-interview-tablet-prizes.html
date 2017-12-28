@@ -1,11 +1,364 @@
+<link rel="import" href="../../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../ui-dragula-element/ui-dragula-element.html">
+
 <dom-module id="dash-interview-tablet-prizes">
 	<template>
-		<style>
+		<style include="dragula-styles">
 			:host {
-				display: block;
+				padding: 22px 14px;
+				@apply --layout-flex;
+				@apply --layout-horizontal;
+			}
+
+			#leftColumn {
+				width: 339px;
+				margin-right: 10px;
+			}
+
+			#rightColumn {
 				@apply --layout-flex;
 			}
+
+			.column {
+				@apply --layout-vertical;
+			}
+
+			#search {
+				width: 100%;
+				height: 33px;
+				border: 1px solid black;
+				box-sizing: border-box;
+				background: white;
+				margin-bottom: 7px;
+				--paper-input-container: {
+					padding: 0;
+				};
+				--paper-input-container-input: {
+					line-height: 30px;
+				};
+			}
+
+			#searchIcon {
+				margin-left: 3px;
+				margin-top: 1px;
+				width: 26px;
+				height: 26px;
+				color: #888888;
+			}
+
+			#clearIcon {
+				margin-right: 3px;
+				color: #88343b;
+			}
+
+			#allPrizesList {
+				border: 1px solid black;
+				box-sizing: border-box;
+				background: white;
+				@apply --layout-flex;
+				@apply --layout-vertical;
+			}
+
+			#allPrizesList-actual {
+				@apply --layout-flex;
+			}
+
+			#rightColumn-buttons {
+				@apply --layout-horizontal;
+			}
+
+			#rightColumn-buttons > paper-button {
+				@apply --layout-flex;
+			}
+
+			#clearPlaylist {
+				--paper-button: {
+					color: white;
+					background-color: #645BA6;
+				}
+			}
+
+			#showPlaylist {
+				--paper-button: {
+					color: white;
+					background-color: #5BA664;
+				}
+			}
+
+			#hidePlaylist {
+				--paper-button: {
+					color: white;
+					background-color: #C9513E;
+				}
+			}
+
+			#playlist {
+				padding-top: 14px;
+				box-sizing: border-box;
+				overflow-y: auto;
+				overflow-x: hidden;
+				@apply --layout-vertical;
+			}
+
+			.spacer {
+				height: 9px;
+				background-color: #F2F2F2;
+			}
+
+			.prizeListing {
+				height: 32px;
+				padding: 0 7px;
+				white-space: nowrap;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			.prizeListing:nth-child(odd) {
+				background-color: #F2F2F2;
+			}
+
+			.prizeListing-name {
+				font-weight: 500;
+				font-size: 16px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				margin-right: auto;
+			}
+
+			.prizeListing-add,
+			.prizeListing-remove {
+				padding: 0;
+				min-width: 0;
+				width: 18px;
+				height: 18px;
+				color: white;
+				margin-left: 12px;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			.prizeListing-add {
+				--paper-button: {
+					background-color: #5BA664;
+				}
+			}
+
+			.prizeListing-remove {
+				--paper-button: {
+					background-color: #C9513E;
+				}
+			}
+
+			.prizeListing-add-icon {
+				width: 16px;
+				height: 16px;
+			}
+
+			.playlistPrize {
+				margin: 4px 0;
+				padding: 7px 0;
+				background-color: #9966cc;
+				box-sizing: border-box;
+				box-shadow:
+					0 2px 2px 0 rgba(0, 0, 0, 0.14),
+					0 1px 5px 0 rgba(0, 0, 0, 0.12),
+					0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			.playlistPrize-handle {
+				position: relative;
+				width: 37px;
+				border-right: 1px solid black;
+				cursor: move;
+				@apply --layout-flex-none;
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+				@apply --layout-self-stretch;
+			}
+
+			.playlistPrize-checkbox {
+				margin: 0 16px;
+				--paper-checkbox-size: 24px;
+				--paper-checkbox-checked-color: #7D7D7D;
+				--paper-checkbox-checkmark-color: #C2C2C2;
+			}
+
+			.playlistPrize-name {
+				font-weight: 500;
+				font-size: 24px;
+				color: black;
+				@apply --layout-flex;
+			}
+
+			.playlistPrize-remove {
+				margin: 0 10px;
+				width: 42px;
+				height: 42px;
+				padding: 0;
+				min-width: 0;
+				--paper-button: {
+					background-color: #C9513E;
+				};
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
+			}
+
+			.playlistPrize-remove-icon {
+				color: white;
+				width: 24px;
+				height: 24px;
+			}
+
+			.playlistPrize[complete] {
+				background-color: #C2C2C2 !important;
+			}
+
+			.playlistPrize[complete] .playlistPrize-name {
+				color: #7D7D7D;
+				text-decoration: line-through;
+			}
+
+			.bg-color-transition {
+				transition: background-color 1600ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+			}
+
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+
+			::-webkit-scrollbar-track {
+				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+				-webkit-border-radius: 10px;
+				border-radius: 10px;
+			}
+
+			::-webkit-scrollbar-thumb {
+				border-radius: 5px;
+				background: #757575;
+				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+			}
+
+			::-webkit-scrollbar-thumb:window-inactive {
+				background: #b9b9b9;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
 		</style>
+
+		<div id="leftColumn" class="column">
+			<paper-input id="search" value="{{searchString}}" no-label-float>
+				<iron-icon id="searchIcon" icon="search" slot="prefix"></iron-icon>
+				<iron-icon
+					id="clearIcon"
+					icon="clear"
+					slot="suffix"
+					on-tap="clearFilter"
+					hidden="[[_calcClearIconHidden(searchString)]]">
+				</iron-icon>
+			</paper-input>
+
+			<div id="allPrizesList">
+				<div id="allPrizesList-topSpacer" class="spacer"></div>
+				<iron-list id="allPrizesList-actual" items="[[_calcPrizesToList(allPrizes, searchString)]]" as="prize" mutable-data>
+					<template>
+						<div class="prizeListing">
+							<div class="prizeListing-name">[[prize.description]]</div>
+							<paper-button
+								class="prizeListing-add"
+								hidden="[[_isPrizeInPlaylist(prize, prizePlaylist)]]"
+								on-tap="_handlePrizeListingAddTap">
+								<iron-icon class="prizeListing-add-icon" icon="add"></iron-icon>
+							</paper-button>
+							<paper-button
+								class="prizeListing-remove"
+								hidden="[[!_isPrizeInPlaylist(prize, prizePlaylist)]]"
+								on-tap="_handlePrizeListingRemoveTap">
+								<iron-icon class="prizeListing-remove-icon" icon="remove"></iron-icon>
+							</paper-button>
+						</div>
+					</template>
+				</iron-list>
+				<div id="allPrizesList-bottomSpacer" class="spacer"></div>
+			</div>
+		</div>
+
+		<div id="rightColumn" class="column">
+			<div id="rightColumn-buttons">
+				<paper-button
+					id="clearPlaylist"
+					on-tap="clearPlaylist"
+					disabled="[[_calcClearPlaylistDisabled(prizePlaylist)]]"
+					raised>
+					Clear List
+				</paper-button>
+
+				<paper-button
+					id="showPlaylist"
+					on-tap="showPlaylist"
+					hidden="[[prizesShowingOnMonitor]]"
+					raised>
+					Show On Monitor
+				</paper-button>
+
+				<paper-button
+					id="hidePlaylist"
+					on-tap="hidePlaylist"
+					hidden="[[!prizesShowingOnMonitor]]"
+					raised>
+					Hide On Monitor
+				</paper-button>
+			</div>
+
+			<ui-dragula-element
+				id="playlist"
+				container-class="container"
+				handle-class="playlistPrize-handle"
+				on-dragula-drag="_handleDrag"
+				on-dragula-dragend="_handleDragEnd">
+				<div id="list-container" class="container">
+					<template
+						id="playlist-repeat"
+						is="dom-repeat"
+						items="[[_calcPrizesInPlaylist(allPrizes, prizePlaylist)]]"
+						as="prize"
+						sort="_mapSort"
+						mutable-data>
+						<div class="playlistPrize bg-color-transition" prize-id="[[prize.id]]" complete$="[[_calcPlaylistPrizeChecked(prize, prizePlaylist)]]">
+							<div class="playlistPrize-handle">
+								<iron-icon
+									style="pointer-events: none;"
+									icon="editor:drag-handle">
+								</iron-icon>
+							</div>
+
+							<paper-checkbox
+								class="playlistPrize-checkbox"
+								checked="[[_calcPlaylistPrizeChecked(prize, prizePlaylist)]]"
+								on-checked-changed="_handlePlaylistPrizeCheckboxChanged">
+							</paper-checkbox>
+
+							<div class="playlistPrize-name">[[prize.description]]</div>
+
+							<paper-button
+								class="playlistPrize-remove"
+								on-tap="_handlePrizeListingRemoveTap"
+								alt="Remove from playlist"
+								raised>
+								<iron-icon icon="remove" class="playlistPrize-remove-icon"></iron-icon>
+							</paper-button>
+						</div>
+					</template>
+				</div>
+			</ui-dragula-element>
+		</div>
 	</template>
 
 	<script src="dash-interview-tablet-prizes.js"></script>
