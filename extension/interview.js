@@ -22,6 +22,8 @@ const questionSortMap = nodecg.Replicant('interview:questionSortMap');
 const questionTweetsRep = nodecg.Replicant('interview:questionTweets');
 const interviewStopwatch = nodecg.Replicant('interview:stopwatch');
 const currentLayout = nodecg.Replicant('gdq:currentLayout');
+const prizePlaylist = nodecg.Replicant('interview:prizePlaylist');
+const showPrizesOnMonitor = nodecg.Replicant('interview:showPrizesOnMonitor');
 const pulseIntervalMap = new Map();
 const pulseTimeoutMap = new Map();
 let interviewTimer;
@@ -127,6 +129,75 @@ database.ref('/active_tweet_id').on('value', snapshot => {
 
 nodecg.listenFor('interview:updateQuestionSortMap', updateQuestionSortMap);
 
+nodecg.listenFor('interview:markQuestionAsDone', markQuestionAsDone);
+
+nodecg.listenFor('interview:end', () => {
+	database.ref('/active_tweet_id').set(0);
+});
+
+nodecg.listenFor('interview:addPrizeToPlaylist', prizeId => {
+	if (typeof prizeId !== 'number' || prizeId < 0) {
+		return;
+	}
+
+	const existingIndex = prizePlaylist.value.findIndex(({id}) => id === prizeId);
+	if (existingIndex >= 0) {
+		return;
+	}
+
+	prizePlaylist.value.push({
+		id: prizeId,
+		complete: false
+	});
+});
+
+nodecg.listenFor('interview:removePrizeFromPlaylist', prizeId => {
+	if (typeof prizeId !== 'number' || prizeId < 0) {
+		return;
+	}
+
+	const existingIndex = prizePlaylist.value.findIndex(({id}) => id === prizeId);
+	if (existingIndex < 0) {
+		return;
+	}
+
+	prizePlaylist.value.splice(existingIndex, 1);
+});
+
+nodecg.listenFor('interview:markPrizeAsDone', prizeId => {
+	if (typeof prizeId !== 'number' || prizeId < 0) {
+		return;
+	}
+
+	const entry = prizePlaylist.value.find(({id}) => id === prizeId);
+	if (entry) {
+		entry.complete = true;
+	}
+});
+
+nodecg.listenFor('interview:markPrizeAsNotDone', prizeId => {
+	if (typeof prizeId !== 'number' || prizeId < 0) {
+		return;
+	}
+
+	const entry = prizePlaylist.value.find(({id}) => id === prizeId);
+	if (entry) {
+		entry.complete = false;
+	}
+});
+
+nodecg.listenFor('interview:clearPrizePlaylist', () => {
+	prizePlaylist.value = [];
+});
+
+nodecg.listenFor('interview:showPrizePlaylistOnMonitor', () => {
+	showPrizesOnMonitor.value = true;
+});
+
+nodecg.listenFor('interview:hidePrizePlaylistOnMonitor', () => {
+	showPrizesOnMonitor.value = false;
+});
+
 function markQuestionAsDone(id, cb = function () {}) {
 	if (!_repliesRef) {
 		return cb(new Error('_repliesRef not ready!'));
@@ -154,12 +225,6 @@ function markQuestionAsDone(id, cb = function () {}) {
 		cb(error);
 	});
 }
-
-nodecg.listenFor('interview:markQuestionAsDone', markQuestionAsDone);
-
-nodecg.listenFor('interview:end', () => {
-	database.ref('/active_tweet_id').set(0);
-});
 
 /**
  * Fixes up the sort map by adding and new IDs and removing deleted IDs.
