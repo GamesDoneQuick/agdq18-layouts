@@ -69,7 +69,6 @@
 					});
 				});
 			});
-
 			this._listObserver.observe(this.$.list, {childList: true, subtree: true});
 
 			questionTimeRemaining.on('change', newVal => {
