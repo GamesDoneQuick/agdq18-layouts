@@ -1,7 +1,7 @@
 {
   "name": "agdq18-layouts",
   "dependencies": {
-    "dragula.js": "Lange/dragula#sgdq2017",
+    "dragula.js": "Lange/dragula#d57d83940f5831c728cdd44222dd2b10d4ef5fe3",
     "EaselJS": "1.0.2",
     "gsap": "~1.20.3",
     "iron-icons": "PolymerElements/iron-icons#^2.0.0",
