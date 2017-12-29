@@ -1,10 +1,12 @@
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../../../bower_components/paper-styles/shadow.html">
 <link rel="import" href="../../../../bower_components/polymer/lib/mixins/mutable-data.html">
 <link rel="import" href="../../../../bower_components/polymer/lib/utils/render-status.html">
-<link rel="import" href="../../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
-<link rel="import" href="dash-interview-monitor-tweet.html">
+<link rel="import" href="../../atoms/atom-tweening-number/atom-tweening-number.html">
+<link rel="import" href="dash-interview-monitor-tweets.html">
 
 <dom-module id="dash-interview-monitor">
 	<template>
@@ -104,24 +106,13 @@
 				@apply --layout-center-center;
 			}
 
-			#tweetsColumn {
+			#rightColumn {
 				background-color: #dedede;
-				padding: 12px 14px;
-				@apply --layout-vertical;
 				@apply --layout-flex;
 			}
 
-			#noQuestions {
-				font-size: 92px;
-				width: 100%;
-				height: 100%;
-				text-align: center;
-				@apply --layout-vertical;
-				@apply --layout-center-center;
-			}
-
-			.bg-color-transition {
-				transition: background-color 1600ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+			#rightColumn > * {
+				padding: 12px 14px;
 			}
 
 			[hidden] {
@@ -131,7 +122,7 @@
 
 		<div id="infoColumn">
 			<div id="total" class="tabular-nums" hidden="[[throwIncoming]]">
-				$<span id="total-amount"></span>
+				$<atom-tweening-number id="total-amount"></atom-tweening-number>
 			</div>
 
 			<div id="throwIncoming" hidden="[[!throwIncoming]]">
@@ -151,15 +142,9 @@
 			<div id="checklistStatus"></div>
 		</div>
 
-		<div id="tweetsColumn" class="bg-color-transition">
-			<div id="noQuestions" hidden="[[!noQuestionTweets]]">
-				No Remaining Questions
-			</div>
-
-			<template id="repeat" is="dom-repeat" items="[[questionTweets]]" as="tweet" sort="mapSort" mutable-data>
-				<dash-interview-monitor-tweet tweet="[[tweet]]"></dash-interview-monitor-tweet>
-			</template>
-		</div>
+		<iron-pages id="rightColumn" selected="[[_calcSelectedPage(prizeMode)]]">
+			<dash-interview-monitor-tweets></dash-interview-monitor-tweets>
+		</iron-pages>
 	</template>
 
 	<script src="dash-interview-monitor.js"></script>
