@@ -1,0 +1,94 @@
+<link rel="import" href="../../../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="dash-interview-monitor-prize">
+	<template>
+		<style>
+			:host {
+				min-height: 174px;
+				font-weight: bold;
+				background-color: white;
+				margin-bottom: 10px;
+				@apply --shadow-elevation-2dp;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-flex-none;
+			}
+
+			#image {
+				width: 174px;
+				@apply --layout-flex-none;
+				@apply --layout-self-stretch;
+			}
+
+			#nameAndProvider {
+				color: black;
+				margin-left: 10px;
+				padding-top: 10px;
+				padding-bottom: 24px;
+				@apply --layout-vertical;
+				@apply --layout-flex;
+			}
+
+			#name {
+				font-size: 73px;
+				word-break: break-word;
+				word-wrap: break-word;
+			}
+
+			#provider {
+				font-size: 42px;
+				word-break: break-word;
+				word-wrap: break-word;
+			}
+
+			#bidInfo {
+				color: #0E721B;
+				margin: 0 26px;
+				@apply --layout-vertical;
+				@apply --layout-flex-none;
+				@apply --layout-end;
+			}
+
+			#minBid {
+				font-size: 73px;
+			}
+
+			#bidType {
+				font-size: 24px;
+				text-transform: uppercase;
+			}
+
+			#strip {
+				width: 19px;
+				background-color: #0E721B;
+				@apply --layout-self-stretch;
+			}
+
+			:host([bid-type="total"]) #bidInfo {
+				color: #FF8800;
+			}
+
+			:host([bid-type="total"]) #strip {
+				background-color: #FF8800;
+			}
+		</style>
+
+		<iron-image id="image" sizing="cover" src="[[prize.image]]"></iron-image>
+
+		<div id="nameAndProvider">
+			<div id="name">[[prize.description]]</div>
+			<div id="provider">PROVIDED BY: [[prize.provided]]</div>
+		</div>
+
+		<div id="bidInfo">
+			<div id="minBid">[[prize.minimumbid]]</div>
+			<div id="bidType">[[bidType]]</div>
+		</div>
+
+		<div id="strip"></div>
+	</template>
+
+	<script src="dash-interview-monitor-prize.js"></script>
+</dom-module>
