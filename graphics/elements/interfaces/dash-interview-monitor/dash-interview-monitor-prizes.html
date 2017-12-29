@@ -1,7 +1,7 @@
 <link rel="import" href="../../../mixins/MapSortMixin.html">
-<link rel="import" href="dash-interview-monitor-tweet.html">
+<link rel="import" href="dash-interview-monitor-prize.html">
 
-<dom-module id="dash-interview-monitor-tweets">
+<dom-module id="dash-interview-monitor-prizes">
 	<template>
 		<style>
 			:host {
@@ -22,22 +22,22 @@
 			}
 		</style>
 
-		<div id="noQuestions" hidden="[[!noQuestionTweets]]">
-			No Remaining Questions
+		<div id="noQuestions" hidden="[[!noPlaylistPrizes]]">
+			No Remaining Prizes
 		</div>
 
 		<template
 			id="repeat"
 			is="dom-repeat"
-			items="[[questionTweets]]"
-			as="tweet"
-			sort="[[_createMapSort('id_str')]]"
+			items="[[playlistPrizes]]"
+			as="prize"
+			sort="[[_createMapSort('id')]]"
 			mutable-data>
-			<dash-interview-monitor-tweet
-				tweet="[[tweet]]">
-			</dash-interview-monitor-tweet>
+			<dash-interview-monitor-prize
+				prize="[[prize]]">
+			</dash-interview-monitor-prize>
 		</template>
 	</template>
 
-	<script src="dash-interview-monitor-tweets.js"></script>
+	<script src="dash-interview-monitor-prizes.js"></script>
 </dom-module>
