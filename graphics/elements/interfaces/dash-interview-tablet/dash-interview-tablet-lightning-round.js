@@ -9,8 +9,10 @@
 	/**
 	 * @customElement
 	 * @polymer
+	 * @appliesMixin window.MapSortMixin
 	 */
-	class DashInterviewTabletLightningRound extends Polymer.MutableData(Polymer.GestureEventListeners(Polymer.Element)) {
+	class DashInterviewTabletLightningRound extends
+		window.MapSortMixin(Polymer.MutableData(Polymer.GestureEventListeners(Polymer.Element))) {
 		static get is() {
 			return 'dash-interview-tablet-lightning-round';
 		}
@@ -63,21 +65,8 @@
 			};
 
 			// Fades new question nodes from purple to white when added.
-			this._listObserver = new MutationObserver(mutations => {
-				mutations.forEach(mutation => {
-					if (!mutation.addedNodes) {
-						return;
-					}
-
-					Array.from(mutation.addedNodes).filter(node => {
-						return node.classList && node.classList.contains('tweet');
-					}).forEach(node => {
-						flushCss(node);
-						node.style.backgroundColor = 'white';
-					});
-				});
-			});
-			this._listObserver.observe(this.$.list, {childList: true, subtree: true});
+			this._flashAddedNodes(this.$.list, '.tweet');
+			// this._listObserver.observe(this.$.list, {childList: true, subtree: true});
 
 			questionTimeRemaining.on('change', newVal => {
 				if (questionShowing.value) {
@@ -100,8 +89,8 @@
 				this._sortMapVal = newVal;
 				this.notifyPath('replies');
 
-				if (newVal.length > 0) {
-					this._flashBgIfAppropriate(operations);
+				if (newVal.length > 0 && this._shouldFlash(operations)) {
+					this._flashElementBackground(this.$.list);
 				}
 
 				this._dragListOrder = newVal.slice(0);
@@ -168,27 +157,6 @@
 			return replies.length <= 0 || _markingTopQuestionAsDone;
 		}
 
-		_flashBgIfAppropriate(operations) {
-			if (operations && operations.length === 1) {
-				// Don't flash if the change was just the addition of a new question.
-				if (operations[0].method === 'push') {
-					return;
-				}
-
-				// Don't flash if the change was just caused by hitting "Show Next" on tier2.
-				if (operations[0].method === 'splice' && operations[0].args.length === 2 &&
-					operations[0].args[0] === 0 && operations[0].args[1] === 1) {
-					return;
-				}
-			}
-
-			this.$.list.classList.remove('bg-color-transition');
-			this.$.list.style.backgroundColor = '#9966cc';
-			flushCss(this.$.list);
-			this.$.list.classList.add('bg-color-transition');
-			this.$.list.style.backgroundColor = 'transparent';
-		}
-
 		_handleDrag() {
 			this._dragging = true;
 		}
@@ -218,30 +186,6 @@
 				return aMapIndex - bMapIndex;
 			});
 			questionSortMap.value = newSortOrder;
-		}
-
-		_mapSort(a, b) {
-			if (!this._sortMapVal) {
-				return 0;
-			}
-
-			const aMapIndex = this._sortMapVal.indexOf(a.id_str);
-			const bMapIndex = this._sortMapVal.indexOf(b.id_str);
-
-			if (aMapIndex >= 0 && bMapIndex < 0) {
-				return -1;
-			}
-
-			if (aMapIndex < 0 && bMapIndex >= 0) {
-				return 1;
-			}
-
-			// If neither of these replies are in the sort map, just leave them where they are.
-			if (aMapIndex < 0 && bMapIndex < 0) {
-				return 0;
-			}
-
-			return aMapIndex - bMapIndex;
 		}
 
 		/* Disabled for now. Can't get drag sort and button sort to work simultaneously.
@@ -274,17 +218,6 @@
 	}
 
 	customElements.define(DashInterviewTabletLightningRound.is, DashInterviewTabletLightningRound);
-
-	/**
-	 * By reading the offsetHeight property, we are forcing
-	 * the browser to flush the pending CSS changes (which it
-	 * does to ensure the value obtained is accurate).
-	 * @param {Object} element - The element to force a CSS flush on.
-	 * @returns {undefined}
-	 */
-	function flushCss(element) {
-		element.offsetHeight; // eslint-disable-line no-unused-expressions
-	}
 
 	/**
 	 * Checks if the page is running in mobile Safari.

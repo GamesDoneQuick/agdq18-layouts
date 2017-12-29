@@ -9,8 +9,12 @@
 	/**
 	 * @customElement
 	 * @polymer
+	 * @appliesMixin window.MapSortMixin
+	 * @appliesMixin Polymer.MutableData
+	 * @appliesMixin Polymer.GestureEventListeners
 	 */
-	class DashInterviewTabletPrizes extends Polymer.MutableData(Polymer.GestureEventListeners(Polymer.Element)) {
+	class DashInterviewTabletPrizes extends
+		window.MapSortMixin(Polymer.MutableData(Polymer.GestureEventListeners(Polymer.Element))) {
 		static get is() {
 			return 'dash-interview-tablet-prizes';
 		}
@@ -54,8 +58,8 @@
 				this._sortMapVal = newVal;
 				this.notifyPath('prizePlaylist');
 
-				if (newVal.length > 0) {
-					this._flashBgIfAppropriate(operations);
+				if (newVal.length > 0 && this._shouldFlash(operations)) {
+					this._flashElementBackground(this.$.playlist);
 				}
 
 				this._dragListOrder = newVal.slice(0);
@@ -65,7 +69,7 @@
 				let start;
 				Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
 					if (e.detail.state === 'start') {
-						start = this.$.list.scrollTop;
+						start = this.$.playlist.scrollTop;
 						console.log('updated start:', start);
 						return;
 					}
@@ -74,7 +78,7 @@
 						return;
 					}
 
-					this.$.list.scrollTop = Math.max(start - e.detail.dy, 0);
+					this.$.playlist.scrollTop = Math.max(start - e.detail.dy, 0);
 				});
 			} else {
 				// Hack to get around https://github.com/bevacqua/crossvent/issues/8
@@ -82,22 +86,9 @@
 				Polymer.Gestures.addListener(this.$['list-container'], 'track', () => {});
 			}
 
-			// Fades new question nodes from purple to white when added.
-			this._listObserver = new MutationObserver(mutations => {
-				mutations.forEach(mutation => {
-					if (!mutation.addedNodes) {
-						return;
-					}
-
-					Array.from(mutation.addedNodes).filter(node => {
-						return node.classList && node.classList.contains('playlistPrize');
-					}).forEach(node => {
-						flushCss(node);
-						node.style.backgroundColor = 'white';
-					});
-				});
-			});
-			this._listObserver.observe(this.$.playlist, {childList: true, subtree: true});
+			// Fades new prize nodes from purple to white when added.
+			this._flashAddedNodes(this.$.playlist, '.playlistPrize'); // TODO: not working
+			// this._listObserver.observe(this.$.playlist, {childList: true, subtree: true});
 		}
 
 		clearFilter() {
@@ -209,27 +200,6 @@
 			}
 		}
 
-		_flashBgIfAppropriate(operations) {
-			if (operations && operations.length === 1) {
-				// Don't flash if the change was just the addition of a new question.
-				if (operations[0].method === 'push') {
-					return;
-				}
-
-				// Don't flash if the change was just caused by hitting "Show Next" on tier2.
-				if (operations[0].method === 'splice' && operations[0].args.length === 2 &&
-					operations[0].args[0] === 0 && operations[0].args[1] === 1) {
-					return;
-				}
-			}
-
-			this.$.playlist.classList.remove('bg-color-transition');
-			this.$.playlist.style.backgroundColor = '#9966cc';
-			flushCss(this.$.playlist);
-			this.$.playlist.classList.add('bg-color-transition');
-			this.$.playlist.style.backgroundColor = 'transparent';
-		}
-
 		_handleDrag() {
 			this._dragging = true;
 		}
@@ -260,30 +230,6 @@
 			});
 			prizePlaylistSortMapRep.value = newSortOrder;
 		}
-
-		_mapSort(a, b) {
-			if (!this._sortMapVal) {
-				return 0;
-			}
-
-			const aMapIndex = this._sortMapVal.indexOf(a.id);
-			const bMapIndex = this._sortMapVal.indexOf(b.id);
-
-			if (aMapIndex >= 0 && bMapIndex < 0) {
-				return -1;
-			}
-
-			if (aMapIndex < 0 && bMapIndex >= 0) {
-				return 1;
-			}
-
-			// If neither of these replies are in the sort map, just leave them where they are.
-			if (aMapIndex < 0 && bMapIndex < 0) {
-				return 0;
-			}
-
-			return aMapIndex - bMapIndex;
-		}
 	}
 
 	customElements.define(DashInterviewTabletPrizes.is, DashInterviewTabletPrizes);
@@ -297,17 +243,6 @@
 		return typeof prizeOrPrizeId === 'object' ?
 			prizeOrPrizeId.id :
 			prizeOrPrizeId;
-	}
-
-	/**
-	 * By reading the offsetHeight property, we are forcing
-	 * the browser to flush the pending CSS changes (which it
-	 * does to ensure the value obtained is accurate).
-	 * @param {Object} element - The element to force a CSS flush on.
-	 * @returns {undefined}
-	 */
-	function flushCss(element) {
-		element.offsetHeight; // eslint-disable-line no-unused-expressions
 	}
 
 	/**

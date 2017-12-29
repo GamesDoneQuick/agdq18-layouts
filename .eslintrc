@@ -8,6 +8,7 @@
 				"Polymer.MutableData",
 				"nodecg.Replicant",
 				"CSSReflectionMixin",
+				"MapSortMixin",
 				"SVG"
 			]
 		}],

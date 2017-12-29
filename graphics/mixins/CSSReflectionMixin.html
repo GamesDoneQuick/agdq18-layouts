@@ -1,6 +1,15 @@
+<link rel="import" href="../../bower_components/polymer/lib/utils/mixin.html">
 <script>
+	/**
+	 * @mixinFunction
+	 * @polymer
+	 */
 	window.CSSReflectionMixin = Polymer.dedupingMixin(base => {
-		return class extends base {
+		/**
+		 * @mixinClass
+		 * @polymer
+		 */
+		class CSSReflectionMixin extends base {
 			/**
 			 * Gets the value of a Custom CSS Property.
 			 * @param {String} prop - The property name to get the value of.
@@ -17,6 +26,8 @@
 
 				return value || fallback;
 			}
-		};
+		}
+
+		return CSSReflectionMixin;
 	});
 </script>
