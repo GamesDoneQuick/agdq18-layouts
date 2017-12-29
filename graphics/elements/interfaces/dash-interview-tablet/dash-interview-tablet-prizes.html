@@ -3,6 +3,7 @@
 <link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../mixins/MapSortMixin.html">
 <link rel="import" href="../ui-dragula-element/ui-dragula-element.html">
 
 <dom-module id="dash-interview-tablet-prizes">
@@ -163,7 +164,7 @@
 			.playlistPrize {
 				margin: 4px 0;
 				padding: 7px 0;
-				background-color: #9966cc;
+				background-color: white;
 				box-sizing: border-box;
 				box-shadow:
 					0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -331,7 +332,7 @@
 						is="dom-repeat"
 						items="[[_calcPrizesInPlaylist(allPrizes, prizePlaylist)]]"
 						as="prize"
-						sort="_mapSort"
+						sort="[[_createMapSort('id')]]"
 						mutable-data>
 						<div class="playlistPrize bg-color-transition" prize-id="[[prize.id]]" complete$="[[_calcPlaylistPrizeChecked(prize, prizePlaylist)]]">
 							<div class="playlistPrize-handle">

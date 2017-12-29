@@ -4,6 +4,7 @@
 <link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../../../mixins/MapSortMixin.html">
 <link rel="import" href="../ui-dragula-element/ui-dragula-element.html">
 <link rel="import" href="../ui-tweet/ui-tweet.html">
 
@@ -83,7 +84,7 @@
 				padding-right: 6px;
 				padding-top: 5px;
 				padding-bottom: 7px;
-				background-color: #9966cc;
+				background-color: white;
 				box-sizing: border-box;
 				box-shadow:
 					0 2px 2px 0 rgba(0, 0, 0, 0.14),
@@ -213,7 +214,7 @@
 					is="dom-repeat"
 					items="[[replies]]"
 					as="reply"
-					sort="_mapSort"
+					sort="[[_createMapSort('id_str')]]"
 					mutable-data>
 					<div class="tweet bg-color-transition" tweet-id="[[reply.id_str]]">
 						<div class="tweet-handle">

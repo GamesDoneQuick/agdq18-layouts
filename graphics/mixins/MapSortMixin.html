@@ -1,0 +1,112 @@
+<link rel="import" href="../../bower_components/polymer/lib/utils/mixin.html">
+<script>
+	/**
+	 * @mixinFunction
+	 * @polymer
+	 */
+	window.MapSortMixin = Polymer.dedupingMixin(base => {
+		/**
+		 * @mixinClass
+		 * @polymer
+		 */
+		class MapSortMixin extends base {
+			static get properties() {
+				return {
+					_sortMapVal: {
+						type: Array
+					}
+				};
+			}
+
+			ready() {
+				this._createMapSort = this._createMapSort.bind(this);
+				super.ready();
+			}
+
+			_createMapSort(idKey) {
+				return (a, b) => {
+					if (!this._sortMapVal) {
+						return 0;
+					}
+
+					const aMapIndex = this._sortMapVal.indexOf(a[idKey]);
+					const bMapIndex = this._sortMapVal.indexOf(b[idKey]);
+
+					if (aMapIndex >= 0 && bMapIndex < 0) {
+						return -1;
+					}
+
+					if (aMapIndex < 0 && bMapIndex >= 0) {
+						return 1;
+					}
+
+					// If neither of these replies are in the sort map, just leave them where they are.
+					if (aMapIndex < 0 && bMapIndex < 0) {
+						return 0;
+					}
+
+					return aMapIndex - bMapIndex;
+				};
+			}
+
+			_shouldFlash(replicantChangeOperations) {
+				if (replicantChangeOperations && replicantChangeOperations.length === 1) {
+					// Don't flash if the change was just the addition of a new question.
+					if (replicantChangeOperations[0].method === 'push') {
+						return false;
+					}
+
+					// Don't flash if the change was just caused by hitting "Show Next" on tier2.
+					if (replicantChangeOperations[0].method === 'splice' &&
+						replicantChangeOperations[0].args.length === 2 &&
+						replicantChangeOperations[0].args[0] === 0 &&
+						replicantChangeOperations[0].args[1] === 1) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			_flashElementBackground(element, {
+				flashColor = '#9966cc',
+				endColor = window.getComputedStyle(element).backgroundColor,
+				duration = 1600,
+				easing = 'cubic-bezier(0.455, 0.03, 0.515, 0.955)'
+			} = {}) {
+				return element.animate([
+					{backgroundColor: flashColor},
+					{backgroundColor: endColor}
+				], {
+					duration,
+					easing
+				});
+			}
+
+			_flashAddedNodes(container, selector, condition) {
+				const observer = new MutationObserver(mutations => {
+					mutations.forEach(mutation => {
+						if (!mutation.addedNodes) {
+							return;
+						}
+
+						Array.from(mutation.addedNodes).filter(node => {
+							return node && node.matches && node.matches(selector);
+						}).forEach(node => {
+							if (condition && !condition(node)) {
+								return;
+							}
+
+							this._flashElementBackground(node);
+						});
+					});
+				});
+
+				observer.observe(container, {childList: true, subtree: true});
+				return observer;
+			}
+		}
+
+		return MapSortMixin;
+	});
+</script>
