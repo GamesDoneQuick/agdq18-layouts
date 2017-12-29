@@ -69,7 +69,7 @@
 			this.$.repeat.render();
 			Polymer.flush();
 
-			const firstMonitorTweet = this.shadowRoot.querySelector('monitor-tweet');
+			const firstMonitorTweet = this.shadowRoot.querySelector('dash-interview-monitor-tweet');
 			if (!firstMonitorTweet) {
 				return;
 			}
@@ -92,9 +92,9 @@
 						return;
 					}
 
-					const firstChild = this.shadowRoot.querySelector('monitor-tweet');
+					const firstChild = this.shadowRoot.querySelector('dash-interview-monitor-tweet');
 					Array.from(mutation.addedNodes).filter(node => {
-						return node.tagName === 'MONITOR-TWEET';
+						return node.tagName && node.tagName.toLowerCase() === 'dash-interview-monitor-tweet';
 					}).forEach(node => {
 						const isFirstChild = node === firstChild;
 						if (isFirstChild) {
