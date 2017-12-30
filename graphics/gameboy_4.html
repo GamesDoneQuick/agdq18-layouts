@@ -5,33 +5,33 @@
 	<title>Game Boy, 4 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
 	<custom-style>
 		<style>
-			gdq-nameplate {
-				--gdq-nameplate-width: 330px;
+			gdq-runner-nameplate {
+				width: 330px;
 			}
 
-			gdq-nameplate:nth-of-type(1) {
+			gdq-runner-nameplate:nth-of-type(1) {
 				top: 10px;
 				left: 446px;
 			}
 
-			gdq-nameplate:nth-of-type(2) {
+			gdq-runner-nameplate:nth-of-type(2) {
 				top: 60px;
 				right: 446px;
 			}
 
-			gdq-nameplate:nth-of-type(3) {
+			gdq-runner-nameplate:nth-of-type(3) {
 				top: 348px;
 				left: 446px;
 			}
 
-			gdq-nameplate:nth-of-type(4) {
+			gdq-runner-nameplate:nth-of-type(4) {
 				top: 398px;
 				right: 446px;
 			}
@@ -59,10 +59,10 @@
 		<img id="background" src="img/backgrounds/standard_4_bg.png">
 		<gdq-runinfo></gdq-runinfo>
 		<gdq-timer></gdq-timer>
-		<gdq-nameplate index="0" attach-left></gdq-nameplate>
-		<gdq-nameplate index="1" attach-right></gdq-nameplate>
-		<gdq-nameplate index="2" attach-left></gdq-nameplate>
-		<gdq-nameplate index="3" attach-right></gdq-nameplate>
+		<gdq-runner-nameplate index="0" attach-left></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="1" attach-right></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="2" attach-left></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="3" attach-right></gdq-runner-nameplate>
 		<img id="foreground" src="img/backgrounds/standard_4_fg.png">
 		<img id="addon" src="img/backgrounds/gb4_addon.png">
 	</div>

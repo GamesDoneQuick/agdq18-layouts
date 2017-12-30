@@ -5,7 +5,7 @@
 	<title>Standard, 2 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -13,16 +13,16 @@
 
 	<custom-style>
 		<style>
-			gdq-nameplate {
+			gdq-runner-nameplate {
 				top: 493px;
-				--gdq-nameplate-width: 349px;
+				width: 349px;
 			}
 
-			gdq-nameplate:nth-of-type(1) {
+			gdq-runner-nameplate:nth-of-type(1) {
 				right: 855px;
 			}
 
-			gdq-nameplate:nth-of-type(2) {
+			gdq-runner-nameplate:nth-of-type(2) {
 				left: 855px;
 			}
 
@@ -73,8 +73,8 @@
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
-		<gdq-nameplate index="0" attach-right></gdq-nameplate>
-		<gdq-nameplate index="1" attach-left></gdq-nameplate>
+		<gdq-runner-nameplate index="0" attach-right></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="1" attach-left></gdq-runner-nameplate>
 		<img id="foreground" src="img/backgrounds/standard_2_fg.png">
 	</div>
 

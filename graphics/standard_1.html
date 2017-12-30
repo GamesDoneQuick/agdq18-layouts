@@ -5,7 +5,7 @@
 	<title>Standard, 1 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -73,11 +73,11 @@
 					--gdq-runinfo-misc-height: 39px;
 				}
 
-				gdq-nameplate {
+				gdq-runner-nameplate {
 					position: relative;
 					margin-bottom: 9px;
 					font-size: 24px;
-					--gdq-nameplate-width: 451px;
+					width: 451px;
 				}
 
 				gdq-timer {
@@ -126,7 +126,7 @@
 					margin-bottom: 0;
 				}
 
-				:host([num-runners="1"]) gdq-nameplate:not([index="0"]) {
+				:host([num-runners="1"]) gdq-runner-nameplate:not([index="0"]) {
 					display: none;
 				}
 
@@ -135,8 +135,8 @@
 					margin-top: 11px;
 				}
 
-				:host([num-runners="2"]) gdq-nameplate[index="2"],
-				:host([num-runners="2"]) gdq-nameplate[index="3"] {
+				:host([num-runners="2"]) gdq-runner-nameplate[index="2"],
+				:host([num-runners="2"]) gdq-runner-nameplate[index="3"] {
 					display: none;
 				}
 
@@ -161,10 +161,10 @@
 			<gdq-runinfo max-name-size="42"></gdq-runinfo>
 			<div id="bottomLeft">
 				<div id="runners">
-					<gdq-nameplate index="0"></gdq-nameplate>
-					<gdq-nameplate index="1"></gdq-nameplate>
-					<gdq-nameplate index="2"></gdq-nameplate>
-					<gdq-nameplate index="3"></gdq-nameplate>
+					<gdq-runner-nameplate index="0"></gdq-runner-nameplate>
+					<gdq-runner-nameplate index="1"></gdq-runner-nameplate>
+					<gdq-runner-nameplate index="2"></gdq-runner-nameplate>
+					<gdq-runner-nameplate index="3"></gdq-runner-nameplate>
 				</div>
 				<gdq-timer></gdq-timer>
 				<div id="sponsorsAndTwitter">

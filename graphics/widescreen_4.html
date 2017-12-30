@@ -5,7 +5,7 @@
 	<title>Widescreen, 4 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -29,7 +29,7 @@
 				@apply --layout-end;
 			}
 
-			#leftPlate > gdq-nameplate {
+			#leftPlate > gdq-runner-nameplate {
 				margin-right: -1px;
 			}
 
@@ -37,7 +37,7 @@
 				right: 0;
 			}
 
-			#rightPlate > gdq-nameplate {
+			#rightPlate > gdq-runner-nameplate {
 				margin-left: -1px;
 			}
 
@@ -61,9 +61,9 @@
 				margin-bottom: -1px;
 			}
 
-			gdq-nameplate {
+			gdq-runner-nameplate {
 				position: relative;
-				--gdq-nameplate-width: 450px;
+				width: 450px;
 			}
 
 			gdq-runinfo {
@@ -110,13 +110,13 @@
 <body>
 	<div id="container">
 		<div id="leftPlate" class="plate">
-			<gdq-nameplate index="0" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
-			<gdq-nameplate index="2" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-nameplate>
+			<gdq-runner-nameplate index="0" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-runner-nameplate>
+			<gdq-runner-nameplate index="2" no-right-cap result-side="right" audio-horiz-pos="left"></gdq-runner-nameplate>
 		</div>
 
 		<div id="rightPlate" class="plate">
-			<gdq-nameplate index="1" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
-			<gdq-nameplate index="3" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-nameplate>
+			<gdq-runner-nameplate index="1" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-runner-nameplate>
+			<gdq-runner-nameplate index="3" no-left-cap result-side="left" audio-horiz-pos="right"></gdq-runner-nameplate>
 		</div>
 
 		<atom-gridlines></atom-gridlines>

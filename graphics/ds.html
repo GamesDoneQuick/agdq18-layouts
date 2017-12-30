@@ -5,7 +5,7 @@
 	<title>DS, 1 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -14,11 +14,11 @@
 	<link rel="import" href="elements/atoms/atom-gridlines/atom-gridlines.html">
 	<custom-style>
 		<style>
-			gdq-nameplate {
+			gdq-runner-nameplate {
 				bottom: 5px;
 				left: 10px;
 				z-index: 11;
-				--gdq-nameplate-width: 454px;
+				width: 454px;
 			}
 
 			gdq-runinfo {
@@ -65,7 +65,7 @@
 		<div id="lineone"></div>
 		<gdq-runinfo max-name-size="24"></gdq-runinfo>
 		<gdq-timer></gdq-timer>
-		<gdq-nameplate index="0"></gdq-nameplate>
+		<gdq-runner-nameplate index="0"></gdq-runner-nameplate>
 	</div>
 
 	<script>

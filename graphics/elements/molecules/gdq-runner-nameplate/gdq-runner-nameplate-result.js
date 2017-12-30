@@ -4,7 +4,7 @@
  */
 class GdqNameplateResult extends Polymer.Element {
 	static get is() {
-		return 'gdq-nameplate-result';
+		return 'gdq-runner-nameplate-result';
 	}
 
 	static get properties() {
