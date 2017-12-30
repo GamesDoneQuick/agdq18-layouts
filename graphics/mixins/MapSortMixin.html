@@ -29,8 +29,8 @@
 						return 0;
 					}
 
-					const aMapIndex = this._sortMapVal.indexOf(a[idKey]);
-					const bMapIndex = this._sortMapVal.indexOf(b[idKey]);
+					const aMapIndex = a ? this._sortMapVal.indexOf(a[idKey]) : -1;
+					const bMapIndex = b ? this._sortMapVal.indexOf(b[idKey]) : -1;
 
 					if (aMapIndex >= 0 && bMapIndex < 0) {
 						return -1;
