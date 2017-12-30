@@ -5,7 +5,7 @@
 	<title>Widescreen, 1 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -36,10 +36,10 @@
 				position: absolute;
 			}
 
-			gdq-nameplate {
+			gdq-runner-nameplate {
 				left: 504px;
 				bottom: 80px;
-				--gdq-nameplate-width: 377px;
+				width: 377px;
 			}
 
 			gdq-runinfo {
@@ -102,7 +102,7 @@
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
-		<gdq-nameplate index="0"></gdq-nameplate>
+		<gdq-runner-nameplate index="0"></gdq-runner-nameplate>
 	</div>
 
 	<script>

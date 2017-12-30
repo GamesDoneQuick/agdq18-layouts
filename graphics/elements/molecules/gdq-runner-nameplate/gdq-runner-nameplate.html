@@ -1,0 +1,52 @@
+<link rel="import" href="../gdq-nameplate/gdq-nameplate.html">
+<link rel="import" href="gdq-runner-nameplate-audio-indicator.html">
+<link rel="import" href="gdq-runner-nameplate-result.html">
+
+<dom-module id="gdq-runner-nameplate">
+	<template>
+		<style>
+			:host {
+				position: absolute;
+				z-index: 1;
+				font-family: "Source Code Pro", monospace;
+			}
+
+			#result {
+				position: absolute;
+				height: 100%;
+				top: 0;
+				z-index: -1;
+				@apply --fui-glow-rect;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<gdq-nameplate
+			id="nameplate"
+			no-left-cap="[[noLeftCap]]"
+			no-right-cap="[[noRightCap]]">
+		</gdq-nameplate>
+
+		<gdq-runner-nameplate-audio-indicator
+			id="audioIndicator"
+			showing="[[audio]]"
+			vert-pos="[[audioVertPos]]"
+			horiz-pos="[[audioHorizPos]]">
+		</gdq-runner-nameplate-audio-indicator>
+
+		<gdq-runner-nameplate-result
+			id="result"
+			showing="[[finished]]"
+			side="[[resultSide]]"
+			place="[[place]]"
+			first-place="[[firstPlace]]"
+			last-place="[[lastPlace]]"
+			time="[[time]]">
+		</gdq-runner-nameplate-result>
+	</template>
+
+	<script src="gdq-runner-nameplate.js"></script>
+</dom-module>

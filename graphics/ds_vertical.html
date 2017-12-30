@@ -5,18 +5,18 @@
 	<title>DS, Vertical, 1 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
 	<link rel="import" href="elements/molecules/gdq-sponsors/gdq-sponsors.html">
 	<custom-style>
 		<style>
-			gdq-nameplate {
+			gdq-runner-nameplate {
 				top: 453px;
 				left: 86px;
 				z-index: 11;
-				--gdq-nameplate-width: 377px;
+				width: 377px;
 			}
 
 			gdq-runinfo {
@@ -66,7 +66,7 @@
 	<gdq-tweet></gdq-tweet>
 	<img id="addon" src="img/backgrounds/ds_vertical_addon.png">
 	<img id="foreground" src="img/backgrounds/gameboy_fg.png">
-	<gdq-nameplate index="0"></gdq-nameplate>
+	<gdq-runner-nameplate index="0"></gdq-runner-nameplate>
 
 	<script>
 		window.addEventListener('DOMContentLoaded', () => {

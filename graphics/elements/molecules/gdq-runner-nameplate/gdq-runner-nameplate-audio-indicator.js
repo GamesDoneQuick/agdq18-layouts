@@ -4,7 +4,7 @@
  */
 class GdqNameplateAudioIndicator extends Polymer.Element {
 	static get is() {
-		return 'gdq-nameplate-audio-indicator';
+		return 'gdq-runner-nameplate-audio-indicator';
 	}
 
 	static get properties() {

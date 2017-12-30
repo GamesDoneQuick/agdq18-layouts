@@ -5,7 +5,7 @@
 	<title>Standard, 4 Player</title>
 	<link rel="stylesheet" href="style/layout.css">
 	<link rel="import" href="../shared/imports/gsap.html">
-	<link rel="import" href="elements/molecules/gdq-nameplate/gdq-nameplate.html">
+	<link rel="import" href="elements/molecules/gdq-runner-nameplate/gdq-runner-nameplate.html">
 	<link rel="import" href="elements/molecules/gdq-runinfo/gdq-runinfo.html">
 	<link rel="import" href="elements/molecules/gdq-timer/gdq-timer.html">
 	<link rel="import" href="elements/molecules/gdq-tweet/gdq-tweet.html">
@@ -43,26 +43,26 @@
 				box-sizing: border-box;
 			}
 
-			gdq-nameplate {
-				--gdq-nameplate-width: 330px;
+			gdq-runner-nameplate {
+				width: 330px;
 			}
 
-			gdq-nameplate:nth-of-type(1) {
+			gdq-runner-nameplate:nth-of-type(1) {
 				top: 245px;
 				left: 563px;
 			}
 
-			gdq-nameplate:nth-of-type(2) {
+			gdq-runner-nameplate:nth-of-type(2) {
 				top: 316px;
 				right: 563px;
 			}
 
-			gdq-nameplate:nth-of-type(3) {
+			gdq-runner-nameplate:nth-of-type(3) {
 				top: 492px;
 				left: 563px;
 			}
 
-			gdq-nameplate:nth-of-type(4) {
+			gdq-runner-nameplate:nth-of-type(4) {
 				top: 563px;
 				right: 563px;
 			}
@@ -117,10 +117,10 @@
 		<div id="linethree" class="line"></div>
 		<gdq-runinfo></gdq-runinfo>
 		<gdq-timer></gdq-timer>
-		<gdq-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-nameplate>
-		<gdq-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-nameplate>
-		<gdq-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-nameplate>
-		<gdq-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-nameplate>
+		<gdq-runner-nameplate index="0" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="1" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="2" no-left-cap result-side="left" audio-horiz-pos="left"></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="3" no-right-cap result-side="right" audio-horiz-pos="right"></gdq-runner-nameplate>
 	</div>
 
 	<script>

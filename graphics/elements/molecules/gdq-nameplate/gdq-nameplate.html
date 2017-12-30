@@ -3,33 +3,25 @@
 <link rel="import" href="../../../../bower_components/sc-fitted-text/sc-fitted-text.html">
 <link rel="import" href="../../../../shared/style/gdq-fui-styles.html">
 <link rel="import" href="../../../../shared/style/gdq-text-styles.html">
-<link rel="import" href="gdq-nameplate-audio-indicator.html">
-<link rel="import" href="gdq-nameplate-result.html">
 <link rel="import" href="gdq-nameplate-twitch-logo.html">
 
 <dom-module id="gdq-nameplate">
 	<template>
 		<style include="gdq-fui-styles gdq-text-styles">
 			:host {
-				position: absolute;
 				display: flex;
+				position: relative;
 				height: 45px;
 				font-size: 24px;
 				text-transform: uppercase;
-				z-index: 1;
 				color: white;
 				font-family: "Source Code Pro", monospace;
-			}
-
-			#main {
-				width: calc(var(--gdq-nameplate-width));
-				height: 100%;
-				align-items: flex-start;
-				@apply --layout-horizontal;
 				@apply --fui-glow-rect;
+				@apply --layout-horizontal;
+				@apply --layout-center-center;
 			}
 
-			#body {
+			#wrapper {
 				position: relative;
 				width: calc(100% - 8px);
 				height: calc(100% + 2px);
@@ -57,29 +49,12 @@
 
 			#namesTwitch sc-fitted-text {
 				display: inline-block;
-				--sc-fitted-text-content: {
-					color: transparent;
-					background-image: var(--atom-gradient-text-gradient, linear-gradient(
-						180deg,
-						#FFFFFF 0%,
-						#CDCDCD 100%
-					));
-					-webkit-background-clip: text;
-				};
 			}
 
 			#twitchLogo {
 				display: inline-block;
 				margin-right: -12px;
 				top: 5px;
-			}
-
-			#result {
-				position: absolute;
-				height: 100%;
-				top: 0;
-				z-index: -1;
-				@apply --fui-glow-rect;
 			}
 
 			.dotGreeble {
@@ -113,12 +88,12 @@
 				display: none;
 			}
 
-			:host([no-left-cap]) #body {
+			:host([no-left-cap]) #wrapper {
 				border-left: 0;
 				margin-left: 0;
 			}
 
-			:host([no-right-cap]) #body {
+			:host([no-right-cap]) #wrapper {
 				border-right: 0;
 				margin-right: 0;
 			}
@@ -132,39 +107,32 @@
 			[hidden] {
 				display: none !important;
 			}
+
+			sc-fitted-text {
+				--sc-fitted-text-content: {
+					color: transparent;
+					background-image: var(--atom-gradient-text-gradient, linear-gradient(
+						180deg,
+						#FFFFFF 0%,
+						#CDCDCD 100%
+					));
+					-webkit-background-clip: text;
+				};
+			}
 		</style>
 
-		<div id="main">
-			<div id="body">
-				<div class="dotGreeble dotGreeble--top dotGreeble--left"></div>
-				<div class="dotGreeble dotGreeble--bottom dotGreeble--left"></div>
-				<div class="dotGreeble dotGreeble--top dotGreeble--right"></div>
-				<div class="dotGreeble dotGreeble--bottom dotGreeble--right"></div>
-				<div id="names">
-					<sc-fitted-text id="namesName" text="[[name]]" align="center"></sc-fitted-text>
-					<div id="namesTwitch">
-						<gdq-nameplate-twitch-logo id="twitchLogo"></gdq-nameplate-twitch-logo>
-						<sc-fitted-text text="[[twitch]]" align="left"></sc-fitted-text>
-					</div>
+		<div id="wrapper">
+			<div class="dotGreeble dotGreeble--top dotGreeble--left"></div>
+			<div class="dotGreeble dotGreeble--bottom dotGreeble--left"></div>
+			<div class="dotGreeble dotGreeble--top dotGreeble--right"></div>
+			<div class="dotGreeble dotGreeble--bottom dotGreeble--right"></div>
+			<div id="names">
+				<sc-fitted-text id="namesName" text="[[name]]" align="center"></sc-fitted-text>
+				<div id="namesTwitch">
+					<gdq-nameplate-twitch-logo id="twitchLogo"></gdq-nameplate-twitch-logo>
+					<sc-fitted-text text="[[twitch]]" align="left"></sc-fitted-text>
 				</div>
 			</div>
-
-			<gdq-nameplate-audio-indicator
-				id="audioIndicator"
-				showing="[[audio]]"
-				vert-pos="[[audioVertPos]]"
-				horiz-pos="[[audioHorizPos]]">
-			</gdq-nameplate-audio-indicator>
-
-			<gdq-nameplate-result
-				id="result"
-				showing="[[finished]]"
-				side="[[resultSide]]"
-				place="[[place]]"
-				first-place="[[firstPlace]]"
-				last-place="[[lastPlace]]"
-				time="[[time]]">
-			</gdq-nameplate-result>
 		</div>
 	</template>
 
