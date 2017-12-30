@@ -26,6 +26,10 @@
 				padding: 12px;
 			}
 
+			#challengeProgress {
+				font-weight: bold;
+			}
+
 			.additionalOptions {
 				font-size: 16px;
 				margin-top: 8px;
@@ -50,6 +54,10 @@
 
 		<div id="material" class="material stroked">
 			<div>[[calcBidName(bid.description)]]</div>
+
+			<template is="dom-if" if="[[bidIsChallenge(bid)]]">
+				<div id="challengeProgress">[[bid.total]] / [[bid.goal]]</div>
+			</template>
 
 			<template is="dom-if" if="[[!bidIsChallenge(bid)]]">
 				<template is="dom-repeat" items="[[limitOptions(bid.options)]]" as="option">
