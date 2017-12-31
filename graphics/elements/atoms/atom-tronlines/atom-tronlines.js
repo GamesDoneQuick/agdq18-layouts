@@ -158,9 +158,9 @@ class AtomTronlines extends Polymer.Element {
 			 * An array containing all nodes currently being drawn to the stage.
 			 */
 			_allocatedNodes: {
-				type: Array,
+				type: Set,
 				value() {
-					return [];
+					return new Set();
 				}
 			},
 
@@ -168,9 +168,9 @@ class AtomTronlines extends Polymer.Element {
 			 * An array containing all nodes currently unallocated.
 			 */
 			_freeNodes: {
-				type: Array,
+				type: Set,
 				value() {
-					return [];
+					return new Set();
 				}
 			},
 
@@ -207,32 +207,9 @@ class AtomTronlines extends Polymer.Element {
 	ready() {
 		super.ready();
 
+		let frameCounter = 0;
 		let warnedLeak = false;
 		const stage = new createjs.Stage(this.$.canvas);
-		createjs.Ticker.on('tick', () => {
-			this.advanceSimulation();
-			this._freeInvisibleNodes();
-
-			if (this.debug) {
-				const totalNodes = this._allocatedNodes.length + this._freeNodes.length;
-				this.$.debugInfo.textContent = `${this._allocatedNodes.length}/${totalNodes}`;
-			}
-
-			if (this._allocatedNodes.length > AtomTronlines.WARNING_THRESHOLD) {
-				if (!warnedLeak) {
-					console.warn(
-						'More than %d nodes are active, this is probably a leak!',
-						AtomTronlines.WARNING_THRESHOLD,
-						this
-					);
-					warnedLeak = true;
-				}
-			} else {
-				warnedLeak = false;
-			}
-
-			stage.update();
-		});
 
 		const bg = new createjs.Shape();
 		this.bgRectCommand = bg.graphics
@@ -241,6 +218,38 @@ class AtomTronlines extends Polymer.Element {
 
 		stage.addChild(bg);
 		this.stage = stage;
+
+		const handleFrame = () => {
+			this.advanceSimulation();
+
+			if (this.debug) {
+				const totalNodes = this._allocatedNodes.size + this._freeNodes.size;
+				this.$.debugInfo.textContent = `${this._allocatedNodes.size}/${totalNodes}`;
+			}
+
+			frameCounter++;
+			if (frameCounter > 60) {
+				frameCounter = 0;
+
+				if (this._allocatedNodes.size > AtomTronlines.WARNING_THRESHOLD) {
+					if (!warnedLeak) {
+						console.warn(
+							'More than %d nodes are active, this is probably a leak!',
+							AtomTronlines.WARNING_THRESHOLD,
+							this
+						);
+						warnedLeak = true;
+					}
+				} else {
+					warnedLeak = false;
+				}
+			}
+
+			stage.update();
+			requestAnimationFrame(handleFrame);
+		};
+
+		handleFrame();
 
 		setInterval(() => {
 			this._sweepExcessFreeNodes();
@@ -254,11 +263,25 @@ class AtomTronlines extends Polymer.Element {
 	 */
 	advanceSimulation() {
 		const opacityRange = Math.abs(this.opacityStart - this.opacityEnd);
-		this._allocatedNodes.forEach(node => {
-			node.y -= node.speed;
+		const tickTime = Date.now();
+		const TIME_PER_TICK_IDEAL = 1000 / 60;
+		Array.from(this._allocatedNodes).forEach(node => {
+			let percent = 1;
+			if (node.lastTickTime) {
+				percent = (tickTime - node.lastTickTime) / TIME_PER_TICK_IDEAL;
+			}
+
+			node.y -= node.speed * percent;
 
 			const journeyPercentage = 1 - (node.y / (this._invertDimensions ? this.width : this.height));
 			node.alpha = this.opacityStart - (opacityRange * journeyPercentage);
+			node.lastTickTime = tickTime;
+
+			// If a node's alpha is less than zero, remove it.
+			// Or a node has completely scrolled off the canvas, remove it.
+			if (node.alpha <= 0 || (node.y + node.tailLength) <= 0) {
+				this._freeNode(node);
+			}
 		});
 	}
 
@@ -276,10 +299,10 @@ class AtomTronlines extends Polymer.Element {
 		}
 
 		this._creationInterval = setInterval(() => {
-			if (this._freeNodes.length <= 0) {
+			if (this._freeNodes.size <= 0) {
 				this._createBlockOfFreeNodes(AtomTronlines.BLOCK_SIZE);
 			}
-			const node = this._freeNodes.pop();
+			const node = this._freeNodes.values().next().value;
 			this._allocateNode(node);
 		}, (1000 / newVal));
 	}
@@ -292,7 +315,7 @@ class AtomTronlines extends Polymer.Element {
 	 */
 	_createBlockOfFreeNodes(blockSize) {
 		for (let i = 0; i < blockSize; i++) {
-			this._freeNodes.push(this._createNode());
+			this._freeNodes.add(this._createNode());
 		}
 	}
 
@@ -340,39 +363,11 @@ class AtomTronlines extends Polymer.Element {
 		node.alpha = this.opacityStart;
 		node.y = this._invertDimensions ? this.width : this.height;
 		node.x = AtomTronlines.getRandomUniform(0, this._invertDimensions ? this.height : this.width);
+		node.lastTickTime = null;
 
 		this.stage.addChild(node);
-		this._allocatedNodes.push(node);
-	}
-
-	/**
-	 * Removes all invisible nodes by removing them from both
-	 * the this.nodes array and this.stage.
-	 * @private
-	 * @returns {undefined}
-	 */
-	_freeInvisibleNodes() {
-		const nodesToFree = [];
-		this._allocatedNodes = this._allocatedNodes.filter(node => {
-			// If a node's alpha is less than zero, remove it.
-			if (node.alpha <= 0) {
-				nodesToFree.push(node);
-				return false;
-			}
-
-			// If a node has completely scrolled off the canvas, remove it.
-			if ((node.y + node.tailLength) <= 0) {
-				nodesToFree.push(node);
-				return false;
-			}
-
-			// Else, keep it.
-			return true;
-		});
-
-		nodesToFree.forEach(node => {
-			this._freeNode(node);
-		});
+		this._freeNodes.delete(node);
+		this._allocatedNodes.add(node);
 	}
 
 	/**
@@ -381,9 +376,7 @@ class AtomTronlines extends Polymer.Element {
 	 * @returns {undefined}
 	 */
 	_freeAllNodes() {
-		const allocatedNodes = this._allocatedNodes;
-		this._allocatedNodes = [];
-		allocatedNodes.forEach(node => {
+		this._allocatedNodes.forEach(node => {
 			this._freeNode(node);
 		});
 	}
@@ -396,7 +389,8 @@ class AtomTronlines extends Polymer.Element {
 	 */
 	_freeNode(node) {
 		this.stage.removeChild(node);
-		this._freeNodes.push(node);
+		this._allocatedNodes.delete(node);
+		this._freeNodes.add(node);
 	}
 
 	/**
@@ -407,8 +401,9 @@ class AtomTronlines extends Polymer.Element {
 	 * @returns {undefined}
 	 */
 	_sweepExcessFreeNodes() {
-		if (this._freeNodes.length > AtomTronlines.BLOCK_SIZE * 2) {
-			this._freeNodes.length = AtomTronlines.BLOCK_SIZE;
+		if (this._freeNodes.size > AtomTronlines.BLOCK_SIZE * 2) {
+			const freeNodesToKeep = Array.from(this._freeNodes).slice(0, AtomTronlines.BLOCK_SIZE);
+			this._freeNodes = new Set(freeNodesToKeep);
 		}
 	}
 
