@@ -30,3 +30,11 @@ body {
 	pointer-events: none;
 	z-index: -11;
 }
+
+#measuring {
+	position: absolute;
+	width: 200px;
+	height: 150px;
+	background-color: #464646;
+	z-index: -100;
+}
