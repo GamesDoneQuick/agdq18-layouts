@@ -24,6 +24,7 @@ const interviewStopwatch = nodecg.Replicant('interview:stopwatch');
 const currentLayout = nodecg.Replicant('gdq:currentLayout');
 const prizePlaylist = nodecg.Replicant('interview:prizePlaylist');
 const showPrizesOnMonitor = nodecg.Replicant('interview:showPrizesOnMonitor');
+const allPrizes = nodecg.Replicant('allPrizes');
 const pulseIntervalMap = new Map();
 const pulseTimeoutMap = new Map();
 let interviewTimer;
@@ -124,6 +125,15 @@ database.ref('/active_tweet_id').on('value', snapshot => {
 
 		questionTweetsRep.value = convertedAndFilteredReplies;
 		updateQuestionSortMap();
+	});
+});
+
+// Ensure that the prize playlist only contains prizes currently in the tracker.
+allPrizes.on('change', newVal => {
+	prizePlaylist.value = prizePlaylist.value.filter(playlistEntry => {
+		return newVal.find(prize => {
+			return prize.id === playlistEntry.id;
+		});
 	});
 });
 
