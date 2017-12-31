@@ -36,7 +36,6 @@
 					align-items: flex-start;
 					position: relative;
 					padding-left: 11px;
-					margin-bottom: -18px;
 				}
 
 				#sponsorsAndTwitter {
@@ -121,20 +120,11 @@
 				}
 
 				/* One runner */
-				:host([num-runners="1"]) #runners {
-					margin-top: 0;
-					margin-bottom: 0;
-				}
-
 				:host([num-runners="1"]) gdq-runner-nameplate:not([index="0"]) {
 					display: none;
 				}
 
 				/* Two runners */
-				:host([num-runners="2"]) #runners {
-					margin-top: 11px;
-				}
-
 				:host([num-runners="2"]) gdq-runner-nameplate[index="2"],
 				:host([num-runners="2"]) gdq-runner-nameplate[index="3"] {
 					display: none;
@@ -142,8 +132,7 @@
 
 				/* Four runners */
 				:host([num-runners="4"]) #runners {
-					margin-top: 11px;
-					margin-bottom: 5px;
+					margin-top: 45px;
 				}
 
 				:host([num-runners="4"]) #sponsorsAndTwitter {
