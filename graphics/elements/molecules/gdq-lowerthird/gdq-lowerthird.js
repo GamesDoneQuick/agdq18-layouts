@@ -17,8 +17,7 @@
 						return new TimelineLite({autoRemoveChildren: true});
 					},
 					readOnly: true
-				},
-				names: Array
+				}
 			};
 		}
 
@@ -26,6 +25,7 @@
 			super.ready();
 
 			this.$.header.updateName({alias: '#AGDQ2018', twitchAlias: null, rotate: false});
+			this._$nameElements = Array.from(this.$.names.querySelectorAll('gdq-nameplate'));
 
 			lowerthirdShowing.on('change', newVal => {
 				if (newVal) {
@@ -41,11 +41,10 @@
 
 			// Set names
 			tl.call(() => {
-				this.names = interviewNames.value.filter(name => Boolean(name));
-				this.$.repeat.render();
-				this.listingElements = Array.from(this.$.names.querySelectorAll('gdq-nameplate'));
-				this.listingElements.forEach((listingElement, index) => {
-					listingElement.updateName({alias: this.names[index], twitchAlias: null, rotate: false});
+				const names = interviewNames.value.filter(name => Boolean(name));
+				this._$nameElements.forEach((nameElement, index) => {
+					nameElement.updateName({alias: names[index], twitchAlias: null, rotate: false});
+					nameElement.hidden = !names[index];
 				});
 			}, null, null, '+=0.3'); // Give time for interviewNames replicant to update.
 

@@ -35,14 +35,20 @@
 				--gdq-nameplate-padding: 8px;
 				--gdq-nameplate-justify: left
 			}
+
+			[hidden] {
+				display: none !important;
+			}
 		</style>
 
 		<gdq-nameplate id="header"></gdq-nameplate>
 
 		<div id="names">
-			<template is="dom-repeat" id="repeat" items="[[names]]">
-				<gdq-nameplate class="nameplate"></gdq-nameplate>
-			</template>
+			<gdq-nameplate class="nameplate"></gdq-nameplate>
+			<gdq-nameplate class="nameplate"></gdq-nameplate>
+			<gdq-nameplate class="nameplate"></gdq-nameplate>
+			<gdq-nameplate class="nameplate"></gdq-nameplate>
+			<gdq-nameplate class="nameplate"></gdq-nameplate>
 		</div>
 	</template>
 
