@@ -5,6 +5,7 @@ body {
 }
 
 #container {
+	position: relative;
 	width: 1600px;
 	height: 845px;
 }
