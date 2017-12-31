@@ -12,20 +12,19 @@
 
 		static get properties() {
 			return {
-				tl: {
-					type: TimelineLite,
-					value() {
-						return new TimelineLite({autoRemoveChildren: true});
-					},
-					readOnly: true
-				},
-				_questionsVal: {
-					type: Object
-				},
 				onScreenTweet: {
 					type: Object,
 					computed: 'calcOnScreenTweet(_questionsVal, _sortMapVal)',
 					value: null
+				},
+				_timeline: {
+					type: TimelineLite,
+					value() {
+						return new TimelineLite({autoRemoveChildren: true});
+					}
+				},
+				_questionsVal: {
+					type: Object
 				}
 			};
 		}
@@ -47,36 +46,30 @@
 				} else {
 					this.hide();
 				}
+				this._initialized = true;
 			});
 		}
 
 		show() {
-			this.tl.call(() => {
-				if (!this.onScreenTweet) {
-					this.tl.clear();
-					return;
-				}
+			if (!this.onScreenTweet) {
+				return;
+			}
 
-				this.$['question-text'].innerHTML = this.onScreenTweet.text;
-				this.$.username.innerText = `@${this.onScreenTweet.user.screen_name}`;
-				this.style.willChange = 'transform';
-			}, null, null, '+=0.3'); // Give time for question replicants to update.
-
-			this.tl.to(this, 0.9, {
-				y: 0,
-				ease: Power3.easeOut
-			});
+			this._timeline.call(() => {
+				console.log(this.onScreenTweet);
+				this.$.tweet._addReset();
+				this.$.tweet._addEntranceAnim(this.onScreenTweet);
+			}, null, null, '+=0.5');
 		}
 
 		hide() {
-			this.tl.to(this, 0.9, {
-				y: 254,
-				ease: Power3.easeIn,
-				onComplete() {
-					this.style.willChange = '';
-				},
-				onCompleteScope: this
-			});
+			if (!this._initialized) {
+				return;
+			}
+
+			this._timeline.call(() => {
+				this.$.tweet._addExitAnim(0);
+			}, null, null, '+=0.5');
 		}
 
 		calcOnScreenTweet(_questionsVal, _sortMapVal) {
