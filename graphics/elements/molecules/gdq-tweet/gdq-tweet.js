@@ -30,6 +30,14 @@
 					value() {
 						return new TimelineLite({autoRemoveChildren: true});
 					}
+				},
+
+				/**
+				 * The message name to bind to.
+				 */
+				bindToMessage: {
+					type: String,
+					value: 'showTweet'
 				}
 			};
 		}
@@ -37,7 +45,11 @@
 		ready() {
 			super.ready();
 			this._initBackgroundSVG();
-			nodecg.listenFor('showTweet', this.playTweet.bind(this));
+
+			if (this.bindToMessage && this.bindToMessage.length > 0) {
+				nodecg.listenFor(this.bindToMessage, this.playTweet.bind(this));
+			}
+
 			Polymer.RenderStatus.beforeNextRender(this, () => {
 				if (!this.companionElement) {
 					if (document.querySelector('layout-app')) {
