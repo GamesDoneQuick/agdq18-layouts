@@ -159,12 +159,13 @@
 		/**
 		 * Adds an exit animation to the master timeline.
 		 * @private
+		 * @param {Number} delay - How long, in seconds, to delay the start of this animation.
 		 * @returns {undefined}
 		 */
-		_addExitAnim() {
+		_addExitAnim(delay = TWEET_DISPLAY_DURATION) {
 			const tl = this.timeline;
 
-			tl.add('exit', `+=${TWEET_DISPLAY_DURATION}`);
+			tl.add('exit', `+=${delay}`);
 
 			tl.add(MaybeRandom.createTween({
 				target: this.$['body-actual'].style,
