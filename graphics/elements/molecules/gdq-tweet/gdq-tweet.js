@@ -96,13 +96,13 @@
 		 */
 		_addReset() {
 			const tl = this.timeline;
-			tl.set(this._bgRect.node, {drawSVG: '0%', 'fill-opacity': 0});
-			tl.set([this.$.label, this.$.name], {scaleX: 0, color: 'transparent'});
-			tl.set(this.$['body-actual'], {opacity: 1});
 			tl.call(() => {
 				this.$['body-actual'].innerHTML = '';
 				this.$.name.innerHTML = '';
-			});
+			}, null, null, '+=0.03');
+			tl.set(this._bgRect.node, {drawSVG: '0%', 'fill-opacity': 0});
+			tl.set([this.$.label, this.$.name], {scaleX: 0, color: 'transparent', clipPath: ''});
+			tl.set(this.$['body-actual'], {opacity: 1});
 		}
 
 		/**
