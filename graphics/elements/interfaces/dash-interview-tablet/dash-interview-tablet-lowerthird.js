@@ -1,10 +1,11 @@
 (function () {
 	'use strict';
 
+	const currentIntermission = nodecg.Replicant('currentIntermission');
 	const interviewNames = nodecg.Replicant('interview:names');
 	const lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing');
-	const runners = nodecg.Replicant('runners');
 	const lowerthirdTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining');
+	const runners = nodecg.Replicant('runners');
 
 	/**
 	 * @customElement
@@ -64,7 +65,6 @@
 
 			interviewNames.on('change', newVal => {
 				const typeaheads = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
-				typeaheads.unshift(this.$.fifthPersonInput);
 
 				if (!newVal || newVal.length <= 0) {
 					typeaheads.forEach(input => {
@@ -73,13 +73,8 @@
 					return;
 				}
 
-				if (newVal.length === 5) {
-					typeaheads[0].selectedItem = newVal[0];
-				}
-
-				const lastFour = newVal.slice(-4);
-				lastFour.forEach((name, index) => {
-					typeaheads[index + 1].selectedItem = name;
+				typeaheads.forEach((input, index) => {
+					input.value = newVal[index] || '';
 				});
 			});
 
@@ -127,16 +122,36 @@
 			nodecg.sendMessage('interview:end');
 		}
 
+		autoFillNames() {
+			if (!currentIntermission.value || !currentIntermission.value.content) {
+				return;
+			}
+
+			const typeaheads = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
+			const currentInterview = currentIntermission.value.content.find(item => item.type === 'interview');
+
+			console.log('currentInterview:', currentInterview);
+
+			if (!currentInterview) {
+				typeaheads.forEach(input => {
+					input.value = '';
+				});
+				return;
+			}
+
+			const allParticipants = currentInterview.interviewers.concat(currentInterview.interviewees);
+			console.log('allParticipants:', allParticipants);
+			typeaheads.forEach((input, index) => {
+				input.value = allParticipants[index] || '';
+			});
+		}
+
 		/**
 		 * Takes the names currently entered into the nodecg-typeahead-inputs.
 		 * @returns {undefined}
 		 */
 		takeNames() {
 			const inputs = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
-			if (this.fivePersonMode) {
-				inputs.unshift(this.$.fifthPersonInput);
-			}
-
 			interviewNames.value = inputs.map(input => input.value);
 		}
 
