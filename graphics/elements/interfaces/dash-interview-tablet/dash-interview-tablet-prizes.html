@@ -275,7 +275,9 @@
 				<iron-list id="allPrizesList-actual" items="[[_calcPrizesToList(allPrizes, searchString)]]" as="prize" mutable-data>
 					<template>
 						<div class="prizeListing">
-							<div class="prizeListing-name">[[prize.description]]</div>
+							<div class="prizeListing-name" title="[[prize.description]]">
+								[[prize.description]]
+							</div>
 							<paper-button
 								class="prizeListing-add"
 								hidden="[[_isPrizeInPlaylist(prize, prizePlaylist)]]"
@@ -350,7 +352,9 @@
 								on-checked-changed="_handlePlaylistPrizeCheckboxChanged">
 							</paper-checkbox>
 
-							<div class="playlistPrize-name">[[prize.description]]</div>
+							<div class="playlistPrize-name" title="[[prize.description]]">
+								[[prize.description]]
+							</div>
 
 							<paper-button
 								class="playlistPrize-remove"
