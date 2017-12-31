@@ -12,9 +12,12 @@
 				left: 20px;
 				width: 300px;
 				font-size: 31px;
+
+				/* prep for animation */
+				opacity: 0;
 			}
 
-			#event gdq-nameplate {
+			#header {
 				width: 207px;
 				height: 33px;
 				margin-left: 20px;
@@ -26,19 +29,21 @@
 			#names gdq-nameplate {
 				width: 450px;
 				margin-bottom: 5px;
+
+				font-size: 34px;
+				font-weight: 600;
+				--gdq-nameplate-padding: 8px;
+				--gdq-nameplate-justify: left
 			}
 		</style>
 
-		<div id="event">
-			<gdq-nameplate id="header"></gdq-nameplate>
-		</div>
+		<gdq-nameplate id="header"></gdq-nameplate>
 
 		<div id="names">
-			<template is="dom-repeat" items="[[names]]" as="name">
-				<gdq-nameplate class="nameplate" name="[[name]]"></gdq-nameplate>
+			<template is="dom-repeat" id="repeat" items="[[names]]">
+				<gdq-nameplate class="nameplate"></gdq-nameplate>
 			</template>
 		</div>
-
 	</template>
 
 	<script src="gdq-lowerthird.js"></script>

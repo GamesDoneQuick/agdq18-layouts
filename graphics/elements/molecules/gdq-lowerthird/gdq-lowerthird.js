@@ -18,17 +18,15 @@
 					},
 					readOnly: true
 				},
-				names: Array,
-				numNames: {
-					type: Number,
-					reflectToAttribute: true
-				},
-				greebles: Array
+				names: Array
 			};
 		}
 
 		ready() {
 			super.ready();
+
+			this.$.header.updateName({alias: '#AGDQ2018', twitchAlias: null, rotate: false});
+
 			lowerthirdShowing.on('change', newVal => {
 				if (newVal) {
 					this.show();
@@ -43,22 +41,13 @@
 
 			// Set names
 			tl.call(() => {
-				let intervieweeNames = interviewNames.value.slice(0);
-				intervieweeNames = intervieweeNames.filter(name => Boolean(name));
-
-				this.names = intervieweeNames;
-				this.numNames = this.names.length;
-				// this.$.header.updateName({alias: '#AGDQ2018', twitchAlias: null, rotate: false});
-
-				this.listingElements = this.names;
-				console.log(this.listingElements);
-
+				this.names = interviewNames.value.filter(name => Boolean(name));
+				this.$.repeat.render();
+				this.listingElements = Array.from(this.$.names.querySelectorAll('gdq-nameplate'));
 				this.listingElements.forEach((listingElement, index) => {
-					listingElement.updateName({alias: '#AGDQ2018', twitchAlias: null, rotate: false});
+					listingElement.updateName({alias: this.names[index], twitchAlias: null, rotate: false});
 				});
-
-				Polymer.flush();
-			}, null, this, '+=0.3'); // Give time for interviewNames replicant to update.
+			}, null, null, '+=0.3'); // Give time for interviewNames replicant to update.
 
 			tl.to(this, 1, {
 				opacity: 1,
@@ -72,8 +61,6 @@
 				opacity: 0,
 				ease: Power3.easeIn
 			});
-
-			tl.set([this, this.$.names], {clearProps: 'all'});
 		}
 	}
 
