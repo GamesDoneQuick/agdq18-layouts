@@ -159,6 +159,10 @@ function addTweet(tweet) {
 		return;
 	}
 
+	if (tweet.truncated) {
+		nodecg.log.warn('Tweet is truncated:', tweet);
+	}
+
 	// Parse emoji.
 	tweet.text = twemoji.parse(tweet.full_text || tweet.text);
 
