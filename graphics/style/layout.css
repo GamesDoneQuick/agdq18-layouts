@@ -32,6 +32,16 @@ body {
 	z-index: -11;
 }
 
+/*
+For use in gathering viewport metrics.
+Dump this javascript into your console to make the measuring div appear:
+
+const measuringDiv = document.createElement('div');
+measuringDiv.id = 'measuring';
+measuringDiv.style.left = '0px';
+measuringDiv.style.top = '0px';
+document.body.appendChild(measuringDiv);
+ */
 #measuring {
 	position: absolute;
 	width: 200px;
