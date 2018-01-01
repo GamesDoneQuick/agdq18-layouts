@@ -48,15 +48,21 @@
 				});
 			}, null, null, '+=0.3'); // Give time for interviewNames replicant to update.
 
-			tl.to(this, 1, {
+			tl.to(this, 0.2, {
 				opacity: 1,
 				ease: Power3.easeInOut
 			});
+
+			tl.staggerFrom(this._$nameElements, 0.2, {
+				x: -30,
+				opacity: 0,
+				ease: Power4.easeOut
+			}, 0.15);
 		}
 
 		hide() {
 			const tl = this.tl;
-			tl.to(this, 0.9, {
+			tl.to(this, 0.4, {
 				opacity: 0,
 				ease: Power3.easeIn
 			});
