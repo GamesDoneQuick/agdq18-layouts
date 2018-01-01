@@ -45,6 +45,7 @@
 		ready() {
 			super.ready();
 			this._initBackgroundSVG();
+			this._addReset();
 
 			if (this.bindToMessage && this.bindToMessage.length > 0) {
 				nodecg.listenFor(this.bindToMessage, this.playTweet.bind(this));
@@ -57,8 +58,6 @@
 							document.querySelector('layout-app').shadowRoot.querySelector('gdq-sponsors');
 					}
 				}
-
-				this._addReset();
 			});
 		}
 
