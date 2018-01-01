@@ -1,7 +1,6 @@
 (function () {
 	'use strict';
 
-	const NAME_FADE_DURATION = 0.33;
 	const NAME_FADE_IN_EASE = Power1.easeOut;
 	const NAME_FADE_OUT_EASE = Power1.easeIn;
 
@@ -30,6 +29,17 @@
 					type: String,
 					value: ''
 				},
+
+				/**
+				 * How long, in seconds, to fade names in/out.
+				 *
+				 * For example, a value of 0.33 means that the fade out will take 0.33
+				 * seconds, and then the subsequent fade in will take another 0.33 seconds.
+				 */
+				nameFadeDuration: {
+					type: Number,
+					value: 0.33
+				},
 				_nameTL: {
 					type: TimelineMax,
 					readOnly: true,
@@ -44,7 +54,7 @@
 			super.ready();
 
 			// Create looping anim for main nameplate.
-			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
 				onStart: function () {
 					this.$.namesTwitch.classList.remove('hidden');
 					this.$.namesName.classList.add('hidden');
@@ -52,11 +62,11 @@
 				opacity: 1,
 				ease: NAME_FADE_IN_EASE
 			});
-			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE
 			}, '+=10');
-			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
 				onStart: function () {
 					this.$.namesTwitch.classList.add('hidden');
 					this.$.namesName.classList.remove('hidden');
@@ -64,14 +74,14 @@
 				opacity: 1,
 				ease: NAME_FADE_IN_EASE
 			});
-			this._nameTL.to(this.$.names, NAME_FADE_DURATION, {
+			this._nameTL.to(this.$.names, this.nameFadeDuration, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE
 			}, '+=80');
 		}
 
 		updateName({alias = '?', twitchAlias = '?', rotate = true} = {}) {
-			TweenLite.to(this.$.names, NAME_FADE_DURATION, {
+			TweenLite.to(this.$.names, this.nameFadeDuration, {
 				opacity: 0,
 				ease: NAME_FADE_OUT_EASE,
 				callbackScope: this,
@@ -86,12 +96,12 @@
 						this._nameTL.pause();
 						this.$.namesName.classList.remove('hidden');
 						this.$.namesTwitch.classList.add('hidden');
-						TweenLite.to(this.$.names, NAME_FADE_DURATION, {opacity: 1, ease: NAME_FADE_IN_EASE});
+						TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
 					} else if (rotate) {
 						this._nameTL.restart();
 					} else {
 						this._nameTL.pause();
-						TweenLite.to(this.$.names, NAME_FADE_DURATION, {opacity: 1, ease: NAME_FADE_IN_EASE});
+						TweenLite.to(this.$.names, this.nameFadeDuration, {opacity: 1, ease: NAME_FADE_IN_EASE});
 					}
 
 					Polymer.RenderStatus.afterNextRender(this, this.fitName);
