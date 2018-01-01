@@ -31,7 +31,19 @@
 			this._debounceUpdateScheduleSlice = this._debounceUpdateScheduleSlice.bind(this);
 			this._updateScheduleSlice = this._updateScheduleSlice.bind(this);
 
-			currentIntermission.on('change', this._debounceUpdateScheduleSlice);
+			currentIntermission.on('change', (newVal, oldVal, operations) => {
+				const ignore = operations ?
+					operations.every(operation => {
+						return operation.path.endsWith('/state');
+					}) :
+					false;
+
+				if (ignore) {
+					return;
+				}
+
+				this._debounceUpdateScheduleSlice();
+			});
 			currentRun.on('change', this._debounceUpdateScheduleSlice);
 			schedule.on('change', this._debounceUpdateScheduleSlice);
 			stopwatch.on('change', (newVal, oldVal) => {
