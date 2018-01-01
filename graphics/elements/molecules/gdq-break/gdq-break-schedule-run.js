@@ -35,10 +35,17 @@
 			const WIDTH_ADDED_BY_BORDERS = 2;
 			const PADDING_OF_INFO_RUNNER = 48;
 
+			if (this._runnerTimeline) {
+				this._runnerTimeline.kill();
+				this._runnerTimeline = null;
+			}
+
 			this.$['info-runner'].maxWidth = 0;
 			this.$['info-runner'].text = this._getLongestName(newVal.runners);
-			TweenLite.set(this.$['info-runner'], {opacity: 1});
-			Polymer.RenderStatus.afterNextRender(this, () => {
+			TweenLite.set(this.$['info-runner'], {opacity: 1, width: 'auto'});
+			TweenLite.set(this.$['info-runner'].$.fittedContent, {scaleX: 1});
+
+			Polymer.RenderStatus.beforeNextRender(this, () => {
 				this.$['info-runner'].maxWidth =
 					this.$.info.clientWidth -
 					WIDTH_ADDED_BY_BORDERS -
@@ -47,11 +54,6 @@
 
 				this.$['info-runner'].style.width = `${this.$['info-runner'].clientWidth - PADDING_OF_INFO_RUNNER}px`;
 				this.$['info-runner'].text = newVal.runners[0].name;
-
-				if (this._runnerTimeline) {
-					this._runnerTimeline.kill();
-					this._runnerTimeline = null;
-				}
 
 				if (newVal.runners.length > 1) {
 					this._runnerTimeline = this._createRunnerLoopTimeline(newVal.runners);
