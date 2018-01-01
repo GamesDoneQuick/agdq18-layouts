@@ -1,5 +1,5 @@
-@import 'font/montserrat.css';
-@import 'font/gdqpixel.css';
+@import '../../shared/fonts/montserrat/stylesheet.css';
+@import '../../shared/fonts/gdqpixel/stylesheet.css';
 
 body {
 	margin: 0;
