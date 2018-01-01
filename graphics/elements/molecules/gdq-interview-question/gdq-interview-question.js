@@ -56,7 +56,6 @@
 			}
 
 			this._timeline.call(() => {
-				console.log(this.onScreenTweet);
 				this.$.tweet._addReset();
 				this.$.tweet._addEntranceAnim(this.onScreenTweet);
 			}, null, null, '+=0.5');
