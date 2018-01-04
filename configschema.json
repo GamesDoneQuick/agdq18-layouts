@@ -220,9 +220,6 @@
 			"required": ["host", "port", "lockSecret", "localOscPort", "adsPath"]
 		}
 	},
-	"adsPath": {
-		"type": "string"
-	},
 	"nowPlayingKey": {
 		"type": "string"
 	},
