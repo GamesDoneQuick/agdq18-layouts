@@ -219,10 +219,10 @@
 				}
 			},
 			"required": ["host", "port", "lockSecret", "localOscPort", "adsPath"]
+		},
+		"nowPlayingKey": {
+			"type": "string"
 		}
-	},
-	"nowPlayingKey": {
-		"type": "string"
 	},
 
 	"required": ["tracker"]
