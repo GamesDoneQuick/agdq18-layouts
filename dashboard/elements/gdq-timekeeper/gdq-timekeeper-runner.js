@@ -20,8 +20,8 @@ class GdqTimekeeperRunner extends Polymer.Element {
 			return;
 		}
 
-		if (results[index]) {
-			return results[index].formatted;
+		if (results[index] && results[index].time) {
+			return results[index].time.formatted;
 		}
 
 		return 'Running';
