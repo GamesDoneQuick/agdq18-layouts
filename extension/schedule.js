@@ -370,13 +370,8 @@ function _seekToArbitraryRun(runOrOrder) {
 	} else {
 		currentRunRep.value = clone(run);
 
-		const nextRunOrder = run.order + 1;
-		const nextRun = scheduleRep.value.find(item => item.type === 'run' && item.order === nextRunOrder);
-		if (nextRun) {
-			nextRunRep.value = clone(nextRun);
-		} else {
-			nextRunRep.value = {};
-		}
+		const newNextRun = _findRunAfter(run);
+		nextRunRep.value = clone(newNextRun);
 
 		checklist.reset();
 		timer.reset();
