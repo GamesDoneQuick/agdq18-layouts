@@ -7,85 +7,73 @@
 	<template>
 		<style include="gdq-input-style">
 			:host {
-				display: block;
-				margin: 0 3px;
-				font-family: "Roboto", sans-serif;
-				@apply --layout-vertical;
-			}
-
-			:host(:first-of-type) {
-				margin-left: 0;
-			}
-
-			:host(:last-of-type) {
-				margin-right: 0;
-			}
-
-			#buttons {
-				margin-bottom: 9px;
-				@apply --layout-horizontal;
-				@apply --layout-justified;
-			}
-
-			#handle,
-			#clear {
-				height: 24px;
-				border-radius: 3px;
+				margin: 6px 0;
+				padding-top: 9px;
+				padding-bottom: 9px;
+				padding-left: 0;
+				padding-right: 44px;
+				background-color: white;
 				box-sizing: border-box;
-				min-width: 0;
+				font-family: "Roboto", sans-serif;
+				box-shadow:
+					0 2px 2px 0 rgba(0, 0, 0, 0.14),
+					0 1px 5px 0 rgba(0, 0, 0, 0.12),
+					0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				@apply --layout-horizontal;
+				@apply --layout-center;
 				@apply --layout-flex;
 			}
 
-			#handle {
-				border: 1px solid #645BA6;
-				padding: 0 10px;
-				color: #645BA6;
-				cursor: move;
-				@apply --layout-horizontal;
-				@apply --layout-center;
-				@apply --layout-justified;
+			:host(:first-of-type) {
+				margin-top: 0;
 			}
 
-			#handle > * {
+			:host(:last-of-type) {
+				margin-bottom: 0;
+			}
+
+			#handle {
+				position: relative;
+				width: 118px;
+				border-right: 3px solid black;
+				cursor: move;
+				@apply --layout-flex-none;
+				@apply --layout-vertical;
+				@apply --layout-center-center;
+			}
+
+			#handle iron-icon {
+				width: 46px;
+				height: 46px;
 				pointer-events: none;
 			}
 
-			#clear {
-				margin-right: 0;
-				--paper-button: {
-					background-color: #C9513E;
-					color: white;
-				}
-			}
-
 			#input {
-				font-family: Roboto, sans-serif;
+				margin-left: 34px;
+				height: 53px;
+				font-size: 32px;
+				font-weight: 600;
+				@apply --layout-flex;
 			}
 		</style>
 
-		<div id="buttons">
-			<div id="handle">
-				<iron-icon icon="editor:drag-handle"></iron-icon>
-				<iron-icon icon="compare-arrows"></iron-icon>
-			</div>
-
-			<paper-button id="clear" raised>
-				<iron-icon icon="clear" on-tap="clear"></iron-icon>
-			</paper-button>
+		<div id="handle">
+			<iron-icon icon="editor:drag-handle"></iron-icon>
 		</div>
 
 		<vaadin-combo-box
 			id="input"
 			class="gdq-input-style"
-			placeholder="HOST NAME"
+			placeholder="NAME"
 			no-label-float
 			value="{{value}}"
 			selected-item="{{selectedItem}}"
 			items="[[items]]"
 			allow-custom-value
 			disabled="[[disabled]]">
-			<!-- We provide our own clear button, so replace the default one with an empty div. -->
-			<div slot="clear-button"></div>
+			<template>
+				<span style="font-size: 28px">[[item]]</span>
+			</template>
 		</vaadin-combo-box>
 	</template>
 
