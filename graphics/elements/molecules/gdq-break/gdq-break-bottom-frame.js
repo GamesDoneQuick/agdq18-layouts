@@ -8,6 +8,11 @@
 	const currentHost = nodecg.Replicant('currentHost');
 	const nowPlaying = nodecg.Replicant('nowPlaying');
 
+	const LOGO_FADE_INTERVAL = 20;
+	const LOGO_FADE_DURATION = 1;
+	const LOGO_FADE_OUT_EASE = Power1.easeIn;
+	const LOGO_FADE_IN_EASE = Power1.easeOut;
+
 	/**
 	 * @customElement
 	 * @polymer
@@ -33,6 +38,29 @@
 			nowPlaying.on('change', newVal => {
 				this._changeText(this.$['music-text'], `${newVal.game || '?'} - ${newVal.title || '?'}`);
 			});
+
+			// Logo anim
+			const logoTL = new TimelineMax({repeat: -1});
+
+			logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
+				opacity: 1,
+				ease: LOGO_FADE_IN_EASE
+			});
+
+			logoTL.to(this.$.gdqLogo, LOGO_FADE_DURATION, {
+				opacity: 0,
+				ease: LOGO_FADE_OUT_EASE
+			}, `+=${LOGO_FADE_INTERVAL}`);
+
+			logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
+				opacity: 1,
+				ease: LOGO_FADE_IN_EASE
+			});
+
+			logoTL.to(this.$.charityLogo, LOGO_FADE_DURATION, {
+				opacity: 0,
+				ease: LOGO_FADE_OUT_EASE
+			}, `+=${LOGO_FADE_INTERVAL}`);
 		}
 
 		_changeText(element, newText) {
