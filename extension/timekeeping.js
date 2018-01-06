@@ -40,7 +40,7 @@ if (stopwatch.value.state === STOPWATCH_STATES.RUNNING) {
 	const timeOffset = previousTime + missedTime;
 	nodecg.log.info('Recovered %s seconds of lost time.', (missedTime / 1000).toFixed(2));
 	start(true);
-	timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(timeOffset / 1000));
+	liveSplitCore.TimeSpan.fromSeconds(timeOffset / 1000).with(t => timer.setGameTime(t));
 }
 
 nodecg.listenFor('startTimer', start);
@@ -159,10 +159,10 @@ function start(force) {
 }
 
 function initGameTime() {
-	timer.setLoadingTimes(liveSplitCore.TimeSpan.fromSeconds(0));
+	liveSplitCore.TimeSpan.fromSeconds(0).with(t => timer.setLoadingTimes(t));
 	timer.initializeGameTime();
 	const existingSeconds = stopwatch.value.time.raw / 1000;
-	timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(existingSeconds));
+	liveSplitCore.TimeSpan.fromSeconds(existingSeconds).with(t => timer.setGameTime(t));
 }
 
 /**
@@ -236,7 +236,7 @@ function resumeRunner(index) {
 		const missedMilliseconds = Date.now() - stopwatch.value.time.timestamp;
 		const newMilliseconds = stopwatch.value.time.raw + missedMilliseconds;
 		stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
-		timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000));
+		liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with(t => timer.setGameTime(t));
 		start();
 	}
 }
@@ -263,7 +263,7 @@ function editTime({index, newTime}) {
 		}
 
 		stopwatch.value.time = TimeUtils.createTimeStruct(newMilliseconds);
-		timer.setGameTime(liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000));
+		liveSplitCore.TimeSpan.fromSeconds(newMilliseconds / 1000).with(t => timer.setGameTime(t));
 	}
 
 	if (stopwatch.value.results[index]) {
