@@ -75,6 +75,7 @@
 
 		static get properties() {
 			return {
+				importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
 				itemsAndPrizes: {
 					type: Array
 				},

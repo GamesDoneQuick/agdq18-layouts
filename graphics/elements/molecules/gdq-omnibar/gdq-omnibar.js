@@ -19,6 +19,12 @@
 			return 'gdq-omnibar';
 		}
 
+		static get properties() {
+			return {
+				importPath: String // https://github.com/Polymer/polymer-linter/issues/71
+			};
+		}
+
 		ready() {
 			super.ready();
 
