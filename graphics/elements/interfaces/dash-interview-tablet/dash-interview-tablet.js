@@ -18,7 +18,7 @@
 				},
 				selectedContentTab: {
 					type: Number,
-					value: 2
+					value: 0
 				}
 			};
 		}

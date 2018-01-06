@@ -11,14 +11,13 @@
 	<template>
 		<style include="dragula-styles dash-interview-tablet-scrollbar-styles">
 			:host {
-				padding: 22px 14px;
 				@apply --layout-flex;
 				@apply --layout-horizontal;
 			}
 
 			#leftColumn {
-				width: 339px;
-				margin-right: 10px;
+				width: 450px;
+				margin-right: 16px;
 			}
 
 			#rightColumn {
@@ -31,7 +30,7 @@
 
 			#search {
 				width: 100%;
-				height: 33px;
+				height: 41px;
 				border: 1px solid black;
 				box-sizing: border-box;
 				background: white;
@@ -40,19 +39,25 @@
 					padding: 0;
 				};
 				--paper-input-container-input: {
-					line-height: 30px;
+					line-height: 38px;
+					font-size: 24px;
 				};
+			}
+
+			#searchIcon,
+			#clearIcon {
+				width: 32px;
+				height: 32px;
 			}
 
 			#searchIcon {
 				margin-left: 3px;
 				margin-top: 1px;
-				width: 26px;
-				height: 26px;
 				color: #888888;
 			}
 
 			#clearIcon {
+				margin-left: 8px;
 				margin-right: 3px;
 				color: #88343b;
 			}
@@ -75,10 +80,13 @@
 			}
 
 			#rightColumn-buttons > paper-button {
+				height: 50px;
+				font-weight: bold;
 				@apply --layout-flex;
 			}
 
 			#clearPlaylist {
+				margin-left: 0;
 				--paper-button: {
 					color: white;
 					background-color: #645BA6;
@@ -86,6 +94,7 @@
 			}
 
 			#showPlaylist {
+				margin-right: 0;
 				--paper-button: {
 					color: white;
 					background-color: #5BA664;
@@ -93,6 +102,7 @@
 			}
 
 			#hidePlaylist {
+				margin-right: 0;
 				--paper-button: {
 					color: white;
 					background-color: #C9513E;
@@ -116,7 +126,7 @@
 			}
 
 			.prizeListing {
-				height: 32px;
+				height: 64px;
 				padding: 0 7px;
 				white-space: nowrap;
 				@apply --layout-horizontal;
@@ -129,7 +139,7 @@
 
 			.prizeListing-name {
 				font-weight: 500;
-				font-size: 16px;
+				font-size: 22px;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				margin-right: auto;
@@ -139,10 +149,10 @@
 			.prizeListing-remove {
 				padding: 0;
 				min-width: 0;
-				width: 18px;
-				height: 18px;
+				width: 84px;
+				height: 50px;
 				color: white;
-				margin-left: 12px;
+				margin-left: 16px;
 				@apply --layout-horizontal;
 				@apply --layout-center-center;
 				@apply --layout-flex-none;
@@ -160,13 +170,14 @@
 				}
 			}
 
-			.prizeListing-add-icon {
-				width: 16px;
-				height: 16px;
+			.prizeListing-add-icon,
+			.prizeListing-remove-icon {
+				width: 48px;
+				height: 48px;
 			}
 
 			.playlistPrize {
-				margin: 4px 0;
+				margin: 6px 0;
 				padding: 7px 0;
 				background-color: white;
 				box-sizing: border-box;
@@ -180,8 +191,8 @@
 
 			.playlistPrize-handle {
 				position: relative;
-				width: 37px;
-				border-right: 1px solid black;
+				width: 76px;
+				border-right: 3px solid black;
 				cursor: move;
 				@apply --layout-flex-none;
 				@apply --layout-vertical;
@@ -191,7 +202,7 @@
 
 			.playlistPrize-checkbox {
 				margin: 0 16px;
-				--paper-checkbox-size: 24px;
+				--paper-checkbox-size: 30px;
 				--paper-checkbox-checked-color: #7D7D7D;
 				--paper-checkbox-checkmark-color: #C2C2C2;
 			}
@@ -205,8 +216,8 @@
 
 			.playlistPrize-remove {
 				margin: 0 10px;
-				width: 42px;
-				height: 42px;
+				width: 57px;
+				height: 57px;
 				padding: 0;
 				min-width: 0;
 				--paper-button: {
@@ -218,8 +229,8 @@
 
 			.playlistPrize-remove-icon {
 				color: white;
-				width: 24px;
-				height: 24px;
+				width: 32px;
+				height: 32px;
 			}
 
 			.playlistPrize[complete] {
@@ -294,7 +305,7 @@
 					on-tap="showPlaylist"
 					hidden="[[prizesShowingOnMonitor]]"
 					raised>
-					Show On Monitor
+					Show Prizes On Monitor
 				</paper-button>
 
 				<paper-button
@@ -302,7 +313,7 @@
 					on-tap="hidePlaylist"
 					hidden="[[!prizesShowingOnMonitor]]"
 					raised>
-					Hide On Monitor
+					Hide Prizes On Monitor
 				</paper-button>
 			</div>
 
