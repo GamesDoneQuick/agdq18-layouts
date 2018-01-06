@@ -513,11 +513,16 @@ function formatAd(ad) {
  * @returns {('VIDEO'|'IMAGE')} - The type of this ad.
  */
 function calcAdType(filename) {
-	if (filename.endsWith('.mp4') || filename.endsWith('.webm')) {
+	if (filename.endsWith('.mp4') ||
+		filename.endsWith('.webm') ||
+		filename.endsWith('.mov') ||
+		filename.endsWith('.avi')) {
 		return 'VIDEO';
 	}
 
-	if (filename.endsWith('.png') || filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+	if (filename.endsWith('.png') ||
+		filename.endsWith('.jpg') ||
+		filename.endsWith('.jpeg')) {
 		return 'IMAGE';
 	}
 
