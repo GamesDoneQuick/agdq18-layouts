@@ -1,8 +1,8 @@
 (function () {
 	'use strict';
 
-	const RIGHT_TIME_PER_PIXEL = 0.00207;
-	const LEFT_TIME_PER_PIXEL = 0.00262;
+	const RIGHT_TIME_PER_PIXEL = 0.00157;
+	const LEFT_TIME_PER_PIXEL = 0.00157;
 	const TAIL_CHEVRON_WIDTH = 6;
 
 	CustomEase.create('BidwarOptionReveal', 'M0,0 C0.166,0.166 0.234,1 1,1');
