@@ -70,7 +70,6 @@
 				Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
 					if (e.detail.state === 'start') {
 						start = this.$.playlist.scrollTop;
-						console.log('updated start:', start);
 						return;
 					}
 
@@ -88,7 +87,6 @@
 
 			// Fades new prize nodes from purple to white when added.
 			this._flashAddedNodes(this.$.playlist, '.playlistPrize'); // TODO: not working
-			// this._listObserver.observe(this.$.playlist, {childList: true, subtree: true});
 		}
 
 		clearFilter() {

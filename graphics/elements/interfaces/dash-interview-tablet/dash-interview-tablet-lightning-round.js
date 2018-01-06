@@ -4,7 +4,7 @@
 	const questions = nodecg.Replicant('interview:questionTweets');
 	const questionShowing = nodecg.Replicant('interview:questionShowing');
 	const questionSortMap = nodecg.Replicant('interview:questionSortMap');
-	const questionTimeRemaining = nodecg.Replicant('interview:questionTimeRemaining');
+	const showPrizesOnMonitorRep = nodecg.Replicant('interview:showPrizesOnMonitor');
 
 	/**
 	 * @customElement
@@ -19,6 +19,10 @@
 
 		static get properties() {
 			return {
+				prizesShowingOnMonitor: {
+					type: Boolean,
+					value: false
+				},
 				questionShowing: {
 					type: Boolean,
 					value: false,
@@ -39,7 +43,6 @@
 				Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
 					if (e.detail.state === 'start') {
 						start = this.$.list.scrollTop;
-						console.log('updated start:', start);
 						return;
 					}
 
@@ -66,15 +69,6 @@
 
 			// Fades new question nodes from purple to white when added.
 			this._flashAddedNodes(this.$.list, '.tweet');
-			// this._listObserver.observe(this.$.list, {childList: true, subtree: true});
-
-			questionTimeRemaining.on('change', newVal => {
-				if (questionShowing.value) {
-					this.$.autoQuestion.innerText = newVal;
-				} else {
-					this.$.autoQuestion.innerText = 'Auto';
-				}
-			});
 
 			questions.on('change', newVal => {
 				this.set('replies', newVal);
@@ -98,46 +92,19 @@
 
 			questionShowing.on('change', newVal => {
 				this.questionShowing = newVal;
-				if (newVal) {
-					this.$.autoQuestion.innerText = questionTimeRemaining.value === 0 ? 'Auto' : questionTimeRemaining.value;
-				} else {
-					this.$.autoQuestion.innerText = 'Auto';
-				}
+			});
+
+			showPrizesOnMonitorRep.on('change', newVal => {
+				this.prizesShowingOnMonitor = newVal;
 			});
 		}
 
-		showQuestion() {
-			questionShowing.value = true;
+		showQuestionsOnMonitor() {
+			nodecg.sendMessage('interview:hidePrizePlaylistOnMonitor');
 		}
 
-		hideQuestion() {
-			questionShowing.value = false;
-			this._markingTopQuestionAsDone = false;
-		}
-
-		autoQuestion() {
-			this._markingTopQuestionAsDone = true;
-			nodecg.sendMessage('pulseInterviewQuestion', questionSortMap.value[0], error => {
-				this._markingTopQuestionAsDone = false;
-				if (error) {
-					this.$.errorToast.text = 'Failed to load next interview question.';
-					this.$.errorToast.show();
-					nodecg.log.error(error);
-				}
-			});
-		}
-
-		showNextQuestion() {
-			this.hideQuestion();
-			this._markingTopQuestionAsDone = true;
-			nodecg.sendMessage('interview:markQuestionAsDone', questionSortMap.value[0], error => {
-				this._markingTopQuestionAsDone = false;
-				if (error) {
-					this.$.errorToast.text = 'Failed to load next interview question.';
-					this.$.errorToast.show();
-					nodecg.log.error(error);
-				}
-			});
+		hideQuestionsOnMonitor() {
+			nodecg.sendMessage('interview:showPrizePlaylistOnMonitor');
 		}
 
 		reject(event) {
@@ -153,8 +120,12 @@
 			});
 		}
 
-		calcShowNextDisabled(replies, _markingTopQuestionAsDone) {
-			return replies.length <= 0 || _markingTopQuestionAsDone;
+		openEndInterviewDialog() {
+			this.$.endInterviewDialog.open();
+		}
+
+		endInterview() {
+			nodecg.sendMessage('interview:end');
 		}
 
 		_handleDrag() {

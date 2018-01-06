@@ -1,10 +1,8 @@
 (function () {
 	'use strict';
 
-	const currentIntermission = nodecg.Replicant('currentIntermission');
 	const interviewNames = nodecg.Replicant('interview:names');
 	const lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing');
-	const lowerthirdTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining');
 	const runners = nodecg.Replicant('runners');
 
 	/**
@@ -38,6 +36,10 @@
 		ready() {
 			super.ready();
 
+			// Hack to get around https://github.com/bevacqua/crossvent/issues/8
+			// I dunno why but this prevents the "auto passive listener" thing.
+			Polymer.Gestures.addListener(this.$.nameInputs, 'track', () => {});
+
 			this.$.nameInputs.moves = function (element, source, handle) {
 				return handle.id === 'handle';
 			};
@@ -64,35 +66,11 @@
 			});
 
 			interviewNames.on('change', newVal => {
-				const typeaheads = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
-
-				if (!newVal || newVal.length <= 0) {
-					typeaheads.forEach(input => {
-						input.value = '';
-					});
-					return;
-				}
-
-				typeaheads.forEach((input, index) => {
-					input.value = newVal[index] || '';
-				});
+				this.setNames(newVal);
 			});
 
 			lowerthirdShowing.on('change', newVal => {
 				this.lowerthirdShowing = newVal;
-				if (newVal) {
-					this.$.autoLowerthird.innerText = lowerthirdTimeRemaining.value === 0 ? 'Auto' : lowerthirdTimeRemaining.value;
-				} else {
-					this.$.autoLowerthird.innerText = 'Auto';
-				}
-			});
-
-			lowerthirdTimeRemaining.on('change', newVal => {
-				if (lowerthirdShowing.value) {
-					this.$.autoLowerthird.innerText = newVal;
-				} else {
-					this.$.autoLowerthird.innerText = 'Auto';
-				}
 			});
 		}
 
@@ -114,45 +92,36 @@
 			nodecg.sendMessage('pulseInterviewLowerthird', 10);
 		}
 
-		openEndInterviewDialog() {
-			this.$.endInterviewDialog.open();
+		/**
+		 * Takes the names currently entered into the inputs.
+		 * @returns {undefined}
+		 */
+		takeNames() {
+			interviewNames.value = this.getNames();
 		}
 
-		endInterview() {
-			nodecg.sendMessage('interview:end');
+		/**
+		 * Returns an array of the names currently entered into the inputs.
+		 * @returns {string[]} - The names.
+		 */
+		getNames() {
+			const inputs = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
+			return inputs.map(input => input.value);
 		}
 
-		autoFillNames() {
-			if (!currentIntermission.value || !currentIntermission.value.content) {
-				return;
-			}
-
+		setNames(names) {
 			const typeaheads = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
-			const currentInterview = currentIntermission.value.content.find(item => item.type === 'interview');
 
-			console.log('currentInterview:', currentInterview);
-
-			if (!currentInterview) {
+			if (!names || names.length <= 0) {
 				typeaheads.forEach(input => {
 					input.value = '';
 				});
 				return;
 			}
 
-			const allParticipants = currentInterview.interviewers.concat(currentInterview.interviewees);
-			console.log('allParticipants:', allParticipants);
 			typeaheads.forEach((input, index) => {
-				input.value = allParticipants[index] || '';
+				input.value = names[index] || '';
 			});
-		}
-
-		/**
-		 * Takes the names currently entered into the nodecg-typeahead-inputs.
-		 * @returns {undefined}
-		 */
-		takeNames() {
-			const inputs = Array.from(this.shadowRoot.querySelectorAll('dash-lowerthird-name-input'));
-			interviewNames.value = inputs.map(input => input.value);
 		}
 
 		any(...args) {

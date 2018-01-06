@@ -1,0 +1,129 @@
+<link rel="import" href="../../../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="dash-interview-tablet-hotbar">
+	<template>
+		<style>
+			:host {
+				height: 94px;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#lowerthirdControls {
+				margin-left: 74px;
+				margin-right: auto;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+			}
+
+			#showLowerthird,
+			#hideLowerthird {
+				width: 306px;
+			}
+
+			#autoFillNames {
+				font-size: 18px;
+				font-weight: bold;
+			}
+
+			#questionControls {
+				margin-right: 35px;
+			}
+
+			#showQuestion,
+			#hideQuestion {
+				width: 280px;
+			}
+
+			paper-button {
+				height: 50px;
+				min-width: 68px;
+				font-size: 24px;
+				font-weight: 900;
+			}
+
+			paper-button.purple {
+				--paper-button: {
+					color: white;
+					background-color: #A50074;
+				}
+			}
+
+			paper-button.green {
+				--paper-button: {
+					color: white;
+					background-color: #5BA664;
+				}
+			}
+
+			paper-button.red {
+				--paper-button: {
+					color: white;
+					background-color: #C9513E;
+				}
+			}
+
+			iron-icon {
+				width: 36px;
+				height: 36px;
+			}
+
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+
+		<div id="lowerthirdControls">
+			<paper-button class="purple" on-tap="openLowerthirdPreview" raised>
+				<iron-icon icon="image:remove-red-eye"></iron-icon>
+			</paper-button>
+
+			<paper-button
+				id="showLowerthird"
+				class="green"
+				on-tap="showLowerthird"
+				hidden="[[lowerthirdShowing]]"
+				disabled="[[questionShowing]]"
+				raised>
+				Show Lowerthird
+			</paper-button>
+			<paper-button
+				id="hideLowerthird"
+				class="red"
+				on-tap="hideLowerthird"
+				hidden="[[!lowerthirdShowing]]"
+				raised>
+				Hide Lowerthird ([[lowerthirdTimeRemaining]])
+			</paper-button>
+
+			<paper-button id="autoFillNames" class="purple" on-tap="autoFillNames" raised>
+				<iron-icon icon="refresh" style="margin-right: 8px"></iron-icon>
+				Refill
+			</paper-button>
+		</div>
+
+		<div id="questionControls">
+			<paper-button
+				id="showQuestion"
+				class="green"
+				on-tap="showQuestion"
+				hidden="[[questionShowing]]"
+				disabled="[[_any(_markingTopQuestionAsDone, lowerthirdShowing)]]"
+				raised>
+				Show Question
+			</paper-button>
+			<paper-button
+				id="hideQuestion"
+				class="red"
+				on-tap="hideQuestion"
+				hidden="[[!questionShowing]]"
+				raised>
+				Hide Question ([[questionTimeRemaining]])
+			</paper-button>
+		</div>
+	</template>
+
+	<script src="dash-interview-tablet-hotbar.js"></script>
+</dom-module>

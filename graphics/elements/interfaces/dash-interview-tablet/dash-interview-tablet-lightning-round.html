@@ -7,81 +7,70 @@
 <link rel="import" href="../../../mixins/MapSortMixin.html">
 <link rel="import" href="../ui-dragula-element/ui-dragula-element.html">
 <link rel="import" href="../ui-tweet/ui-tweet.html">
+<link rel="import" href="dash-interview-tablet-scrollbar-styles.html">
 
 <dom-module id="dash-interview-tablet-lightning-round">
 	<template>
-		<style include="dragula-styles iron-flex iron-flex-alignment">
+		<style include="dragula-styles iron-flex iron-flex-alignment dash-interview-tablet-scrollbar-styles">
 			:host {
 				box-sizing: border-box;
 				@apply --layout-vertical;
 				@apply --layout-flex;
 			}
 
-			#endInterview,
-			#showNext {
-				width: 300px;
-				height: 43px;
-				margin: 0 7px;
+			#showQuestions,
+			#hideQuestions,
+			#endInterview {
+				height: 50px;
+				max-width: 314px;
 				text-align: center;
+				font-size: 20px;
+				white-space: nowrap;
+				@apply --layout-flex;
 			}
 
-			#hideQuestion,
+			#showQuestions {
+				--paper-button: {
+					color: white;
+					background-color: #5BA664;
+				}
+			}
+
+			#hideQuestions {
+				--paper-button: {
+					color: white;
+					background-color: #C9513E;
+				}
+			}
+
 			#endInterview {
 				--paper-button: {
 					background-color: #C9513E;
 				};
 			}
 
-			#showNext,
-			#showQuestion {
-				--paper-button: {
-					background-color: #5BA664;
-				};
-			}
-
-			#showQuestion,
-			#hideQuestion,
-			#autoQuestion {
-				width: 160px;
-				height: 35px;
-				margin: 0 9px;
-			}
-
-			#autoQuestion {
-				--paper-button: {
-					background-color: #645BA6;
-				}
-			}
-
-			#approvedQuestionsHeader {
-				text-transform: uppercase;
-				padding-left: 9px;
-				font-weight: bold;
-				font-size: 24px;
-				margin-top: 15px;
-				margin-bottom: 6px;
-				user-select: none;
-			}
-
 			#placeholder {
+				margin-top: 32px;
 				padding-left: 10px;
+				font-size: 32px;
+				text-align: center;
 			}
 
 			#list {
-				padding: 0 4px 14px 10px;
-				margin-top: 14px;
-				margin-right: 6px;
+				padding: 0 8px 0 0;
+				margin-top: 26px;
 				box-sizing: border-box;
 				overflow-y: auto;
 				overflow-x: hidden;
 				-webkit-overflow-scrolling: touch;
 				@apply --layout-vertical;
+				@apply --layout-flex;
 			}
 
 			.tweet {
-				margin: 4px 0;
+				margin: 6px 0;
 				padding-left: 0;
-				padding-right: 6px;
+				padding-right: 44px;
 				padding-top: 5px;
 				padding-bottom: 7px;
 				background-color: white;
@@ -90,6 +79,7 @@
 					0 2px 2px 0 rgba(0, 0, 0, 0.14),
 					0 1px 5px 0 rgba(0, 0, 0, 0.12),
 					0 3px 1px -2px rgba(0, 0, 0, 0.2);
+				min-height: 104px;
 				@apply --layout-horizontal;
 			}
 
@@ -99,38 +89,51 @@
 			}
 
 			.tweet-content {
+				--ui-tweet-avatar-size: 72px;
+				--ui-tweet-font-size: 24px;
 				@apply --layout-flex;
 			}
 
 			.tweet-handle {
 				position: relative;
-				width: 50px;
-				border-right: 1px solid black;
+				width: 118px;
+				border-right: 3px solid black;
 				cursor: move;
 				@apply --layout-flex-none;
 				@apply --layout-vertical;
 				@apply --layout-center-center;
 			}
 
+			.tweet-handle iron-icon {
+				width: 46px;
+				height: 46px;
+				pointer-events: none;
+			}
+
 			.tweet-buttons {
-				width: 52px;
 				@apply --layout-horizontal;
 				@apply --layout-center-center;
 			}
 
 			.tweet-buttons paper-button {
-				width: 46px;
-				height: 46px;
-				min-width: 46px;
+				width: 57px;
+				height: 57px;
+				min-width: 57px;
 				margin-right: 0;
 				@apply --layout-horizontal;
 				@apply --layout-center-center;
+				@apply --layout-flex-none;
 			}
 
 			.tweet-buttons-reject {
 				--paper-button: {
 					background-color: #C9513E;
 				};
+			}
+
+			.tweet-buttons-reject iron-icon {
+				width: 32px;
+				height: 32px;
 			}
 
 			.bg-color-transition {
@@ -146,60 +149,33 @@
 				font-weight: bold;
 			}
 
-			::-webkit-scrollbar {
-				width: 6px;
-			}
-
-			::-webkit-scrollbar-track {
-				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-				-webkit-border-radius: 10px;
-				border-radius: 10px;
-			}
-
-			::-webkit-scrollbar-thumb {
-				border-radius: 5px;
-				background: #757575;
-				-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-			}
-
-			::-webkit-scrollbar-thumb:window-inactive {
-				background: #b9b9b9;
-			}
-
 			[hidden] {
 				display: none !important;
 			}
 		</style>
 
 		<div class="layout horizontal center-center flex-none">
-			<paper-button id="endInterview" raised on-tap="openEndInterviewDialog">End Interview (Clear Questions)</paper-button>
 			<paper-button
-				id="showNext"
-				raised
-				on-tap="showNextQuestion"
-				disabled="[[calcShowNextDisabled(replies, _markingTopQuestionAsDone)]]">
-				Load Next Approved Question
+				id="showQuestions"
+				on-tap="showQuestionsOnMonitor"
+				hidden="[[!prizesShowingOnMonitor]]"
+				raised>
+				Show Q's On Monitor
 			</paper-button>
-		</div>
 
-		<div id="approvedQuestionsHeader">APPROVED QUESTIONS</div>
+			<paper-button
+				id="hideQuestions"
+				on-tap="hideQuestionsOnMonitor"
+				hidden="[[prizesShowingOnMonitor]]"
+				raised>
+				Hide Q's On Monitor
+			</paper-button>
+
+			<paper-button id="endInterview" raised on-tap="openEndInterviewDialog">End Interview (Clear Q's)</paper-button>
+		</div>
 
 		<div id="placeholder" hidden="[[replies.length]]">
 			There are no Twitter questions currently approved for use.
-		</div>
-
-		<div class="layout horizontal center-center flex-none" hidden="[[!replies.length]]">
-			<paper-button id="showQuestion" raised on-tap="showQuestion" disabled="[[questionShowing]]">
-				Show
-			</paper-button>
-
-			<paper-button id="hideQuestion" raised on-tap="hideQuestion" disabled="[[!questionShowing]]">
-				Hide
-			</paper-button>
-
-			<paper-button id="autoQuestion" raised on-tap="autoQuestion" disabled="[[questionShowing]]">
-				Auto
-			</paper-button>
 		</div>
 
 		<ui-dragula-element

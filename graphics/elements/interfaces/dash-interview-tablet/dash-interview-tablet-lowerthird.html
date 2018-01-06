@@ -6,67 +6,15 @@
 
 <dom-module id="dash-interview-tablet-lowerthird">
 	<template>
-		<style include="gdq-input-style dragula-styles iron-flex iron-flex-alignment">
+		<style include="gdq-input-style dragula-styles">
 			:host {
 				box-sizing: border-box;
-				background-color: white;
 				@apply --layout-vertical;
 			}
 
-			#title {
-				background-color: #C4C4C4;
-				font-style: normal;
-				font-weight: bold;
-				font-size: 18px;
-				color: black;
-				height: 29px;
-				text-transform: uppercase;
-				@apply --layout-flex-none;
-				@apply --layout-horizontal;
-				@apply --layout-center-center;
-			}
-
-			#resetNameOrder {
-				margin-left: auto;
-				margin-right: 0;
-				--paper-button: {
-					height: 35px;
-					background-color: #A50074;
-				}
-			}
-
 			#nameInputs {
-				margin-top: 17px;
-				margin-bottom: 12px;
-				@apply --layout-horizontal;
-				@apply --layout-around-justified;
-			}
-
-			#showLowerthird,
-			#hideLowerthird,
-			#autoLowerthird {
-				width: 160px;
-				height: 35px;
-				margin: 0 9px;
-			}
-
-			#hideLowerthird {
-				--paper-button: {
-					background-color: #C9513E;
-				};
-			}
-
-			#showLowerthird {
-				margin-left: 0;
-				--paper-button: {
-					background-color: #5BA664;
-				};
-			}
-
-			#autoLowerthird {
-				--paper-button: {
-					background-color: #645BA6;
-				}
+				@apply --layout-vertical;
+				@apply --layout-flex;
 			}
 
 			paper-button {
@@ -79,35 +27,13 @@
 			}
 		</style>
 
-		<div id="title">Interview Graphic</div>
-
-		<div style="padding: 0 14px 14px 14px;">
-			<ui-dragula-element id="nameInputs" direction="horizontal">
-				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
-				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
-				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
-				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
-				<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
-			</ui-dragula-element>
-
-			<div class="layout horizontal center-center">
-				<paper-button id="showLowerthird" raised on-tap="showLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
-					Show
-				</paper-button>
-
-				<paper-button id="hideLowerthird" raised on-tap="hideLowerthird" disabled="[[!lowerthirdShowing]]">
-					Hide
-				</paper-button>
-
-				<paper-button id="autoLowerthird" raised on-tap="autoLowerthird" disabled="[[any(lowerthirdShowing, questionShowing)]]">
-					Auto
-				</paper-button>
-
-				<paper-button raised id="resetNameOrder" on-tap="autoFillNames">
-					Auto Fill&ensp;<iron-icon icon="refresh"></iron-icon>
-				</paper-button>
-			</div>
-		</div>
+		<ui-dragula-element id="nameInputs" direction="vertical">
+			<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+			<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+			<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+			<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+			<dash-lowerthird-name-input items="[[_typeaheadCandidates]]"></dash-lowerthird-name-input>
+		</ui-dragula-element>
 	</template>
 
 	<script src="dash-interview-tablet-lowerthird.js"></script>
