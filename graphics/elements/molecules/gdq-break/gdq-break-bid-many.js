@@ -50,7 +50,7 @@ class GdqBreakBidMany extends Polymer.Element {
 			tl.add(MaybeRandom.createTween({
 				target: optionElement.style,
 				propName: 'opacity',
-				duration: 0.465,
+				duration: 0.2,
 				ease: Power4.easeIn,
 				start: {probability: 1, normalValue: 1},
 				end: {probability: 0, normalValue: 0}
