@@ -17,6 +17,11 @@
 						return new TimelineLite({autoRemoveChildren: true});
 					},
 					readOnly: true
+				},
+				preview: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
 				}
 			};
 		}
@@ -27,13 +32,25 @@
 			this.$.header.updateName({alias: '#AGDQ2018', twitchAlias: null, rotate: false});
 			this._$nameElements = Array.from(this.$.names.querySelectorAll('gdq-nameplate'));
 
-			lowerthirdShowing.on('change', newVal => {
-				if (newVal) {
-					this.show();
-				} else {
-					this.hide();
-				}
-			});
+			if (!this.preview) {
+				lowerthirdShowing.on('change', newVal => {
+					if (newVal) {
+						this.show();
+					} else {
+						this.hide();
+					}
+				});
+
+				interviewNames.on('change', newVal => {
+					this.names = newVal.filter(name => Boolean(name));
+				});
+			}
+		}
+
+		updatePreview(names) {
+			this.names = names;
+			this.show();
+			this.tl.progress(1);
 		}
 
 		show() {
@@ -41,10 +58,9 @@
 
 			// Set names
 			tl.call(() => {
-				const names = interviewNames.value.filter(name => Boolean(name));
 				this._$nameElements.forEach((nameElement, index) => {
-					nameElement.updateName({alias: names[index], twitchAlias: null, rotate: false});
-					nameElement.hidden = !names[index];
+					nameElement.updateName({alias: this.names[index], twitchAlias: null, rotate: false});
+					nameElement.hidden = !this.names[index];
 				});
 			}, null, null, '+=0.3'); // Give time for interviewNames replicant to update.
 
