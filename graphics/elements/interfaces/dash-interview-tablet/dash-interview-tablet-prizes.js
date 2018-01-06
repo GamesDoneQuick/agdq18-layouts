@@ -88,7 +88,6 @@
 
 			// Fades new prize nodes from purple to white when added.
 			this._flashAddedNodes(this.$.playlist, '.playlistPrize'); // TODO: not working
-			// this._listObserver.observe(this.$.playlist, {childList: true, subtree: true});
 		}
 
 		clearFilter() {

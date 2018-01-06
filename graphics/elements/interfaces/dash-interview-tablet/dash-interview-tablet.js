@@ -16,16 +16,27 @@
 					type: Boolean,
 					reflectToAttribute: true
 				},
-				prizeEditingMode: {
-					type: Boolean,
-					value: false,
-					reflectToAttribute: true
+				selectedContentTab: {
+					type: Number,
+					value: 2
 				}
 			};
 		}
 
-		_calcSelectedPage(prizeEditingMode) {
-			return prizeEditingMode ? 1 : 0;
+		ready() {
+			super.ready();
+
+			this.$.hotbar.addEventListener('auto-fill-names-clicked', () => {
+				this.$.lowerthird.autoFillNames();
+			});
+
+			this.$.hotbar.addEventListener('show-lowerthird-clicked', () => {
+				this.$.lowerthird.autoLowerthird();
+			});
+
+			this.$.hotbar.addEventListener('hide-lowerthird-clicked', () => {
+				this.$.lowerthird.hideLowerthird();
+			});
 		}
 	}
 

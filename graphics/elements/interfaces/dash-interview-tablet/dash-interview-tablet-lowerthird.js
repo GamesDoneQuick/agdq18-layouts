@@ -4,7 +4,6 @@
 	const currentIntermission = nodecg.Replicant('currentIntermission');
 	const interviewNames = nodecg.Replicant('interview:names');
 	const lowerthirdShowing = nodecg.Replicant('interview:lowerthirdShowing');
-	const lowerthirdTimeRemaining = nodecg.Replicant('interview:lowerthirdTimeRemaining');
 	const runners = nodecg.Replicant('runners');
 
 	/**
@@ -80,19 +79,6 @@
 
 			lowerthirdShowing.on('change', newVal => {
 				this.lowerthirdShowing = newVal;
-				if (newVal) {
-					this.$.autoLowerthird.innerText = lowerthirdTimeRemaining.value === 0 ? 'Auto' : lowerthirdTimeRemaining.value;
-				} else {
-					this.$.autoLowerthird.innerText = 'Auto';
-				}
-			});
-
-			lowerthirdTimeRemaining.on('change', newVal => {
-				if (lowerthirdShowing.value) {
-					this.$.autoLowerthird.innerText = newVal;
-				} else {
-					this.$.autoLowerthird.innerText = 'Auto';
-				}
 			});
 		}
 
