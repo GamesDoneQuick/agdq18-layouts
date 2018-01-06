@@ -92,14 +92,6 @@
 			nodecg.sendMessage('pulseInterviewLowerthird', 10);
 		}
 
-		openEndInterviewDialog() {
-			this.$.endInterviewDialog.open();
-		}
-
-		endInterview() {
-			nodecg.sendMessage('interview:end');
-		}
-
 		/**
 		 * Takes the names currently entered into the inputs.
 		 * @returns {undefined}

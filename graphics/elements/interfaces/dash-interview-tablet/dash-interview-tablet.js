@@ -51,11 +51,6 @@
 		openLowerthirdRefillDialog() {
 			const currentInterview = currentIntermissionRep.value.content.find(item => item.type === 'interview');
 			const nextInterview = scheduleRep.value.find(scheduleItem => {
-				// Ignore items before the currentRun.
-				if (scheduleItem.order <= currentRunRep.value.order) {
-					return false;
-				}
-
 				// Ignore items which are not interviews.
 				if (scheduleItem.type !== 'interview') {
 					return false;
@@ -67,7 +62,8 @@
 				}
 
 				// If we don't have a currentInterview, return the first interview after the currentRun.
-				return true;
+				// Ignore items before the currentRun.
+				return scheduleItem.order >= currentRunRep.value.order;
 			});
 
 			let currentInterviewNames = [];
@@ -93,10 +89,10 @@
 			this.$.nextLowerthirdRefillOption.names = nextInterviewNames;
 			this.$.lowerthirdRefillDialog.open();
 
-			nodecg.log.debug('currentInterview:', currentInterview);
-			nodecg.log.debug('currentInterviewNames:', currentInterviewNames);
-			nodecg.log.debug('nextInterview:', nextInterview);
-			nodecg.log.debug('nextInterviewNames:', nextInterviewNames);
+			nodecg.log.info('currentInterview:', currentInterview);
+			nodecg.log.info('currentInterviewNames:', currentInterviewNames);
+			nodecg.log.info('nextInterview:', nextInterview);
+			nodecg.log.info('nextInterviewNames:', nextInterviewNames);
 		}
 
 		closeLowerthirdRefillDialog() {

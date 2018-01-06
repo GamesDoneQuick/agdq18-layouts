@@ -120,6 +120,14 @@
 			});
 		}
 
+		openEndInterviewDialog() {
+			this.$.endInterviewDialog.open();
+		}
+
+		endInterview() {
+			nodecg.sendMessage('interview:end');
+		}
+
 		_handleDrag() {
 			this._dragging = true;
 		}
