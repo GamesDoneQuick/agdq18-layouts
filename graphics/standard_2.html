@@ -41,11 +41,11 @@
 			}
 
 			gdq-runner-nameplate:nth-of-type(1) {
-				right: 1028px;
+				right: 1026px;
 			}
 
 			gdq-runner-nameplate:nth-of-type(2) {
-				left: 1028px;
+				left: 1026px;
 			}
 
 			gdq-runinfo {
@@ -63,6 +63,7 @@
 				width: 456px;
 				font-size: 56px;
 				--gdq-timer-voffset: -2px;
+				z-index: 2;
 			}
 
 			gdq-tweet {
@@ -98,11 +99,11 @@
 		<atom-tronlines height="244" width="550" class="tronleft"></atom-tronlines>
 		<atom-tronlines height="244" width="550" class="tronright"></atom-tronlines>
 		<gdq-runinfo max-name-size="45"></gdq-runinfo>
+		<gdq-runner-nameplate index="0" no-right-cap result-side="left"></gdq-runner-nameplate>
+		<gdq-runner-nameplate index="1" no-left-cap result-side="right"></gdq-runner-nameplate>
 		<gdq-timer></gdq-timer>
 		<gdq-sponsors></gdq-sponsors>
 		<gdq-tweet></gdq-tweet>
-		<gdq-runner-nameplate index="0" no-right-cap result-side="left"></gdq-runner-nameplate>
-		<gdq-runner-nameplate index="1" no-left-cap result-side="right"></gdq-runner-nameplate>
 	</div>
 
 	<script>
