@@ -30,6 +30,14 @@
 
 			:host(:last-of-type) {
 				margin-bottom: 0;
+
+				/* TODO: uncomment this if the new L3 design is implemented */
+				/*background-color: #C9F5FF;*/
+			}
+
+			:host(:last-of-type) #hostIndicator {
+				/* TODO: uncomment this if the new L3 design is implemented */
+				/*opacity: 1;*/
 			}
 
 			#handle {
@@ -55,6 +63,14 @@
 				font-weight: 600;
 				@apply --layout-flex;
 			}
+
+			#hostIndicator {
+				opacity: 0;
+				text-align: right;
+				font-size: 32px;
+				font-weight: 600;
+				margin-left: 24px;
+			}
 		</style>
 
 		<div id="handle">
@@ -75,6 +91,8 @@
 				<span style="font-size: 28px">[[item]]</span>
 			</template>
 		</vaadin-combo-box>
+
+		<div id="hostIndicator">HOST</div>
 	</template>
 
 	<script src="dash-lowerthird-name-input.js"></script>

@@ -62,6 +62,10 @@
 			this.dispatchEvent(new CustomEvent('auto-fill-names-clicked'));
 		}
 
+		openLowerthirdPreview() {
+			this.dispatchEvent(new CustomEvent('open-lowerthird-preview-clicked'));
+		}
+
 		_any(...args) {
 			return args.find(arg => Boolean(arg));
 		}

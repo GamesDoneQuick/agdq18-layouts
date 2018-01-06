@@ -177,6 +177,7 @@
 			}
 
 			.playlistPrize {
+				min-height: 90px;
 				margin: 6px 0;
 				padding: 7px 0;
 				background-color: white;
@@ -189,6 +190,14 @@
 				@apply --layout-center;
 			}
 
+			.playlistPrize:first-child {
+				margin-top: 0;
+			}
+
+			.playlistPrize:last-child {
+				margin-bottom: 0;
+			}
+
 			.playlistPrize-handle {
 				position: relative;
 				width: 76px;
@@ -198,6 +207,12 @@
 				@apply --layout-vertical;
 				@apply --layout-center-center;
 				@apply --layout-self-stretch;
+			}
+
+			.playlistPrize-handle iron-icon {
+				width: 46px;
+				height: 46px;
+				pointer-events: none;
 			}
 
 			.playlistPrize-checkbox {

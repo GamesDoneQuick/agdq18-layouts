@@ -70,7 +70,6 @@
 				Polymer.Gestures.addListener(this.$['list-container'], 'track', e => {
 					if (e.detail.state === 'start') {
 						start = this.$.playlist.scrollTop;
-						console.log('updated start:', start);
 						return;
 					}
 
