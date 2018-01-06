@@ -5,6 +5,7 @@ class GdqTimekeeperRunner extends Polymer.Element {
 
 	static get properties() {
 		return {
+			importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
 			index: {
 				type: Number
 			},

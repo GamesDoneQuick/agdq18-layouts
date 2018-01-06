@@ -5,6 +5,7 @@ class GdqTimekeeperCoop extends Polymer.Element {
 
 	static get properties() {
 		return {
+			importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
 			results: {
 				type: Object
 			},
