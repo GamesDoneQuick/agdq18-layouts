@@ -37,6 +37,10 @@
 		ready() {
 			super.ready();
 
+			// Hack to get around https://github.com/bevacqua/crossvent/issues/8
+			// I dunno why but this prevents the "auto passive listener" thing.
+			Polymer.Gestures.addListener(this.$.nameInputs, 'track', () => {});
+
 			this.$.nameInputs.moves = function (element, source, handle) {
 				return handle.id === 'handle';
 			};
