@@ -1,8 +1,8 @@
 (function () {
 	'use strict';
 
-	const RIGHT_TIME_PER_PIXEL = 0.00207;
-	const LEFT_TIME_PER_PIXEL = 0.00262;
+	const RIGHT_TIME_PER_PIXEL = 0.00107;
+	const LEFT_TIME_PER_PIXEL = 0.00107;
 	const PROGRESS_FILL_OFFSET = 10;
 	const TAIL_CHEVRON_WIDTH = 6;
 	const DIRECTION_CHANGE_DELAY = 0.1167;
