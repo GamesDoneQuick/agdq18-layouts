@@ -33,39 +33,13 @@
 			let sponsors;
 			const layoutName = window.location.pathname.split('/').pop();
 			switch (layoutName) {
-				case ('standard_1.html'):
-				case ('standard_1_ff6.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-standard_1');
-					break;
-				case ('standard_2.html'):
-				case ('gameboy_2.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-standard_2');
-					break;
-				case ('standard_3.html'):
-				case ('gameboy_3.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-standard_3');
-					break;
 				case ('widescreen_1.html'):
+				case ('gba_1.html'):
 					sponsors = nodecg.Replicant('assets:sponsors-widescreen_1');
 					break;
-				case ('widescreen_2.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-widescreen_2');
-					break;
-				case ('gba_1.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-gba_1');
-					break;
-				case ('gba_2.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-gba_2');
-					break;
-				case ('gameboy_1.html'):
-				case ('ds_vertical.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-gameboy_1');
-					break;
-				case ('3ds.html'):
-					sponsors = nodecg.Replicant('assets:sponsors-3ds');
-					break;
 				default:
-					throw new Error(`Unexpected pathname! ${window.location.pathname}`);
+					sponsors = nodecg.Replicant('assets:sponsors-standard_1');
+					break;
 			}
 
 			Polymer.RenderStatus.beforeNextRender(this, () => {
