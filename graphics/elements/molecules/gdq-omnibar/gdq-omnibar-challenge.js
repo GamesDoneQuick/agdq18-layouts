@@ -31,8 +31,10 @@
 		}
 
 		enter() {
-			const progressPercentage = Math.min(this.bid.rawTotal / this.bid.rawGoal, 1);
-			const revealTweenWidth = this.$.body.clientWidth - this.$.tailChevron.clientWidth;
+			let progressPercentage = this.bid.rawTotal / this.bid.rawGoal;
+			progressPercentage = Math.min(progressPercentage, 1); // Clamp to 1 max.
+			progressPercentage = Math.max(progressPercentage, 0); // Clamp to 0 min.
+
 			this._revealTweenWidth = revealTweenWidth;
 			const progressBlockWidth = this.$.progressBlock.clientWidth;
 			const tl = new TimelineLite();
