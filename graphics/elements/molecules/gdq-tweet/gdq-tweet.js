@@ -161,7 +161,7 @@
 			}, 'start+=0.4');
 
 			tl.to(this._bgRect.node, 0.5, {
-				'fill-opacity': 0.25,
+				'fill-opacity': this.backgroundOpacity,
 				ease: Sine.easeOut
 			}, 'start+=1');
 
