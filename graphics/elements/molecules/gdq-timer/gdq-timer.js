@@ -52,6 +52,13 @@
 						timerTL.clear();
 						this.$.startFlash.style.opacity = 0;
 					}
+
+					if (newVal.state === 'finished' && oldVal.state !== 'finished') {
+						timerTL.from(this.$.startFlash, 1, {
+							opacity: 1,
+							ease: Power2.easeIn
+						});
+					}
 				}
 
 				this.notStarted = newVal.state === 'not_started';
