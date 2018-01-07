@@ -31,6 +31,10 @@
 						return new TimelineLite({autoRemoveChildren: true});
 					}
 				},
+				backgroundOpacity: {
+					type: Number,
+					value: 0.25
+				},
 
 				/**
 				 * The message name to bind to.
@@ -232,7 +236,7 @@
 				// are center strokes, and the outer half is cut off.
 				width: STROKE_SIZE * 2
 			});
-			bgRect.fill({color: 'black', opacity: 0.25});
+			bgRect.fill({color: 'black', opacity: this.backgroundOpacity});
 
 			// Rotate and translate such that drawSVG anims start from the top right
 			// and move clockwise to un-draw, counter-clockwise to un-draw.
