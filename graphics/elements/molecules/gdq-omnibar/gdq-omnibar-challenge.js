@@ -35,6 +35,7 @@
 			progressPercentage = Math.min(progressPercentage, 1); // Clamp to 1 max.
 			progressPercentage = Math.max(progressPercentage, 0); // Clamp to 0 min.
 
+			const revealTweenWidth = this.$.body.clientWidth - this.$.tailChevron.clientWidth + PROGRESS_FILL_OFFSET;
 			this._revealTweenWidth = revealTweenWidth;
 			const progressBlockWidth = this.$.progressBlock.clientWidth;
 			const tl = new TimelineLite();
@@ -111,7 +112,7 @@
 			tl.set(this.$.tailChevron, {'--atom-chevron-background': 'transparent'});
 
 			const progressFillWidth = this.$.progressFill.arrowBlock.node.getBoundingClientRect().width;
-			const tailChevronEndX = (progressFillWidth * progressPercentage) - PROGRESS_FILL_OFFSET;
+			const tailChevronEndX = progressFillWidth * progressPercentage;
 			this._progressTweenDuration = progressFillWidth * progressPercentage * RIGHT_TIME_PER_PIXEL;
 			tl.addLabel('fillProgress');
 			tl.to(this.$.tailChevron, this._progressTweenDuration, {
