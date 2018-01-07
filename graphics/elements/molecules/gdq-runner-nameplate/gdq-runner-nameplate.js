@@ -37,6 +37,11 @@
 					reflectToAttribute: true,
 					value: false
 				},
+				noAudio: {
+					type: Boolean,
+					reflectToAttribute: true,
+					value: false
+				},
 				resultSide: String,
 				coop: {
 					type: Boolean,
@@ -143,6 +148,10 @@
 		}
 
 		gameAudioChannelsChanged(newVal) {
+			if (this.noAudio) {
+				return;
+			}
+
 			if (!newVal || newVal.length <= 0) {
 				return;
 			}
