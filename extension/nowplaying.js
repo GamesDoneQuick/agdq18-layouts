@@ -38,7 +38,7 @@ app.post(`/${nodecg.bundleName}/song`, (req, res, next) => {
 	}
 
 	if (nodecg.bundleConfig.nowPlayingKey && req.body.key !== nodecg.bundleConfig.nowPlayingKey) {
-		return res.sednStatus(401);
+		return res.sendStatus(401);
 	}
 
 	changeSong(req.body);
