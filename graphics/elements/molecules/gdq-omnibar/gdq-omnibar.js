@@ -323,8 +323,7 @@
 
 			const specialPrizesToDisplayLast = [];
 			const prizesToDisplay = currentPrizes.value.filter(prize => {
-				if (prize.id === 1668 || // Custom Built Corsair PC
-					prize.id === 1669) { // Eighth Generation Console Bundle
+				if (prize.id === 1892) {
 					specialPrizesToDisplayLast.push(prize);
 					return false;
 				}
