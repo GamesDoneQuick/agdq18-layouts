@@ -75,11 +75,17 @@ streamingOBS.replicants.programScene.on('change', newVal => {
 
 function cycleRecording(obs) {
 	return new Promise((resolve, reject) => {
+		let rejected = false;
 		const timeout = setTimeout(() => {
+			rejected = true;
 			reject(new Error(`Timed out waiting for ${obs.namespace} to stop recording.`));
-		}, 10000);
+		}, 30000);
 
 		const recordingStoppedListener = () => {
+			if (rejected) {
+				return;
+			}
+
 			obs.log.info('Recording stopped.');
 			clearTimeout(timeout);
 
