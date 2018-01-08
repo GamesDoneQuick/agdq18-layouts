@@ -215,7 +215,7 @@
 		}
 
 		_showItem(prize) {
-			let useFallbackImage = false;
+			let useFallbackImage = !prize.image.trim();
 			let changingProvider = true;
 			let changingMinimumBid = true;
 			const imageEntranceCells = Random.shuffle(Random.engines.browserCrypto, this._imageMaskCells.slice(0));
