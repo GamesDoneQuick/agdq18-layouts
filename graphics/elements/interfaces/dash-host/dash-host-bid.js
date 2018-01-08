@@ -63,7 +63,7 @@ class DashHostBid extends Polymer.MutableData(Polymer.Element) {
 	}
 
 	calcBidName(description) {
-		return description.replace('||', ' -- ');
+		return description.replace(/\\n/g, ' ');
 	}
 
 	_computeType(bid) {
