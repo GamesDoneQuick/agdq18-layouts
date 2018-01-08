@@ -19,6 +19,7 @@ let currentFrame = 0;
 let durationFrames = 0;
 let fileMayHaveRestarted = false;
 let updateFilesInterval;
+let ignoreForegroundUntilNextPlay = false;
 
 const log = new nodecg.Logger(`${nodecg.bundleName}:caspar`);
 const currentRun = nodecg.Replicant('currentRun');
@@ -62,7 +63,9 @@ connection.clear(1);
 module.exports = {
 	play(filename) {
 		log.info('Attempting to play %s...', filename);
-		return connection.play(1, undefined, filename);
+		return connection.play(1, undefined, filename).then(() => {
+			ignoreForegroundUntilNextPlay = false;
+		});
 	},
 	info() {
 		return connection.info(1);
@@ -88,6 +91,7 @@ function resetState() {
 	currentFrame = 0;
 	durationFrames = 0;
 	fileMayHaveRestarted = false;
+	ignoreForegroundUntilNextPlay = true;
 }
 
 nodecg.listenFor('caspar:play', module.exports.play);
@@ -119,7 +123,7 @@ udpPort.on('message', message => {
 		}
 	} else if (message.address === '/channel/1/stage/layer/0/file/path') {
 		const fileChanged = message.args[0].value !== foregroundFileName;
-		if (fileChanged || fileMayHaveRestarted) {
+		if ((fileChanged || fileMayHaveRestarted) && !ignoreForegroundUntilNextPlay) {
 			foregroundFileName = message.args[0].value;
 			emitForegroundChanged();
 		}
