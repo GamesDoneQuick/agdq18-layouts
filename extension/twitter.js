@@ -159,8 +159,9 @@ function addTweet(tweet) {
 		return;
 	}
 
+	// Don't add truncated tweets.
 	if (tweet.truncated) {
-		nodecg.log.warn('Tweet is truncated:', tweet);
+		return;
 	}
 
 	// Parse emoji.
