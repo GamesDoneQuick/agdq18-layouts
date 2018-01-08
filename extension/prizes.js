@@ -134,6 +134,18 @@ function formatPrize(prize) {
 		minimumbid: numeral(prize.fields.minimumbid).format('$0,0[.]00'),
 		grand: prize.fields.category__name === 'Grand',
 		sumdonations: prize.fields.sumdonations,
+		startrun: {
+			id: prize.fields.startrun,
+			name: prize.fields.startrun__display_name || 'Unknown',
+			longName: prize.fields.startrun__name || 'Unknown',
+			order: prize.fields.startrun__order
+		},
+		endrun: {
+			id: prize.fields.endrun,
+			name: prize.fields.endrun__display_name || 'Unknown',
+			longName: prize.fields.endrun__name || 'Unknown',
+			order: prize.fields.endrun__order
+		},
 		type: 'prize'
 	};
 }
