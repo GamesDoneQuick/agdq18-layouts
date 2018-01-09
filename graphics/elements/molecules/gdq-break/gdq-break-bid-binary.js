@@ -62,9 +62,7 @@ class GdqBreakBidBinary extends Polymer.Element {
 			ease: Power3.easeInOut,
 			callbackScope: this,
 			onStart() {
-				const losingPercent = 1 - winningPercent;
-				const turn = `${(losingPercent / 2) + 0.54}turn`;
-				this._svgDoc.style({transform: `rotate(${turn})`});
+				this._svgDoc.style({transform: `rotate(0.65turn)`});
 
 				this.$.winningOptionName.innerText = this.bid.options[0].name || this.bid.options[0].description;
 				this.$.losingOptionName.innerText = this.bid.options[1].name || this.bid.options[1].description;
