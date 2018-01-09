@@ -51,7 +51,7 @@
 		computeBidsFilter(string) {
 			if (string) {
 				// Return a filter function for the current search string.
-				const regexp = new RegExp(string, 'ig');
+				const regexp = new RegExp(escapeRegExp(string), 'ig');
 				return function (bid) {
 					return regexp.test(bid.description);
 				};
@@ -94,6 +94,10 @@
 			this.dialogBid = e.target.bid;
 			this.$.dialog.open();
 		}
+	}
+
+	function escapeRegExp(text) {
+		return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 	}
 
 	customElements.define(DashHostBids.is, DashHostBids);
