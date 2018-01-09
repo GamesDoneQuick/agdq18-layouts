@@ -84,7 +84,7 @@ class GdqBreakBidChallenge extends Polymer.Element {
 			callbackScope: this,
 			onStart() {
 				this.$.amount.tween(this.bid.rawTotal, meterDuration);
-				this.$.percent.tween(meterPercent * 100, meterDuration);
+				this.$.percent.tween(Math.floor(meterPercent * 100), meterDuration);
 			}
 		});
 
