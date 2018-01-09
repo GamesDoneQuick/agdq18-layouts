@@ -40,15 +40,24 @@
 			super.ready();
 
 			canPlayTwitchAd.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
 				this.canPlay = newVal.canPlay;
 				this.cantPlayReason = newVal.reason;
 			});
 
 			timeLeft.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
 				this.timeLeft = newVal.formatted.split('.')[0];
 			});
 
 			timeSince.on('change', newVal => {
+				if (!newVal) {
+					return;
+				}
 				this.timeSince = newVal.formatted.split('.')[0];
 			});
 		}
