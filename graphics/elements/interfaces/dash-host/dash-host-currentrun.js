@@ -64,8 +64,8 @@
 		}
 
 		_calcRunnerStatus(result) {
-			if (result) {
-				return result.formatted;
+			if (result && result.time) {
+				return result.time.formatted;
 			}
 
 			return 'Running';
