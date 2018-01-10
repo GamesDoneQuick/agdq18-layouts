@@ -32,6 +32,7 @@
 				@apply --layout-vertical;
 				margin-left: 58px;
 				margin-bottom: 6px;
+				min-width: 1px;
 			}
 
 			#avatar {
@@ -47,11 +48,12 @@
 			#profileLink {
 				word-break: break-word;
 				word-wrap: break-word;
-				display: block;
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				text-decoration: none;
+				@apply --layout-horizontal;
+				@apply --layout-center;
 			}
 
 			#profileLink:hover {
@@ -63,10 +65,18 @@
 				text-decoration: underline;
 			}
 
+			#name,
+			#screenName {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-decoration: none;
+			}
+
 			#name {
 				color: black;
 				font-weight: bold;
 				font-size: 16px;
+				margin-right: 0.5em;
 			}
 
 			#screenName,
