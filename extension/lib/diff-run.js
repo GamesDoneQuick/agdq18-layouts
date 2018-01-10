@@ -64,7 +64,7 @@ function calcOriginalValues(run, original) {
 							originalValues.runners[difference.index] = {name: '', stream: ''};
 							break;
 						case 'D':
-							originalValues.runners[difference.index] = original.runners[difference.index];
+							originalValues.runners[difference.index] = clone(original.runners[difference.index]);
 							break;
 						/* istanbul ignore next: shouldn't be possible to enter default path */
 						default:
