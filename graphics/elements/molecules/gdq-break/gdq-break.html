@@ -43,7 +43,7 @@
 
 			#schedule {
 				position: absolute;
-				top: 123px;
+				top: 383px;
 				right: 0;
 			}
 
@@ -63,12 +63,41 @@
 				position: absolute;
 				bottom: 70px;
 			}
+
+			#crowd-cam {
+				width: 689px;
+				height: 236px;
+				position: absolute;
+				right: 40px;
+				top: 120px;
+				box-sizing: border-box;
+				border-top: 1px solid #00ffff;
+				border-right: 1px solid #00ffff;
+				border-bottom: 1px solid #00ffff;
+				border-left: 49px solid #00ffff;
+			}
+
+			#crowd-cam-label {
+				width: 142px;
+				height: 26px;
+				position: absolute;
+				right: 51px;
+				top: 340px;
+				background-color: #00ffff;
+				text-align: center;
+				font-size: 14px;
+				box-sizing: border-box;
+				padding-top: 3px;
+			}
 		</style>
 
 		<gdq-break-bids id="bids"></gdq-break-bids>
 		<gdq-break-prizes id="prizes"></gdq-break-prizes>
 		<gdq-tweet id="tweet" label="SOCIAL_MEDIA_ENGAGEMENT"></gdq-tweet>
 		<gdq-break-schedule id="schedule"></gdq-break-schedule>
+
+		<div id="crowd-cam"></div>
+		<div id="crowd-cam-label">Herndon, VA</div>
 
 		<atom-text-greeble style="left: 348px;" length="15"></atom-text-greeble>
 		<atom-text-greeble style="left: 532px;" length="11"></atom-text-greeble>
