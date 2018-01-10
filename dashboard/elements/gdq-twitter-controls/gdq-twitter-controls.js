@@ -37,8 +37,10 @@
 			});
 		}
 
-		_sortTweets(a, b) {
-			return new Date(b.created_at) - new Date(a.created_at);
+		_sortTweets(tweets) {
+			return tweets.slice(0).sort((a, b) => {
+				return new Date(b.created_at) - new Date(a.created_at);
+			});
 		}
 	}
 

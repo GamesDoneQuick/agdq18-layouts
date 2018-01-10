@@ -1,4 +1,5 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../../bower_components/nodecg-replicant/nodecg-replicant.html">
 <link rel="import" href="../../../bower_components/polymer/lib/mixins/mutable-data.html">
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
@@ -79,11 +80,11 @@
 		<div id="label">Twitter Overlay</div>
 
 		<div id="scrollWrapper">
-			<div id="tweets">
-				<template is="dom-repeat" items="[[tweets]]" as="tweet" sort="_sortTweets" mutable-data>
+			<iron-list id="tweets" items="[[_sortTweets(tweets)]]" as="tweet" mutable-data>
+				<template>
 					<tweet-item value="[[tweet]]"></tweet-item>
 				</template>
-			</div>
+			</iron-list>
 			<div id="empty">There are no tweets in the queue.</div>
 		</div>
 
