@@ -386,39 +386,13 @@ function _seekToArbitraryRun(runOrOrder) {
  */
 
 function calcFormattedSchedule({rawRuns, formattedRunners, formattedAds, formattedInterviews}) {
-	const flatSchedule = [];
-
-	// NOTE: We *probably* don't have to do this sort step,
-	// but UraniumAnchor said he wasn't 100% positive that sorting
-	// was guaranteed from the API, so we do this just to be safe.
-
-	// Sort runs by order.
-	rawRuns = rawRuns.sort((a, b) => a.fields.order - b.fields.order);
-
-	// Sort ads and interviews by order, then suborder.
-	const formattedAdsAndInterviews = formattedAds.concat(formattedInterviews).sort(suborderSort);
-
-	let lastIndex = 0;
-	rawRuns.forEach(run => {
-		run = formatRun(run, formattedRunners);
-		flatSchedule.push(run);
-
-		formattedAdsAndInterviews.slice(lastIndex).some((item, index) => {
-			if (item.order > run.order) {
-				return true;
-			}
-
-			lastIndex = index;
-
-			// This theoretically should never be hit?
-			if (item.order < run.order) {
-				return false;
-			}
-
-			flatSchedule.push(item);
-			return false;
-		});
-	});
+	const flatSchedule = rawRuns
+		.map(run => {
+			return formatRun(run, formattedRunners);
+		})
+		.concat(formattedAds)
+		.concat(formattedInterviews)
+		.sort(suborderSort);
 
 	const schedule = [];
 
@@ -569,6 +543,14 @@ function suborderSort(a, b) {
 
 	if (orderDiff !== 0) {
 		return orderDiff;
+	}
+
+	if ('suborder' in a && !('suborder' in b)) {
+		return 1;
+	}
+
+	if (!('suborder' in a) && 'suborder' in b) {
+		return -1;
 	}
 
 	return a.suborder - b.suborder;
