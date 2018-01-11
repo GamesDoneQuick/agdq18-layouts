@@ -9,6 +9,7 @@
 	<template>
 		<style>
 			:host {
+				position: relative;
 				@apply --layout-vertical;
 			}
 
@@ -46,6 +47,23 @@
 				box-sizing: border-box;
 			}
 
+			#tooltip {
+				position: absolute;
+				top: 0;
+				left: 12px;
+				transition: opacity 200ms ease-in-out;
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			#tooltip-content {
+				font-size: 14px;
+				color: white;
+				background: rgba(0, 0, 0, 0.8);
+				border-radius: 5px;
+				padding: 6px;
+			}
+
 			::-webkit-scrollbar {
 				width: 6px;
 			}
@@ -71,7 +89,12 @@
 
 		<div id="currentItems">
 			<template is="dom-repeat" items="[[currentItems]]" mutable-data>
-				<ui-rundown-item item="[[item]]" current></ui-rundown-item>
+				<ui-rundown-item
+					item="[[item]]"
+					current
+					on-mouseover="_showTooltip"
+					on-mouseout="_hideTooltip">
+				</ui-rundown-item>
 			</template>
 		</div>
 
@@ -80,10 +103,18 @@
 		<iron-list id="remainderItems" items="[[remainderItems]]" mutable-data>
 			<template>
 				<div class="itemWrapper">
-					<ui-rundown-item item="[[item]]"></ui-rundown-item>
+					<ui-rundown-item
+						item="[[item]]"
+						on-mouseover="_showTooltip"
+						on-mouseout="_hideTooltip">
+					</ui-rundown-item>
 				</div>
 			</template>
 		</iron-list>
+
+		<div id="tooltip">
+			<div id="tooltip-content"></div>
+		</div>
 	</template>
 
 	<script src="ui-rundown.js"></script>

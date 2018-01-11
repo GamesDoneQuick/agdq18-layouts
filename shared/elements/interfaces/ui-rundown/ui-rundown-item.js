@@ -72,6 +72,10 @@ class UiRundownItem extends Polymer.Element {
 				throw new Error(`'Unexpected content type "${item.type}" in item: ${JSON.stringify(item)}`);
 		}
 	}
+
+	_itemHasNotes(item) {
+		return item && item.notes && item.notes.trim().length > 0;
+	}
 }
 
 customElements.define(UiRundownItem.is, UiRundownItem);

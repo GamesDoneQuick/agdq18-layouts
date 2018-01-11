@@ -1,9 +1,11 @@
+<link rel="import" href="../../../../bower_components/html-echo/html-echo.html">
 <link rel="import" href="../../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../bower_components/iron-icons/notification-icons.html">
 <link rel="import" href="../../../../bower_components/paper-styles/shadow.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 
 <dom-module id="ui-rundown-item">
-	<template>
+	<template strip-whitespace>
 		<style>
 			:host {
 				position: relative;
@@ -69,6 +71,13 @@
 				@apply --layout-flex;
 			}
 
+			#notesIcon {
+				position: relative;
+				top: -2px;
+				width: 20px;
+				height: 20px;
+			}
+
 			#topRight,
 			#bottomRight,
 			#bottomLeft {
@@ -97,12 +106,23 @@
 				display: block;
 				max-width: 190px;
 			}
+
+			[hidden] {
+				display: none !important;
+			}
 		</style>
 
 		<div id="green"></div>
 		<div id="body">
 			<div id="top" class="line">
-				<div id="name">[[name]]</div>
+				<div id="name">
+					[[name]]
+					<iron-icon
+						id="notesIcon"
+						icon="notification:event-note"
+						hidden="[[!_itemHasNotes(item)]]">
+					</iron-icon>
+				</div>
 				<div id="topRight"></div>
 			</div>
 
@@ -111,7 +131,6 @@
 				<div id="bottomRight"></div>
 			</div>
 		</div>
-
 	</template>
 
 	<script src="ui-rundown-item.js"></script>

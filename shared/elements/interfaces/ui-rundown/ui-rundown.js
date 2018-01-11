@@ -116,6 +116,29 @@
 		_maxRunsToShowChanged() {
 			this._debounceUpdateScheduleSlice();
 		}
+
+		_showTooltip(e) {
+			const notes = e.model.item.notes;
+			if (!notes || notes.trim().length <= 0) {
+				return;
+			}
+
+			this.$['tooltip-content'].innerHTML = notes
+				.replace(/\r\n/g, '<br/>')
+				.replace(/\n/g, '<br/>');
+
+			const thisRect = this.getBoundingClientRect();
+			const itemRect = e.target.getBoundingClientRect();
+			const tooltipRect = this.$['tooltip-content'].getBoundingClientRect();
+			const offset = -4;
+
+			this.$.tooltip.style.opacity = 1;
+			this.$.tooltip.style.top = `${itemRect.top - thisRect.top - tooltipRect.height + offset}px`;
+		}
+
+		_hideTooltip() {
+			this.$.tooltip.style.opacity = 0;
+		}
 	}
 
 	customElements.define(UiRundown.is, UiRundown);
