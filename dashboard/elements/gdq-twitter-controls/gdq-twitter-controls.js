@@ -20,8 +20,10 @@
 
 			currentLayout.on('change', newVal => {
 				switch (newVal) {
+					case 'countdown':
 					case 'interview':
 					case 'standard_4':
+					case 'widescreen_4':
 					case 'gameboy_4':
 					case 'ds':
 						this.$.cover.style.display = 'flex';
