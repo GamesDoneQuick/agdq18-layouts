@@ -35,10 +35,7 @@
 			const WIDTH_ADDED_BY_BORDERS = 2;
 			const PADDING_OF_INFO_RUNNER = 48;
 
-			if (this._runnerTimeline) {
-				this._runnerTimeline.kill();
-				this._runnerTimeline = null;
-			}
+			this._killRunnerLoopTimeline();
 
 			this.$['info-runner'].maxWidth = 0;
 			this.$['info-runner'].text = this._getLongestName(newVal.runners);
@@ -56,6 +53,7 @@
 				this.$['info-runner'].text = newVal.runners[0].name;
 
 				if (newVal.runners.length > 1) {
+					this._killRunnerLoopTimeline();
 					this._runnerTimeline = this._createRunnerLoopTimeline(newVal.runners);
 				}
 			});
@@ -81,6 +79,13 @@
 			});
 
 			return tl;
+		}
+
+		_killRunnerLoopTimeline() {
+			if (this._runnerTimeline) {
+				this._runnerTimeline.kill();
+				this._runnerTimeline = null;
+			}
 		}
 
 		_formatRunName(runName) {
