@@ -106,7 +106,13 @@
 			}, 'reveal');
 			tl.to(this.$.body, revealTweenWidth * LEFT_TIME_PER_PIXEL, {
 				clipPath: 'inset(0 -13px 0 0px)',
-				ease: 'BidwarOptionReveal'
+				ease: 'BidwarOptionReveal',
+				callbackScope: this,
+				onComplete() {
+					TweenLite.to(this.$.body, 0.18, {
+						clipPath: 'inset(0 -13px 0 -13px)'
+					});
+				}
 			}, 'reveal');
 
 			tl.set(this.$.tailChevron, {'--atom-chevron-background': 'transparent'});
