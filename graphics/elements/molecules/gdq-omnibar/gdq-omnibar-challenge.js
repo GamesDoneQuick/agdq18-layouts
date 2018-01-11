@@ -110,7 +110,7 @@
 				callbackScope: this,
 				onComplete() {
 					TweenLite.to(this.$.body, 0.18, {
-						clipPath: 'inset(0 -13px 0 -13px)'
+						clipPath: 'inset(0 -13px)'
 					});
 				}
 			}, 'reveal');
@@ -176,6 +176,7 @@
 			}, 'concealFill');
 
 			tl.set(this.$.tailChevron, {clearProps: '--atom-chevron-background'});
+			tl.set(this.$.body, {clipPath: 'inset(0 -13px 0 0px)'});
 
 			tl.addLabel('concealAll', `+=${DIRECTION_CHANGE_DELAY}`);
 			const concealTweenWidth = this._revealTweenWidth + TAIL_CHEVRON_WIDTH;
