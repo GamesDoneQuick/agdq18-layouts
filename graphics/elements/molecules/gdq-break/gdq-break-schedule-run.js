@@ -88,7 +88,7 @@
 				return '?';
 			}
 
-			return runName.replace('/\\n/g', ' ');
+			return runName.replace(/\\n/g, ' ');
 		}
 
 		_getLongestName(runners) {
