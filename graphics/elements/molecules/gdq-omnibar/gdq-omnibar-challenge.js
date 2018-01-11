@@ -117,7 +117,7 @@
 
 			tl.set(this.$.tailChevron, {'--atom-chevron-background': 'transparent'});
 
-			const progressFillWidth = this.$.progressFill.arrowBlock.node.getBoundingClientRect().width;
+			const progressFillWidth = this.$.progressFill.arrowBlock.node.getBoundingClientRect().width - PROGRESS_FILL_OFFSET;
 			const tailChevronEndX = progressFillWidth * progressPercentage;
 			this._progressTweenDuration = progressFillWidth * progressPercentage * RIGHT_TIME_PER_PIXEL;
 			tl.addLabel('fillProgress');
