@@ -1,4 +1,7 @@
 (function () {
+	const memoizedYardstickWidths = new Map();
+	const memoizedBodyTweenDurations = new Map();
+	const MAX_MEMOIZATION_MAP_SIZE = 150;
 	const ANCHOR_TWEEN_DURATION = 0.3;
 	const BODY_TWEEN_DURATION_PER_PX = 0.002;
 
@@ -19,6 +22,7 @@
 			labelHtml = this.processLabelHtml(labelHtml);
 
 			const tl = new TimelineLite();
+			const yardstickWidth = this.calcBodyWidth(labelHtml);
 
 			tl.fromTo(this.$.anchor, ANCHOR_TWEEN_DURATION, {
 				scaleY: 0
@@ -35,6 +39,7 @@
 				callbackScope: this,
 				onStart() {
 					this.$.text.innerHTML = labelHtml;
+					this.$.text.style.width = `${Math.ceil(yardstickWidth)}px`;
 				}
 			});
 
@@ -45,6 +50,7 @@
 			labelHtml = this.processLabelHtml(labelHtml);
 
 			const tl = new TimelineLite();
+			const yardstickWidth = this.calcBodyWidth(labelHtml);
 
 			tl.to(this.$.body, this.calcBodyTweenDuration(labelHtml), {
 				x: '-100%',
@@ -52,6 +58,7 @@
 				callbackScope: this,
 				onComplete() {
 					this.$.text.innerHTML = labelHtml;
+					this.$.text.style.width = `${Math.ceil(yardstickWidth)}px`;
 				}
 			});
 
@@ -84,15 +91,40 @@
 			return labelHtml.replace(/\\n/g, '<br/>');
 		}
 
-		calcBodyTweenDuration(labelHtml) {
-			let res;
-			if (labelHtml) {
-				this.$.yardstick.innerHTML = labelHtml;
-				res = BODY_TWEEN_DURATION_PER_PX * (this.$.yardstick.clientWidth + 30); // 30 = width added by chevrons
-			} else {
-				res = BODY_TWEEN_DURATION_PER_PX * this.$.body.clientWidth;
+		calcBodyWidth(labelHtml) {
+			if (memoizedYardstickWidths.has(labelHtml)) {
+				return memoizedYardstickWidths.get(labelHtml);
 			}
-			return res;
+
+			if (memoizedYardstickWidths.size > MAX_MEMOIZATION_MAP_SIZE) {
+				memoizedYardstickWidths.clear();
+			}
+
+			this.$.yardstick.innerHTML = labelHtml;
+			const width = this.$.yardstick.clientWidth;
+			memoizedYardstickWidths.set(labelHtml, width);
+			return width;
+		}
+
+		calcBodyTweenDuration(labelHtml) {
+			if (memoizedBodyTweenDurations.has(labelHtml)) {
+				return memoizedBodyTweenDurations.get(labelHtml);
+			}
+
+			if (memoizedBodyTweenDurations.size > MAX_MEMOIZATION_MAP_SIZE) {
+				memoizedYardstickWidths.clear();
+			}
+
+			let duration;
+			if (labelHtml) {
+				const yardstickWidth = this.calcBodyWidth(labelHtml);
+				duration = BODY_TWEEN_DURATION_PER_PX * (yardstickWidth + 30); // 30 = width added by chevrons
+			} else {
+				duration = BODY_TWEEN_DURATION_PER_PX * this.$.body.clientWidth;
+			}
+
+			memoizedBodyTweenDurations.set(labelHtml, duration);
+			return duration;
 		}
 	}
 
