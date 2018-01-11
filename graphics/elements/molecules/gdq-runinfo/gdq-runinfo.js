@@ -23,13 +23,18 @@
 				releaseYear: String,
 				console: String,
 				category: String,
-				name: String
+				name: {
+					type: String,
+					value: '?'
+				}
 			};
 		}
 
 		ready() {
 			super.ready();
-			currentRun.on('change', this.currentRunChanged.bind(this));
+			Polymer.RenderStatus.afterNextRender(this, () => {
+				currentRun.on('change', this.currentRunChanged.bind(this));
+			});
 		}
 
 		currentRunChanged(newVal) {
