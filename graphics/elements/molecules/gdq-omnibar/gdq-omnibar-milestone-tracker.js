@@ -95,7 +95,13 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 	exit() {
 		const tl = new TimelineLite();
 
-		tl.to({}, 1, {});
+		tl.add(MaybeRandom.createTween({
+			target: this.style,
+			propName: 'opacity',
+			duration: 0.465,
+			start: {probability: 1, normalValue: 0},
+			end: {probability: 0, normalValue: 0}
+		}));
 
 		return tl;
 	}
