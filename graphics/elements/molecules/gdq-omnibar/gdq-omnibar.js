@@ -395,6 +395,11 @@
 				return tl;
 			}
 
+			// If the current total is < $1M, return.
+			if (total.value.raw < 1000000) {
+				return tl;
+			}
+
 			const currentMilestone = MILESTONES.find(milestone => {
 				return total.value.raw < milestone.total;
 			});

@@ -22,7 +22,7 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		TweenLite.set(this.$.start.$['body-content'], {x: '100%'});
 		TweenLite.set(this.$.current.$['body-content'], {x: '-105%'});
 		TweenLite.set(this.$.end.$['body-content'], {x: '-100%'});
-		TweenLite.set(this.$.nextGoalLabel, {x: '100%'});
+		TweenLite.set(this.$.nextGoalLabel, {x: '101%'});
 	}
 
 	enter(displayDuration) {
@@ -36,7 +36,6 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		const currentPointBodyRect = this.$.current.$.body.getBoundingClientRect();
 		this._updateCurrentBody({
 			percent: 0,
-			currentTotal: this.currentTotal,
 			availableSpace,
 			currentPointBodyRect
 		});
@@ -75,7 +74,8 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 			onUpdate(self) {
 				this._updateCurrentBody({
 					percent: self.progress(),
-					currentTotal: this.currentTotal,
+					startValue: this.milestone.precedingMilestone.total,
+					endValue: this.currentTotal,
 					availableSpace,
 					currentPointBodyRect
 				});
@@ -97,7 +97,7 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		return tl;
 	}
 
-	_updateCurrentBody({percent = 0, currentTotal, availableSpace, currentPointBodyRect}) {
+	_updateCurrentBody({percent = 0, startValue = 0, endValue = 0, availableSpace, currentPointBodyRect}) {
 		const availableLeftSpace = this.$.current._gsTransform.x;
 		const availableRightSpace = availableSpace - this.$.current._gsTransform.x;
 		const centeredOverhang = (currentPointBodyRect.width / 2) - 1.5;
@@ -105,7 +105,9 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		const rightDefecit = Math.max(centeredOverhang - availableRightSpace, 0);
 		const finalTransform = leftDefecit - rightDefecit;
 		TweenLite.set(this.$.current.$.body, {x: finalTransform});
-		this.$.current.amount = currentTotal * percent;
+
+		const delta = endValue - startValue;
+		this.$.current.amount = startValue + (delta * percent);
 	}
 }
 
