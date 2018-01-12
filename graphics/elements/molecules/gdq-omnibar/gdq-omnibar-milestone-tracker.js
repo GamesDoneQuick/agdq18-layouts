@@ -15,11 +15,21 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		const availableSpace =
 			this.$.body.getBoundingClientRect().width -
 			this.$.current.$.line.clientWidth;
+		const currentPointBodyRect = this.$.current.$.body.getBoundingClientRect();
 
-		console.log('percentCompleted: %f, availableSpace: %f', percentCompleted, availableSpace);
-
-		tl.set(this.$.current, {
-			left: `${percentCompleted * availableSpace}px`
+		tl.to(this.$.current, 5, {
+			x: `${percentCompleted * availableSpace}px`,
+			ease: Linear.easeNone,
+			callbackScope: this,
+			onUpdate() {
+				const availableLeftSpace = this.$.current._gsTransform.x;
+				const availableRightSpace = availableSpace - this.$.current._gsTransform.x;
+				const centeredOverhang = (currentPointBodyRect.width / 2) - 1.5;
+				const leftDefecit = Math.max(centeredOverhang - availableLeftSpace, 0);
+				const rightDefecit = Math.max(centeredOverhang - availableRightSpace, 0);
+				const finalTransform = leftDefecit - rightDefecit;
+				TweenLite.set(this.$.current.$.body, {x: finalTransform});
+			}
 		});
 
 		tl.call(() => {

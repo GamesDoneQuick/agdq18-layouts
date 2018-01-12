@@ -21,33 +21,13 @@
 			};
 		}
 
-		updatePosition() {
-			if (this.align !== 'auto') {
+		_alignChanged(newVal) {
+			if (newVal !== 'center') {
 				this.$.body.style.left = '';
-				return;
 			}
 
-			const parentRect = this.parentNode.getBoundingClientRect();
-			const lineRect = this.$.line.getBoundingClientRect();
 			const bodyRect = this.$.body.getBoundingClientRect();
-
-			const availableLeftSpace = lineRect.left - parentRect.left;
-			const availableRightSpace = parentRect.right - lineRect.right;
-			console.log('parentRect:', parentRect);
-			console.log('lineRect:', lineRect);
-
-			const centeredOverhang = (bodyRect.width / 2) - 1.5;
-			const leftDefecit = Math.max(centeredOverhang - availableLeftSpace, 0);
-			const rightDefecit = Math.max(centeredOverhang - availableRightSpace, 0);
-			const finalLeft = -centeredOverhang + leftDefecit - rightDefecit;
-			console.log('availableLeftSpace: %f, availableRightSpace: %f', availableLeftSpace, availableRightSpace);
-			console.log('leftDefecit: %f, rightDefecit: %f, finalLeft: %f', leftDefecit, rightDefecit, finalLeft);
-
-			this.$.body.style.left = `${finalLeft}px`;
-		}
-
-		_alignChanged() {
-			this.updatePosition();
+			this.$.body.style.left = `${(bodyRect.width / -2) + 1.5}px`;
 		}
 
 		_calcDisplayAmount(amount) {
