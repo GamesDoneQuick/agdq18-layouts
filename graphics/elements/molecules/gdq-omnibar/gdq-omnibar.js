@@ -94,7 +94,7 @@
 				this.showUpNext,
 				this.showChallenges,
 				this.showChoices,
-				this.showCurrentPrizes
+				this.showCurrentPrizes,
 				this.showMilestoneProgress
 			];
 
