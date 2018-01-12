@@ -48,31 +48,31 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 			this.$.end.$.line
 		], 0.25, {
 			scaleY: 1,
-			ease: Linear.easeNone
+			ease: Power2.easeInOut
 		});
 
 		tl.to([
 			this.$.start.$['body-content'],
 			this.$.end.$['body-content'],
 			this.$.nextGoalLabel
-		], 0.25, {
+		], 0.75, {
 			x: '0%',
-			ease: Linear.easeNone
+			ease: Power2.easeInOut
 		});
 
 		tl.to(this.$.current.$.line, 0.25, {
 			scaleY: 1,
-			ease: Linear.easeNone
+			ease: Power2.easeInOut
 		}, '+=0.08');
 
 		tl.to(this.$.current.$['body-content'], 0.25, {
 			x: '0%',
-			ease: Linear.easeNone
+			ease: Power2.easeInOut
 		});
 
-		const fooTween = TweenLite.to(this.$.current, 2.5, {
+		const fooTween = TweenLite.to(this.$.current, 0.5 + (3 * percentCompleted), {
 			x: `${percentCompleted * availableSpace}px`,
-			ease: Linear.easeNone,
+			ease: Power1.easeInOut,
 			callbackScope: this,
 			onUpdate(self) {
 				this._updateCurrentBody({
