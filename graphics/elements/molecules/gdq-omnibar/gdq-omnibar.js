@@ -4,7 +4,6 @@
 	const MILESTONES = [
 		{name: 'AGDQ 2014', total: 1031665.50},
 		{name: 'AGDQ 2015', total: 1576085.00},
-		{name: 'SGDQ 2015', total: 1215601.49},
 		{name: 'AGDQ 2016', total: 1216309.02},
 		{name: 'SGDQ 2016', total: 1294139.50},
 		{name: 'AGDQ 2017', total: 2222790.52},
