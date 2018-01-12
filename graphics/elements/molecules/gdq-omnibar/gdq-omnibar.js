@@ -18,11 +18,11 @@
 
 		const succeedingMilestone = array[index + 1];
 
-		const modifiedMilestone = {
-			...milestone,
+		// Can't use spread operator in this method because of https://github.com/Polymer/polymer-cli/issues/888
+		const modifiedMilestone = Object.assign({}, milestone, {
 			precedingMilestone,
 			succeedingMilestone
-		};
+		});
 		Object.freeze(modifiedMilestone);
 		return modifiedMilestone;
 	});

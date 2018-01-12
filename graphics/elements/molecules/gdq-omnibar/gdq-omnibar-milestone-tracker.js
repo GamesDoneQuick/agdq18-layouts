@@ -4,7 +4,10 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 	}
 
 	static get properties() {
-		return {};
+		return {
+			currentTotal: Number,
+			milestone: Object
+		};
 	}
 
 	ready() {
