@@ -1,0 +1,49 @@
+<dom-module id="gdq-omnibar-milestone-tracker-point">
+	<template>
+		<style>
+			:host {
+				position: relative;
+				height: 100%;
+				filter: drop-shadow(0 0 12px var(--gdq-omnibar-milestone-tracker-point-color));
+				@apply --layout-horizontal;
+			}
+
+			#line {
+				width: 3px;
+				height: 100%;
+				background-color: var(--gdq-omnibar-milestone-tracker-point-color);
+			}
+
+			#body {
+				height: 30px;
+				background-color: var(--gdq-omnibar-milestone-tracker-point-color);
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-self-center;
+			}
+
+			#label {
+				font-size: 16px;
+				color: black;
+				padding-left: 8px;
+				padding-right: 5px;
+			}
+
+			:host([align="right"]) #line {
+				order: 1;
+			}
+
+			:host([align="auto"]) #body {
+				position: absolute;
+				top: 13px;
+			}
+		</style>
+
+		<div id="line"></div>
+		<div id="body">
+			<div id="label">[[_calcDisplayAmount(amount)]]</div>
+		</div>
+	</template>
+
+	<script src="gdq-omnibar-milestone-tracker-point.js"></script>
+</dom-module>

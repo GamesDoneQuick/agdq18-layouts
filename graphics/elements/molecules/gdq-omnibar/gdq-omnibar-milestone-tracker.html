@@ -1,0 +1,72 @@
+<link rel="import" href="../../../../shared/fonts/gdqpixel/import.html">
+<link rel="import" href="gdq-omnibar-milestone-tracker-point.html">
+
+<dom-module id="gdq-omnibar-milestone-tracker">
+	<template>
+		<style>
+			:host {
+				font-family: gdqpixel;
+				@apply --layout-horizontal;
+				@apply --layout-flex;
+			}
+
+			#body {
+				position: relative;
+				@apply --layout-horizontal;
+				@apply --layout-center;
+				@apply --layout-flex;
+			}
+
+			#nextGoalLabel {
+				line-height: normal;
+				font-size: 28px;
+				text-align: right;
+				color: rgba(0, 255, 255, 0.5);
+				text-transform: uppercase;
+				margin-left: auto;
+				margin-right: 7px;
+			}
+
+			#start {
+				--gdq-omnibar-milestone-tracker-point-color: #FF70C7;
+				@apply --layout-flex-none;
+			}
+
+			#current {
+				--gdq-omnibar-milestone-tracker-point-color: #00FF00;
+			}
+
+			#end {
+				--gdq-omnibar-milestone-tracker-point-color: #00FFFF;
+				margin-right: 9px;
+				@apply --layout-flex-none;
+			}
+		</style>
+
+		<gdq-omnibar-milestone-tracker-point
+			id="start"
+			align="right"
+			amount="[[milestone.precedingMilestone.total]]">
+		</gdq-omnibar-milestone-tracker-point>
+
+		<div id="body">
+			<gdq-omnibar-milestone-tracker-point
+				id="current"
+				align="auto"
+				amount="[[currentTotal]]">
+			</gdq-omnibar-milestone-tracker-point>
+
+			<div id="nextGoalLabel">
+				NEXT GOAL: [[milestone.name]]
+			</div>
+		</div>
+
+		<gdq-omnibar-milestone-tracker-point
+			id="end"
+			align="left"
+			amount="[[milestone.total]]">
+		</gdq-omnibar-milestone-tracker-point>
+	</template>
+
+	<script src="gdq-omnibar-milestone-tracker.js"></script>
+</dom-module>

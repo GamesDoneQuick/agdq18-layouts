@@ -8,6 +8,7 @@
 <link rel="import" href="gdq-omnibar-label.html">
 <link rel="import" href="gdq-omnibar-left-divider.html">
 <link rel="import" href="gdq-omnibar-list.html">
+<link rel="import" href="gdq-omnibar-milestone-tracker.html">
 <link rel="import" href="gdq-omnibar-prize.html">
 <link rel="import" href="gdq-omnibar-run.html">
 <link rel="import" href="gdq-omnibar-total.html">
@@ -47,13 +48,21 @@
 				@apply --layout-horizontal;
 			}
 
-			#cta {
+			#cta,
+			#milestoneAlert {
 				position: absolute;
 				top: 0;
 				left: 0;
 				height: 100%;
 				width: 100%;
+			}
+
+			#cta {
 				font-size: 31px;
+			}
+
+			#milestoneAlert {
+				font-size: 33px;
 			}
 
 			#charityLogo {
@@ -68,6 +77,10 @@
 			<gdq-omnibar-label id="label"></gdq-omnibar-label>
 			<div id="content"></div>
 			<gdq-omnibar-cta id="cta"></gdq-omnibar-cta>
+			<gdq-omnibar-milestone-alert
+				id="milestoneAlert"
+				milestones="[[milestones]]">
+			</gdq-omnibar-milestone-alert>
 		</div>
 		<gdq-omnibar-total id="total"></gdq-omnibar-total>
 		<img id="charityLogo" src="[[importPath]]img/logo-charity.png">

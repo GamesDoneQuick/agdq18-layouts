@@ -1,6 +1,33 @@
 (function () {
 	'use strict';
 
+	const MILESTONES = [
+		{name: 'AGDQ 2014', total: 1031665.50},
+		{name: 'AGDQ 2015', total: 1576085.00},
+		{name: 'SGDQ 2015', total: 1215601.49},
+		{name: 'AGDQ 2016', total: 1216309.02},
+		{name: 'SGDQ 2016', total: 1294139.50},
+		{name: 'AGDQ 2017', total: 2222790.52},
+		{name: 'SGDQ 2017', total: 1792342.37}
+	].sort((a, b) => {
+		return a.total - b.total;
+	}).map((milestone, index, array) => {
+		const precedingMilestone = index > 0 ?
+			array[index - 1] :
+			{name: 'none', total: 0};
+
+		const succeedingMilestone = array[index + 1];
+
+		const modifiedMilestone = {
+			...milestone,
+			precedingMilestone,
+			succeedingMilestone
+		};
+		Object.freeze(modifiedMilestone);
+		return modifiedMilestone;
+	});
+	Object.freeze(MILESTONES);
+
 	// Configuration consts.
 	const DISPLAY_DURATION = nodecg.bundleConfig.displayDuration;
 	const SCROLL_HOLD_DURATION = nodecg.bundleConfig.omnibar.scrollHoldDuration;
@@ -11,6 +38,7 @@
 	const currentPrizes = nodecg.Replicant('currentPrizes');
 	const currentRun = nodecg.Replicant('currentRun');
 	const nextRun = nodecg.Replicant('nextRun');
+	const recordTrackerEnabled = nodecg.Replicant('recordTrackerEnabled');
 	const schedule = nodecg.Replicant('schedule');
 	const total = nodecg.Replicant('total');
 
@@ -21,7 +49,12 @@
 
 		static get properties() {
 			return {
-				importPath: String // https://github.com/Polymer/polymer-linter/issues/71
+				importPath: String, // https://github.com/Polymer/polymer-linter/issues/71
+				milestones: {
+					type: Array,
+					readOnly: true,
+					value: MILESTONES
+				}
 			};
 		}
 
@@ -34,6 +67,7 @@
 				currentPrizes,
 				currentRun,
 				nextRun,
+				recordTrackerEnabled,
 				schedule,
 				total
 			];
@@ -61,6 +95,7 @@
 				this.showChallenges,
 				this.showChoices,
 				this.showCurrentPrizes
+				this.showMilestoneProgress
 			];
 
 			function processNextPart() {
@@ -348,6 +383,41 @@
 
 			this.showContent(tl, listElement);
 			this.hideContent(tl, listElement);
+
+			return tl;
+		}
+
+		showMilestoneProgress() {
+			const tl = new TimelineLite();
+
+			// If we have manually disabled this feature, return.
+			if (!recordTrackerEnabled.value) {
+				return tl;
+			}
+
+			const currentMilestone = MILESTONES.find(milestone => {
+				return total.value.raw < milestone.total;
+			});
+
+			// If we are out of milestones to show, return.
+			if (!currentMilestone) {
+				return tl;
+			}
+
+			const milestoneTrackerElement = document.createElement('gdq-omnibar-milestone-tracker');
+			milestoneTrackerElement.milestone = currentMilestone;
+			milestoneTrackerElement.currentTotal = total.value.raw;
+
+			this.setContent(tl, milestoneTrackerElement);
+
+			tl.add(this.showLabel('Milestone Progress', {
+				avatarIconName: 'milestones',
+				flagColor: '#FFB800',
+				ringColor: '#E7EC07'
+			}), '+=0.03');
+
+			this.showContent(tl, milestoneTrackerElement);
+			this.hideContent(tl, milestoneTrackerElement);
 
 			return tl;
 		}
