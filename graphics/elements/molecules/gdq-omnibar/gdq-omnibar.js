@@ -14,7 +14,7 @@
 	}).map((milestone, index, array) => {
 		const precedingMilestone = index > 0 ?
 			array[index - 1] :
-			{name: 'none', total: 0};
+			{name: 'none', total: 1000000};
 
 		const succeedingMilestone = array[index + 1];
 

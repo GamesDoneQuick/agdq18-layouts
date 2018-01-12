@@ -49,7 +49,8 @@
 		<gdq-omnibar-milestone-tracker-point
 			id="start"
 			align="right"
-			amount="[[milestone.precedingMilestone.total]]">
+			amount="[[milestone.precedingMilestone.total]]"
+			drop-trailing-zeroes>
 		</gdq-omnibar-milestone-tracker-point>
 
 		<div id="body">
@@ -67,7 +68,8 @@
 		<gdq-omnibar-milestone-tracker-point
 			id="end"
 			align="left"
-			amount="[[milestone.total]]">
+			amount="[[milestone.total]]"
+			drop-trailing-zeroes>
 		</gdq-omnibar-milestone-tracker-point>
 	</template>
 

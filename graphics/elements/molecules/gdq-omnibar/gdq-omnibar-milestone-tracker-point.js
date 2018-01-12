@@ -2,7 +2,6 @@
 	'use strict';
 
 	const ONE_MILLION = 1000000;
-	const ONE_THOUSAND = 1000;
 
 	class GdqOmnibarMilestoneTrackerPoint extends Polymer.Element {
 		static get is() {
@@ -17,7 +16,11 @@
 					reflectToAttribute: true,
 					observer: '_alignChanged'
 				},
-				amount: Number
+				amount: Number,
+				dropTrailingZeroes: {
+					type: Boolean,
+					value: false
+				}
 			};
 		}
 
@@ -31,27 +34,23 @@
 		}
 
 		_calcDisplayAmount(amount) {
-			if (amount >= ONE_MILLION) {
-				return `$${this._formatAmount(amount / ONE_MILLION)}M`;
-			}
-
-			if (amount >= ONE_THOUSAND) {
-				return `$${this._formatAmount(amount / ONE_THOUSAND)}K`;
-			}
-
-			return `$${this._formatAmount(amount)}`;
+			return `$${this._formatAmount(amount / ONE_MILLION)}M`;
 		}
 
 		_formatAmount(amount) {
 			let amountString = amount.toFixed(2);
-			while (
-				(amountString.endsWith('0') || amountString.endsWith('.')) &&
-				amountString.length > 1
-			) {
-				amountString = amountString.slice(0, -1);
+
+			if (this.dropTrailingZeroes) {
+				while (
+					(amountString.endsWith('0') || amountString.endsWith('.')) &&
+					amountString.length > 1
+				) {
+					amountString = amountString.slice(0, -1);
+				}
 			}
 
-			return amountString;
+			// Use the monospace version of the "1" character in the gdqpixel font.
+			return amountString.replace(/1/ig, '\u00C0');
 		}
 	}
 

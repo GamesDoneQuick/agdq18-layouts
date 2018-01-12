@@ -105,7 +105,7 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 		const rightDefecit = Math.max(centeredOverhang - availableRightSpace, 0);
 		const finalTransform = leftDefecit - rightDefecit;
 		TweenLite.set(this.$.current.$.body, {x: finalTransform});
-		//this.$.current.amount = currentTotal * percent;
+		this.$.current.amount = currentTotal * percent;
 	}
 }
 
