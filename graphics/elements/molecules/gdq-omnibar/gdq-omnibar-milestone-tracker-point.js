@@ -38,7 +38,7 @@
 		}
 
 		_formatAmount(amount) {
-			let amountString = amount.toFixed(2);
+			let amountString = String(amount).substr(0, 4);
 
 			if (this.dropTrailingZeroes) {
 				while (
