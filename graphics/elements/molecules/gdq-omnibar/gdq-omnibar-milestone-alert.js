@@ -67,17 +67,17 @@
 
 			tl.to(this.$.layer1, 0.5, {
 				clipPath: 'inset(0 0% 0 0%)',
-				ease: Linear.easeNone
+				ease: Power3.easeInOut
 			});
 
 			tl.to(this.$.layer2, 0.5, {
 				clipPath: 'inset(0 0% 0 0%)',
-				ease: Linear.easeNone
+				ease: Power3.easeInOut
 			}, `+=${SLIDE_HOLD_DURATION}`);
 
 			tl.to(this.$.layer3, 0.5, {
 				clipPath: 'inset(0 0% 0 0%)',
-				ease: Linear.easeNone
+				ease: Power3.easeInOut
 			}, `+=${SLIDE_HOLD_DURATION}`);
 
 			tl.set([this.$.layer1, this.$.layer2], {opacity: 0});
@@ -88,7 +88,7 @@
 
 			tl.to(this.$.layer3, 0.5, {
 				clipPath: 'inset(0px 0% 0px 100%)',
-				ease: Linear.easeNone
+				ease: Power3.easeInOut
 			}, `+=${SLIDE_HOLD_DURATION}`);
 
 			tl.set([
