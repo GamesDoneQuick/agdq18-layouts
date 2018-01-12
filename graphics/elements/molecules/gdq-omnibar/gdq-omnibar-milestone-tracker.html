@@ -12,6 +12,7 @@
 
 			#body {
 				position: relative;
+				overflow: hidden;
 				@apply --layout-horizontal;
 				@apply --layout-center;
 				@apply --layout-flex;
@@ -24,7 +25,7 @@
 				color: rgba(0, 255, 255, 0.5);
 				text-transform: uppercase;
 				margin-left: auto;
-				margin-right: 7px;
+				padding-right: 7px;
 			}
 
 			#start {
@@ -35,6 +36,7 @@
 			#current {
 				--gdq-omnibar-milestone-tracker-point-color: #00FF00;
 				will-change: transform;
+				z-index: 1;
 			}
 
 			#end {

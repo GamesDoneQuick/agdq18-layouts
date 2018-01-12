@@ -12,14 +12,21 @@
 				width: 3px;
 				height: 100%;
 				background-color: var(--gdq-omnibar-milestone-tracker-point-color);
+				transform-origin: center;
+				will-change: transform;
 			}
 
 			#body {
+				overflow: hidden;
+				@apply --layout-self-center;
+			}
+
+			#body-content {
 				height: 30px;
 				background-color: var(--gdq-omnibar-milestone-tracker-point-color);
+				will-change: transform;
 				@apply --layout-horizontal;
 				@apply --layout-center;
-				@apply --layout-self-center;
 			}
 
 			#label {
@@ -42,7 +49,9 @@
 
 		<div id="line"></div>
 		<div id="body">
-			<div id="label">[[_calcDisplayAmount(amount)]]</div>
+			<div id="body-content">
+				<div id="label">[[_calcDisplayAmount(amount)]]</div>
+			</div>
 		</div>
 	</template>
 
