@@ -32,13 +32,20 @@
 		ready() {
 			super.ready();
 
-			total.on('change', (newVal, oldVal) => {
-				if (!newVal) {
+			let lastRaw;
+			total.on('change', newVal => {
+				if (!newVal || typeof newVal.raw !== 'number') {
 					return;
 				}
 
 				if (!this._initialized) {
+					lastRaw = newVal.raw;
 					this._initialized = true;
+					return;
+				}
+
+				// If we have manually disabled this feature, return.
+				if (!recordTrackerEnabled.value) {
 					return;
 				}
 
@@ -53,22 +60,19 @@
 					return;
 				}
 
-				if (oldVal &&
+				if (lastRaw &&
 					newVal.raw >= highestPassedMilestone.total &&
-					oldVal.raw < highestPassedMilestone.total) {
+					lastRaw < highestPassedMilestone.total) {
 					const alertAnim = this.alertMilestonePassed(highestPassedMilestone);
 					this.tl.add(alertAnim, '+=0.1');
 				}
+
+				lastRaw = newVal.raw;
 			});
 		}
 
 		alertMilestonePassed(milestone) {
 			const tl = new TimelineLite();
-
-			// If we have manually disabled this feature, return.
-			if (!recordTrackerEnabled.value) {
-				return tl;
-			}
 
 			tl.call(() => {
 				this.displayingMilestone = milestone;
