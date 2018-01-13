@@ -23,8 +23,22 @@
 				selectedContentTab: {
 					type: Number,
 					value: 0
+				},
+				_connectedToNodeCG: {
+					type: Boolean,
+					value: true
+				},
+				_reconnectingToNodeCG: {
+					type: Boolean,
+					value: false
 				}
 			};
+		}
+
+		static get observers() {
+			return [
+				'_updateConnectionStatusIndicator(_connectedToNodeCG, _reconnectingToNodeCG)'
+			];
 		}
 
 		ready() {
@@ -45,6 +59,20 @@
 			this.$.hotbar.addEventListener('open-lowerthird-preview-clicked', () => {
 				this.$.lowerthirdPreview.updatePreview(this.$.lowerthirdControls.getNames());
 				this.$.lowerthirdPreviewDialog.open();
+			});
+
+			window.socket.on('disconnect', () => {
+				this._connectedToNodeCG = false;
+				this._reconnectingToNodeCG = false;
+			});
+
+			window.socket.on('reconnect', () => {
+				this._connectedToNodeCG = true;
+				this._reconnectingToNodeCG = false;
+			});
+
+			window.socket.on('reconnecting', () => {
+				this._reconnectingToNodeCG = true;
 			});
 		}
 
@@ -102,6 +130,16 @@
 		_handleLowerthirdRefillOptionAccepted(e) {
 			this.$.lowerthirdControls.setNames(e.detail.names);
 			this.closeLowerthirdRefillDialog();
+		}
+
+		_updateConnectionStatusIndicator(connectedToNodeCG, reconnectingToNodeCG) {
+			if (reconnectingToNodeCG) {
+				this.$.contentTabs.style.borderColor = '#dfd334';
+			} else if (connectedToNodeCG) {
+				this.$.contentTabs.style.borderColor = '';
+			} else {
+				this.$.contentTabs.style.borderColor = '#A62724';
+			}
 		}
 	}
 
