@@ -70,7 +70,10 @@ class GdqOmnibarMilestoneTracker extends Polymer.Element {
 			ease: Power2.easeInOut
 		});
 
-		const fooTween = TweenLite.to(this.$.current, 0.5 + (3 * percentCompleted), {
+		const fooTween = TweenLite.to([
+			this.$.current,
+			this.$.fill
+		], 0.5 + (3 * percentCompleted), {
 			x: `${percentCompleted * availableSpace}px`,
 			ease: Power1.easeInOut,
 			callbackScope: this,
