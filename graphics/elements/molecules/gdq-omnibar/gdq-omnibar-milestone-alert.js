@@ -33,6 +33,10 @@
 			super.ready();
 
 			total.on('change', (newVal, oldVal) => {
+				if (!newVal) {
+					return;
+				}
+
 				const highestPassedMilestone = this.milestones
 					.slice(0)
 					.reverse().find(milestone => {
