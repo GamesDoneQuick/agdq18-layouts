@@ -81,13 +81,14 @@ function processRawBids(bids) {
 	const parentBidsById = {};
 	const childBids = [];
 	bids.sort(sortBidsByEarliestEndTime).forEach(bid => {
+		if (bid.fields.state.toLowerCase() === 'denied' ||
+			bid.fields.state.toLowerCase() === 'pending') {
+			return;
+		}
+
 		// If this bid is an option for a donation war, add it to childBids array.
 		// Else, add it to the parentBidsById object.
 		if (bid.fields.parent) {
-			if (bid.fields.state.toLowerCase() === 'denied' ||
-				bid.fields.state.toLowerCase() === 'pending') {
-				return;
-			}
 			childBids.push(bid);
 		} else {
 			// Format the bid to clean up unneeded cruft.
