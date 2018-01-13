@@ -58,7 +58,7 @@
 		{name: 'sword', hasLevels: true}, // can be 0-4
 		{name: 'boss8'}
 	], [
-		{name: 'mpupgrade', hasLevels: true}, // can be 0-2
+		{name: 'cape'},
 		{name: 'boomerang', hasLevels: true}, // can be 0-3
 		{name: 'boss10'},
 		{name: 'boss9'}
