@@ -66,7 +66,7 @@
       },
       {
         "name": "record-tracker",
-        "title": "Record Tracker",
+        "title": "Milestone Tracker",
         "width": 2,
         "file": "record-tracker.html",
         "headerColor": "#2d4e8a",

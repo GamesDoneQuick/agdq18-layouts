@@ -18,7 +18,8 @@
 
 		_totalDisplayValueTransform(displayValue) {
 			const formatted = displayValue.toLocaleString('en-US', {
-				maximumFractionDigits: 0
+				maximumFractionDigits: 0,
+				minimumFractionDigits: 0
 			}).replace(/1/ig, '\u00C0');
 
 			// Part of the workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=67029
