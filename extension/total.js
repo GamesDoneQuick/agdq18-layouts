@@ -11,6 +11,7 @@ const nodecg = require('./util/nodecg-api-context').get();
 
 const autoUpdateTotal = nodecg.Replicant('autoUpdateTotal');
 const bitsTotal = nodecg.Replicant('bits:total');
+const recordTrackerEnabled = nodecg.Replicant('recordTrackerEnabled');
 const total = nodecg.Replicant('total');
 
 autoUpdateTotal.on('change', newVal => {
@@ -19,6 +20,14 @@ autoUpdateTotal.on('change', newVal => {
 		manuallyUpdateTotal(true);
 	} else {
 		nodecg.log.warn('Automatic updating of donation total DISABLED');
+	}
+});
+
+recordTrackerEnabled.on('change', newVal => {
+	if (newVal) {
+		nodecg.log.info('Milestone tracker enabled');
+	} else {
+		nodecg.log.warn('Milestone tracker DISABLED');
 	}
 });
 
