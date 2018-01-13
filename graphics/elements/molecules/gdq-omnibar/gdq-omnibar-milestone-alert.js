@@ -37,14 +37,19 @@
 					return;
 				}
 
+				if (!this._initialized) {
+					this._initialized = true;
+					return;
+				}
+
 				const highestPassedMilestone = this.milestones
 					.slice(0)
-					.reverse().find(milestone => {
+					.reverse()
+					.find(milestone => {
 						return newVal.raw >= milestone.total;
 					});
 
-				if (!this._initialized) {
-					this._initialized = true;
+				if (!highestPassedMilestone) {
 					return;
 				}
 
