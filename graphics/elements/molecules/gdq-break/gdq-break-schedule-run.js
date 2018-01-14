@@ -31,7 +31,17 @@
 			};
 		}
 
+		ready() {
+			super.ready();
+			this.hidden = true;
+		}
+
 		_runChanged(newVal) {
+			this.hidden = !newVal;
+			if (!newVal) {
+				return;
+			}
+
 			const WIDTH_ADDED_BY_BORDERS = 2;
 			const PADDING_OF_INFO_RUNNER = 48;
 
