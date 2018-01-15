@@ -1,0 +1,50 @@
+image: Visual Studio 2017
+
+platform:
+  - x64
+
+environment:
+  PKG_CACHE_PATH: '%USERPROFILE%\pkg-cache'
+
+cache:
+  - '%APPDATA%\npm'
+  - '%APPDATA%\npm-cache'
+  - '%LOCALAPPDATA%\bower'
+  - '%USERPROFILE%\pkg-cache'
+
+install:
+  - ps: Install-Product node 8 x64
+  - git reset --hard HEAD
+  - npm install -g bower polymer-cli pkg
+  - npm install
+  - bower install
+
+before_build:
+  - node --version
+  - npm --version
+  - npm test
+
+build_script:
+  - cd ..
+  - git clone https://github.com/nodecg/nodecg.git
+  - cd nodecg
+  - git checkout pkg
+  - npm i && bower install
+  - 'move %APPVEYOR_BUILD_FOLDER% bundles\%APPVEYOR_PROJECT_SLUG%'
+  - pkg . --targets node8-win-x64 --public
+  - if not exist cfg mkdir cfg
+  - 'echo {"logging": {"console": {"level": "info"},"file": {"enabled": true,"level": "debug"},"replicants": false}} >> cfg/nodecg.json'
+  - ps: Start-FileDownload 'https://redacted.com/agdq18-layouts-demo-config.json' -FileName 'cfg/agdq18-layouts.json'
+
+after_build:
+  - ps: '$env:PKG_ZIP_NAME = "agdq18-layouts-$(-join $env:APPVEYOR_REPO_COMMIT[0..7]).zip"'
+  - 7z a %PKG_ZIP_NAME% nodecg.exe cfg
+  - ps: 'Get-ChildItem -Recurse -ErrorAction SilentlyContinue bundles\$env:APPVEYOR_PROJECT_SLUG\node_modules\*.node | % { 7z a $env:PKG_ZIP_NAME $_.FullName }'
+  - 'if not exist %APPVEYOR_BUILD_FOLDER% mkdir %APPVEYOR_BUILD_FOLDER%'
+  - 'move %PKG_ZIP_NAME% %APPVEYOR_BUILD_FOLDER%'
+
+test: off
+
+artifacts:
+  - path: '%PKG_ZIP_NAME%'
+    name: pkg-agdq18-layouts
