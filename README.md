@@ -1,5 +1,6 @@
 # agdq18-layouts [![CircleCI](https://circleci.com/gh/GamesDoneQuick/agdq18-layouts.svg?style=svg&circle-token=b8e5c287d234a540e20ce7950ddaa4dff4474de4)](https://circleci.com/gh/GamesDoneQuick/agdq18-layouts)
-The on-stream graphics used during Awesome Games Done Quick 2018.
+
+> The on-stream graphics used during Awesome Games Done Quick 2018.
 
 This is a [NodeCG](http://github.com/nodecg/nodecg) v0.9 bundle. You will need to have NodeCG v0.9 installed to run it.
 
@@ -7,8 +8,8 @@ This is a [NodeCG](http://github.com/nodecg/nodecg) v0.9 bundle. You will need t
 We unfortunately do not have time to make a video breakdown for this event's bundle. However, [we did make one for the last year's AGDQ](https://www.youtube.com/watch?v=vBAZXchbI3U&list=PLTEhlYdONYxv1wk2FsIpEz92X3x2E7bSx), which still has a few similarities with this one.
 
 ## Requirements
-- [NodeCG v0.9.x](https://github.com/nodecg/nodecg/releases)
 - [Node.js v7 or greater (v8 recommended)](https://nodejs.org/)
+- [NodeCG v0.9.x](https://github.com/nodecg/nodecg/releases)
 
 ## Installation
 1. Install to `nodecg/bundles/agdq18-layouts`.
@@ -18,7 +19,7 @@ We unfortunately do not have time to make a video breakdown for this event's bun
 	- **LINUX**: Install `build-essential` and Python 2.7, which are needed to compile `agdq18-layouts`' dependencies.
 4. `cd nodecg/bundles/agdq18-layouts` and run `npm install --production`, then `bower install`
 5. Create the configuration file (see the [configuration](#configuration) section below for more details)
-6. Run the nodecg server: `nodecg start` (or `node index.js` if you don't have [`nodecg-cli`](https://github.com/nodecg/nodecg-cli)) from the `nodecg` root directory.
+6. Run the nodecg server: `node index.js` (or `nodecg start` if you have [`nodecg-cli`](https://github.com/nodecg/nodecg-cli) installed) from the `nodecg` root directory.
 
 **Please note that by default, not all graphics will not work.** This is because `agdq18-layouts` makes use of several non-free plugins for [GSAP](https://greensock.com), which we cannot redistribute. If you wish to use all graphics in their current implementations, you will need to pay for access to [Club GreenSock](https://greensock.com/club) and save the following plugins to the following directories:
 - [SplitText](https://greensock.com/SplitText): `shared/lib/vendor/SplitText.min.js`
