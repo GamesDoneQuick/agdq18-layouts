@@ -1,4 +1,4 @@
-# agdq18-layouts [![CircleCI](https://circleci.com/gh/GamesDoneQuick/agdq18-layouts.svg?style=svg&circle-token=b8e5c287d234a540e20ce7950ddaa4dff4474de4)](https://circleci.com/gh/GamesDoneQuick/agdq18-layouts)
+# agdq18-layouts
 
 > The on-stream graphics used during Awesome Games Done Quick 2018.
 
