@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "bluebird": "^3.4.0",
-    "bower-npm-resolver": "^0.8.1",
+    "bower-npm-resolver": "^0.8.2",
     "casparcg-connection": "^3.0.1",
     "cheerio": "^1.0.0-rc.1",
     "clone": "^2.1.1",
