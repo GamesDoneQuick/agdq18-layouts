@@ -52,7 +52,7 @@ Lightning Round is pretty weird and kind of difficult to set up. You can watch t
 To configure this bundle, create and edit `nodecg/cfg/agdq18-layouts.json`.  
 Refer to [configschema.json](configschema.json) for the structure of this file.
 
-If you have [nodecg-cli](https://github.com/nodecg/nodecg-cli) installed, you can run `nodecg defaultconfig` from the `nodecg/bundles/agdq18-layouts/` folder to generate a `configschema.json` file with default values derived from the schema.
+If you have [nodecg-cli](https://github.com/nodecg/nodecg-cli) installed, you can run `nodecg defaultconfig` from the `nodecg/bundles/agdq18-layouts/` folder to generate a `cfg/agdq18-layouts.json` file with default values derived from the schema.
 
 ## License
 agdq18-layouts is provided under the Apache v2 license, which is available to read in the [LICENSE](LICENSE) file.
