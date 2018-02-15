@@ -42,7 +42,7 @@ we provide a small script that sends mock donations:
 In production, you'd use [TipoftheHats/donation-socket-repeater](https://github.com/TipoftheHats/donation-socket-repeater) along with the "Postback URL" feature of [GamesDoneQuick/donation-tracker](https://github.com/GamesDoneQuick/donation-tracker).
 
 ### Lightning Round
-[Lightning Round](https://github.com/GamesDoneQuick/lightning-round) is GDQ's system for gathering interview questions from Twitter. It exists in two parts: one part running "in the cloud" as a Firebase app, and one part running locally as part of this NodeCG bundle. 
+[Lightning Round](https://github.com/GamesDoneQuick/lightning-round) is GDQ's system for gathering interview questions from Twitter. It exists in two parts: one part running "in the cloud" as a Firebase app, and one part running locally as part of this NodeCG bundle.
 
 Lightning Round is pretty weird and kind of difficult to set up. You can watch these videos for more information but please bear in mind that they are outdated, as they were made for AGDQ 2017, not AGDQ 2018:
 - [Lightning Round Overview](https://www.youtube.com/watch?v=-qzIfS7KxCQ&index=4&list=PLTEhlYdONYxv1wk2FsIpEz92X3x2E7bSx)
@@ -51,6 +51,8 @@ Lightning Round is pretty weird and kind of difficult to set up. You can watch t
 ## Configuration
 To configure this bundle, create and edit `nodecg/cfg/agdq18-layouts.json`.  
 Refer to [configschema.json](configschema.json) for the structure of this file.
+
+If you have [nodecg-cli](https://github.com/nodecg/nodecg-cli) installed, you can run `nodecg defaultconfig` from the `nodecg/bundles/agdq18-layouts/` folder to generate a `configschema.json` file with default values derived from the schema.
 
 ## License
 agdq18-layouts is provided under the Apache v2 license, which is available to read in the [LICENSE](LICENSE) file.
